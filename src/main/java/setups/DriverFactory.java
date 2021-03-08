@@ -1,4 +1,4 @@
-package driver_factory;
+package setups;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.extern.log4j.Log4j2;
