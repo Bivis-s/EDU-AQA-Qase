@@ -13,9 +13,9 @@ import java.io.IOException;
 public class DriverFactory {
     private PropertyReader propertyReader;
 
-    public DriverFactory(String PropertiesPath) {
+    public DriverFactory(String propertiesPath) {
         try {
-            this.propertyReader = new PropertyReader(PropertiesPath);
+            this.propertyReader = new PropertyReader(propertiesPath);
         } catch (IOException e) {
             propertyReader = null;
         }

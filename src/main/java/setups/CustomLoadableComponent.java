@@ -19,5 +19,5 @@ public abstract class CustomLoadableComponent<T extends CustomLoadableComponent<
 
     protected abstract T load();
 
-    protected abstract T isLoaded() throws Error;
+    public abstract T isLoaded() throws Error;
 }
