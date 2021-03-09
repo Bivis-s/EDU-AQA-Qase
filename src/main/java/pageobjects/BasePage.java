@@ -6,6 +6,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import setups.CustomLoadableComponent;
+import setups.PropertyDriver;
 
 import java.util.Arrays;
 
@@ -14,7 +15,7 @@ public abstract class BasePage<T extends CustomLoadableComponent<T>> extends Cus
     protected static final String BASE_URL = "https://qase.io/";
     private final WebDriver driver;
 
-    public BasePage(WebDriver driver) {
+    public BasePage(PropertyDriver driver) {
         PageFactory.initElements(driver, this);
         this.driver = driver;
     }
@@ -40,12 +41,10 @@ public abstract class BasePage<T extends CustomLoadableComponent<T>> extends Cus
     }
 
     protected WebElement findElementByXpath(String xpath) {
-        log.debug("Find element by xpath '" + xpath + "'");
         return getDriver().findElement(By.xpath(xpath));
     }
 
     protected WebElement findElementById(String id) {
-        log.debug("Find element by id '" + id + "'");
         return getDriver().findElement(By.id(id));
     }
 

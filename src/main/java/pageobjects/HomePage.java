@@ -1,14 +1,16 @@
 package pageobjects;
 
 import helpers.PageLoadHelper;
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import setups.PropertyDriver;
 
+@Log4j2
 public class HomePage extends BasePage<HomePage> {
     private static final String HOME_PAGE_URL = "";
     private static final String SIGN_IN_BUTTON_ID = "signin";
 
-    public HomePage(WebDriver driver) {
+    public HomePage(PropertyDriver driver) {
         super(driver);
     }
 
@@ -19,10 +21,13 @@ public class HomePage extends BasePage<HomePage> {
 
     @Override
     public HomePage isLoaded() throws Error {
-        if (PageLoadHelper.waitForElementIsClickable(getDriver(), By.id(SIGN_IN_BUTTON_ID))) {
+        try {
+            PageLoadHelper.waitForElementIsClickable(getDriver(), By.id(SIGN_IN_BUTTON_ID));
             return this;
-        } else {
-            throw new Error("The home page is not loaded");
+        } catch (Error e) {
+            String errorMessage = "The home page is not loaded";
+            log.error(errorMessage);
+            throw new Error(errorMessage);
         }
     }
 
@@ -33,6 +38,6 @@ public class HomePage extends BasePage<HomePage> {
 
     public LoginPage clickLoginButton() {
         click(findElementById(SIGN_IN_BUTTON_ID));
-        return new LoginPage(getDriver()).get();
+        return new LoginPage((PropertyDriver) getDriver()).get();
     }
 }
