@@ -7,10 +7,26 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import property_objects.DriverProperties;
 
 @Log4j2
 public class DriverPropertyFactory {
     private final DriverProperties properties;
+
+    public enum Type {
+        CHROME("chrome"),
+        FIREFOX("firefox");
+
+        private final String value;
+
+        Type(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
 
     public DriverPropertyFactory(DriverProperties properties) {
         this.properties = properties;
@@ -47,7 +63,7 @@ public class DriverPropertyFactory {
     }
 
     public WebDriver createWebDriver() {
-        DriverType driverType = properties.getType();
+        Type driverType = properties.getType();
         switch (driverType) {
             case CHROME:
                 return createChromeDriver();
