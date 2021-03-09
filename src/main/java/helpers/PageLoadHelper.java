@@ -13,22 +13,20 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class PageLoadHelper {
     private static final int TIMEOUT = 10; //TODO MOVE TO PROPERTIES FILE
 
-    public static boolean waitForElementIsClickable(WebDriver driver, By by) {
+    public static void waitForElementIsClickable(WebDriver driver, By by) {
         try {
-            log.debug("Wait for element '" + by + "' to become clickable for '" + TIMEOUT + "' seconds");
+            log.debug("Wait for element '" + by + "' to become clickable for '" + TIMEOUT + "' seconds maximum");
             new WebDriverWait(driver, TIMEOUT).until(ExpectedConditions.elementToBeClickable(by));
-            return true;
         } catch (WebDriverException e) {
-            log.error("Element '" + by + " does not become clickable");
+            log.error("Element '" + by + "' does not become clickable");
             throw new Error("Element is not clickable");
         }
     }
 
-    public static boolean waitForElementIsVisible(WebDriver driver, By by) {
+    public static void waitForElementIsVisible(WebDriver driver, By by) {
         try {
-            log.debug("Wait for element '" + by + "' to become visible for '" + TIMEOUT + "' seconds");
+            log.debug("Wait for element '" + by + "' to become visible for '" + TIMEOUT + "' seconds maximum");
             new WebDriverWait(driver, TIMEOUT).until(ExpectedConditions.elementToBeClickable(by));
-            return true;
         } catch (WebDriverException e) {
             log.error("Element '" + by + " does not become visible");
             throw new Error("Element is not visible");
