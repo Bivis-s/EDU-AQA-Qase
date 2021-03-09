@@ -15,6 +15,7 @@ public abstract class BasePage<T extends CustomLoadableComponent<T>> extends Cus
     private final WebDriver driver;
 
     public BasePage(WebDriver driver) {
+        PageFactory.initElements(driver, this);
         this.driver = driver;
     }
 
@@ -22,13 +23,16 @@ public abstract class BasePage<T extends CustomLoadableComponent<T>> extends Cus
         return driver;
     }
 
-    public abstract String getPageUrl();
+    protected abstract String getPageUrl();
 
     @SuppressWarnings("unchecked")
     public T openPage() {
-        T page = (T) PageFactory.initElements(getDriver(), getClass());
         getDriver().get(BASE_URL + getPageUrl());
-        return page.get();
+        return (T) this;
+    }
+
+    protected void open(String url) {
+        getDriver().get(url);
     }
 
     protected String getElementLocation(WebElement element) {
