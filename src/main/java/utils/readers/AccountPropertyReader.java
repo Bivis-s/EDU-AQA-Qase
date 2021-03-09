@@ -1,21 +1,22 @@
-package property_objects;
+package utils.readers;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
-import utils.PropertyReader;
+import property_objects.AccountProperties;
 
 import java.io.IOException;
 import java.util.Map;
 
 @Log4j2
-public class AccountPropertyReader extends PropertyReader{
-    private static final String ACCOUNTS_PROPERTIES_FILE = "src/test/resources/properties/accounts.properties";
-    @Getter @Setter
+public class AccountPropertyReader extends PropertyReader {
+    private static final String ACCOUNTS_PROPERTIES_FILE_PATH = "src/test/resources/properties/accounts.properties";
+    @Getter
+    @Setter
     private String accountName;
 
     public AccountPropertyReader(String accountName) throws IOException {
-        super(ACCOUNTS_PROPERTIES_FILE);
+        super(ACCOUNTS_PROPERTIES_FILE_PATH);
         this.accountName = accountName;
     }
 
@@ -30,25 +31,32 @@ public class AccountPropertyReader extends PropertyReader{
         }
     }
 
-    public String getLogin () {
+    private String getLogin() {
         String login = getAccountPropertiesMap().get(getAccountName() + "_login");
-        if (!login.equals("")) {
+        if (login != null && !login.equals("")) {
             return login;
         } else {
-            String errorMessage = "Account '" + accountName + "' login is empty, please fill in the line in the properties file, path: " + ACCOUNTS_PROPERTIES_FILE;
+            String errorMessage = "Account '" + accountName + "' login is empty, please fill in the line in the properties file, path: " + ACCOUNTS_PROPERTIES_FILE_PATH;
             log.error(errorMessage);
             throw new Error(errorMessage);
         }
     }
 
-    public String getPassword () {
+    private String getPassword() {
         String password = getAccountPropertiesMap().get(getAccountName() + "_password");
-        if (!password.equals("")) {
+        if (password != null && !password.equals("")) {
             return password;
         } else {
-            String errorMessage = "Account '" + accountName + "' password is empty, please fill in the line in the properties file, path: " + ACCOUNTS_PROPERTIES_FILE;
+            String errorMessage = "Account '" + accountName + "' password is empty, please fill in the line in the properties file, path: " + ACCOUNTS_PROPERTIES_FILE_PATH;
             log.error(errorMessage);
             throw new Error(errorMessage);
         }
+    }
+
+    public AccountProperties getAccountsProperties() {
+        AccountProperties properties = new AccountProperties();
+        properties.setLogin(getLogin());
+        properties.setPassword(getPassword());
+        return properties;
     }
 }
