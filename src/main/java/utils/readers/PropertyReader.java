@@ -1,4 +1,4 @@
-package utils;
+package utils.readers;
 
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
@@ -6,12 +6,15 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Log4j2
-public class PropertyReader {
+public abstract class PropertyReader {
     private final Properties properties = new Properties();
 
     public PropertyReader(String path) throws IOException {
@@ -25,7 +28,14 @@ public class PropertyReader {
     }
 
     public String getString(String key) {
-        return properties.getProperty(key);
+        String value = properties.getProperty(key);
+        if (value != null) {
+            return value;
+        } else {
+            String errorMessage = "There is no such property: '" + key + "'";
+            log.error(errorMessage);
+            throw new Error(errorMessage);
+        }
     }
 
     public boolean getBoolean(String key) {

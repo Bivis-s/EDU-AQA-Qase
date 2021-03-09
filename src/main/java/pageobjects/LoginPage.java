@@ -6,29 +6,25 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import setups.PropertyDriver;
+import utils.readers.UrlPropertyReader;
+
+import java.io.IOException;
 
 @Log4j2
-public class LoginPage extends BasePage<LoginPage>{
-    private static final String HOME_PAGE_URL = BASE_URL + "login";
+public class LoginPage extends BasePage<LoginPage> {
     private static final String LOGIN_BUTTON_ID = "btnLogin";
-    @FindBy(id = "inputEmail")
-    private WebElement emailInput;
     @FindBy(id = "inputPassword")
     protected WebElement passwordInput;
+    @FindBy(id = "inputEmail")
+    private WebElement emailInput;
 
     public LoginPage(PropertyDriver driver) {
         super(driver);
     }
 
     @Override
-    protected String getPageUrl() {
-        return HOME_PAGE_URL;
-    }
-
-    @Override
-    protected LoginPage load() {
-        open(getPageUrl());
-        return this;
+    protected String getPageUrl() throws IOException {
+        return getUrlFromProperty(UrlPropertyReader.Page.LOGIN);
     }
 
     @Override

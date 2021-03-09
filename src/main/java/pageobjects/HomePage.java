@@ -4,19 +4,16 @@ import helpers.PageLoadHelper;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import setups.PropertyDriver;
+import utils.readers.UrlPropertyReader;
+
+import java.io.IOException;
 
 @Log4j2
 public class HomePage extends BasePage<HomePage> {
-    private static final String HOME_PAGE_URL = "";
     private static final String SIGN_IN_BUTTON_ID = "signin";
 
     public HomePage(PropertyDriver driver) {
         super(driver);
-    }
-
-    @Override
-    protected HomePage load() {
-        return refreshPage();
     }
 
     @Override
@@ -32,8 +29,8 @@ public class HomePage extends BasePage<HomePage> {
     }
 
     @Override
-    protected String getPageUrl() {
-        return HOME_PAGE_URL;
+    protected String getPageUrl() throws IOException {
+        return getUrlFromProperty(UrlPropertyReader.Page.HOME);
     }
 
     public LoginPage clickLoginButton() {

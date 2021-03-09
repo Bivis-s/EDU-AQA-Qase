@@ -4,10 +4,12 @@ import helpers.PageLoadHelper;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import setups.PropertyDriver;
+import utils.readers.UrlPropertyReader;
+
+import java.io.IOException;
 
 @Log4j2
 public class ProjectsPage extends BasePage<ProjectsPage> {
-    private static final String PROJECTS_PAGE_URL = BASE_URL + "projects";
     private static final String CREATE_NEW_PROJECT_BUTTON_ID = "createButton";
 
     public ProjectsPage(PropertyDriver driver) {
@@ -15,14 +17,8 @@ public class ProjectsPage extends BasePage<ProjectsPage> {
     }
 
     @Override
-    protected String getPageUrl() {
-        return PROJECTS_PAGE_URL;
-    }
-
-    @Override
-    protected ProjectsPage load() {
-        open(getPageUrl());
-        return this;
+    protected String getPageUrl() throws IOException {
+        return getUrlFromProperty(UrlPropertyReader.Page.PROJECTS);
     }
 
     @Override

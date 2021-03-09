@@ -1,23 +1,16 @@
 package element_decorators;
 
+import helpers.ElementsManipulator;
 import lombok.extern.log4j.Log4j2;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import setups.PropertyDriver;
 
-import java.util.Arrays;
-
 @Log4j2
-public abstract class BaseElementDecorator<T extends BaseElementDecorator<T>> {
-    private final WebDriver driver;
+public abstract class BaseElementDecorator<T extends BaseElementDecorator<T>> extends ElementsManipulator {
     private WebElement element;
 
     protected BaseElementDecorator(PropertyDriver driver) {
-        this.driver = driver;
-    }
-
-    protected WebDriver getDriver() {
-        return driver;
+        super(driver);
     }
 
     public WebElement getElement() {
@@ -30,27 +23,29 @@ public abstract class BaseElementDecorator<T extends BaseElementDecorator<T>> {
         return element;
     }
 
-    protected abstract void initElement();
-
     protected void setElement(WebElement element) {
         this.element = element;
     }
 
-    protected String getElementLocation(WebElement element) {
-        return element.getLocation().toString();
+    protected abstract void initElement();
+
+    protected void click() {
+        super.click(getElement());
     }
 
-    @SuppressWarnings("unchecked")
-    protected T click() {
-        log.debug("Click element '" + getElementLocation(getElement()) + "'");
-        getElement().click();
-        return (T) this;
+    protected void sendKeys(String... keys) {
+        super.sendKeys(getElement(), keys);
     }
 
-    @SuppressWarnings("unchecked")
-    protected T sendKeys(String... keys) {
-        log.debug("Send keys '" + Arrays.toString(keys) + "' to element '" + getElementLocation(getElement()) + "'");
-        getElement().sendKeys(keys);
-        return (T) this;
+    protected String getText() {
+        return super.getText(getElement());
+    }
+
+    protected boolean isElementDisplayed() {
+        return super.isElementDisplayed(getElement());
+    }
+
+    protected boolean isElementDisplayed(int timeout) {
+        return super.isElementDisplayed(getElement(), timeout);
     }
 }

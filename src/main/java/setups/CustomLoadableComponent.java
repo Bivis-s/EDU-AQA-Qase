@@ -1,9 +1,14 @@
 package setups;
 
+import helpers.ElementsManipulator;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-public abstract class CustomLoadableComponent<T extends CustomLoadableComponent<T>> {
+public abstract class CustomLoadableComponent<T extends CustomLoadableComponent<T>> extends ElementsManipulator {
+
+    public CustomLoadableComponent(PropertyDriver driver) {
+        super(driver);
+    }
 
     @SuppressWarnings("unchecked")
     public T get() {

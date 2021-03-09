@@ -4,12 +4,11 @@ import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import utils.readers.DriverPropertyReader;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
-
-import static org.testng.Assert.fail;
 
 @Log4j2
 public class PropertyDriver implements WebDriver {
@@ -21,7 +20,6 @@ public class PropertyDriver implements WebDriver {
         } catch (IOException e) {
             String errorMessage = "Driver property file not found";
             log.error(errorMessage);
-            fail(errorMessage);
             throw new Error(errorMessage);
         }
     }
