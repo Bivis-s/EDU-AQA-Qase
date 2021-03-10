@@ -2,11 +2,12 @@ package setups;
 
 import helpers.ElementsManipulator;
 import lombok.extern.log4j.Log4j2;
+import org.openqa.selenium.WebDriver;
 
 @Log4j2
 public abstract class CustomLoadableComponent<T extends CustomLoadableComponent<T>> extends ElementsManipulator {
 
-    public CustomLoadableComponent(PropertyDriver driver) {
+    public CustomLoadableComponent(WebDriver driver) {
         super(driver);
     }
 

@@ -1,16 +1,16 @@
 package pageobjects;
 
 import lombok.extern.log4j.Log4j2;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import setups.CustomLoadableComponent;
-import setups.PropertyDriver;
 import utils.readers.UrlPropertyReader;
 
 import java.io.IOException;
 
 @Log4j2
 public abstract class BasePage<T extends CustomLoadableComponent<T>> extends CustomLoadableComponent<T> {
-    public BasePage(PropertyDriver driver) {
+    public BasePage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
     }

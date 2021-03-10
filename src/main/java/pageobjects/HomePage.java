@@ -3,6 +3,7 @@ package pageobjects;
 import helpers.PageLoadHelper;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import setups.PropertyDriver;
 import utils.readers.UrlPropertyReader;
 
@@ -12,7 +13,7 @@ import java.io.IOException;
 public class HomePage extends BasePage<HomePage> {
     private static final String SIGN_IN_BUTTON_ID = "signin";
 
-    public HomePage(PropertyDriver driver) {
+    public HomePage(WebDriver driver) {
         super(driver);
     }
 
@@ -35,6 +36,6 @@ public class HomePage extends BasePage<HomePage> {
 
     public LoginPage clickLoginButton() {
         click(findElementById(SIGN_IN_BUTTON_ID));
-        return new LoginPage((PropertyDriver) getDriver()).get();
+        return new LoginPage(getDriver()).get();
     }
 }

@@ -3,6 +3,7 @@ package pageobjects;
 import helpers.PageLoadHelper;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import setups.PropertyDriver;
@@ -18,7 +19,7 @@ public class LoginPage extends BasePage<LoginPage> {
     @FindBy(id = "inputEmail")
     private WebElement emailInput;
 
-    public LoginPage(PropertyDriver driver) {
+    public LoginPage(WebDriver driver) {
         super(driver);
     }
 
@@ -51,6 +52,6 @@ public class LoginPage extends BasePage<LoginPage> {
 
     public ProjectsPage clickLoginButton() {
         click(findElementById(LOGIN_BUTTON_ID));
-        return new ProjectsPage((PropertyDriver) getDriver()).get();
+        return new ProjectsPage(getDriver()).get();
     }
 }

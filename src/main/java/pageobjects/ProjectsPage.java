@@ -3,7 +3,7 @@ package pageobjects;
 import helpers.PageLoadHelper;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
-import setups.PropertyDriver;
+import org.openqa.selenium.WebDriver;
 import utils.readers.UrlPropertyReader;
 
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.io.IOException;
 public class ProjectsPage extends BasePage<ProjectsPage> {
     private static final String CREATE_NEW_PROJECT_BUTTON_ID = "createButton";
 
-    public ProjectsPage(PropertyDriver driver) {
+    public ProjectsPage(WebDriver driver) {
         super(driver);
     }
 

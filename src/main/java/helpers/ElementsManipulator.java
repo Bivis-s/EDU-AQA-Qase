@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import setups.PropertyDriver;
 
 import java.util.Arrays;
 
@@ -13,7 +12,7 @@ public abstract class ElementsManipulator {
     @Getter
     private final WebDriver driver;
 
-    public ElementsManipulator(PropertyDriver driver) {
+    public ElementsManipulator(WebDriver driver) {
         this.driver = driver;
     }
 
