@@ -1,31 +1,39 @@
-package utils;
+package utils.readers;
 
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
+import throwables.PropertyError;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Log4j2
-public class PropertyReader {
+public abstract class PropertyReader {
     private final Properties properties = new Properties();
 
-    public PropertyReader(String path) throws IOException {
+    public PropertyReader(String path) {
         try {
             log.debug("Load property file, path: '" + path + "'");
             properties.load(new FileReader(new File(path)));
         } catch (IOException e) {
-            log.error("Property file '" + path + "' is not found");
-            throw e;
+            throw new PropertyError("Property file '" + path + "' is not found");
         }
     }
 
     public String getString(String key) {
-        return properties.getProperty(key);
+        String value = properties.getProperty(key);
+        if (value != null) {
+            return value;
+        } else {
+            throw new PropertyError("There is no such property: '" + key + "'");
+        }
     }
 
     public boolean getBoolean(String key) {

@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import throwables.WaitForElementConditionError;
 
 @Log4j2
 public class PageLoadHelper {
@@ -18,22 +19,21 @@ public class PageLoadHelper {
             log.debug("Wait for element '" + by + "' to become clickable for '" + TIMEOUT + "' seconds maximum");
             new WebDriverWait(driver, TIMEOUT).until(ExpectedConditions.elementToBeClickable(by));
         } catch (WebDriverException e) {
-            log.error("Element '" + by + "' does not become clickable");
-            throw new Error("Element is not clickable");
+            throw new WaitForElementConditionError("Element '" + by + "' is not clickable");
         }
     }
 
     public static void waitForElementIsVisible(WebDriver driver, By by) {
         try {
             log.debug("Wait for element '" + by + "' to become visible for '" + TIMEOUT + "' seconds maximum");
-            new WebDriverWait(driver, TIMEOUT).until(ExpectedConditions.elementToBeClickable(by));
+            new WebDriverWait(driver, TIMEOUT)
+                    .until(ExpectedConditions.not(ExpectedConditions.invisibilityOfElementLocated(by)));
         } catch (WebDriverException e) {
-            log.error("Element '" + by + " does not become visible");
-            throw new Error("Element is not visible");
+            throw new WaitForElementConditionError("Element '" + by + "' does not become visible");
         }
     }
 
-    public static void waitFor(WebDriver driver, ExpectedCondition<WebElement> expectedConditions) {
+    public static void waitForCondition(WebDriver driver, ExpectedCondition<WebElement> expectedConditions) {
         new WebDriverWait(driver, TIMEOUT).until(expectedConditions);
     }
 }

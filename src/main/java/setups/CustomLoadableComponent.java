@@ -1,9 +1,13 @@
 package setups;
 
-import lombok.extern.log4j.Log4j2;
+import helpers.ElementsManipulator;
+import org.openqa.selenium.WebDriver;
 
-@Log4j2
-public abstract class CustomLoadableComponent<T extends CustomLoadableComponent<T>> {
+public abstract class CustomLoadableComponent<T extends CustomLoadableComponent<T>> extends ElementsManipulator {
+
+    public CustomLoadableComponent(WebDriver driver) {
+        super(driver);
+    }
 
     @SuppressWarnings("unchecked")
     public T get() {
@@ -11,7 +15,6 @@ public abstract class CustomLoadableComponent<T extends CustomLoadableComponent<
             isLoaded();
             return (T) this;
         } catch (Error e) {
-            log.error(e.getMessage());
             load().isLoaded();
             return (T) this;
         }
@@ -19,5 +22,5 @@ public abstract class CustomLoadableComponent<T extends CustomLoadableComponent<
 
     protected abstract T load();
 
-    public abstract T isLoaded() throws Error;
+    public abstract T isLoaded();
 }
