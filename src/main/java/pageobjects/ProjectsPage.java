@@ -1,12 +1,11 @@
 package pageobjects;
 
+import element_decorators.ProjectRow;
+import enums.UrlPageName;
 import helpers.PageLoadHelper;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import utils.readers.UrlPropertyReader;
-
-import java.io.IOException;
 
 @Log4j2
 public class ProjectsPage extends BasePage<ProjectsPage> {
@@ -17,19 +16,22 @@ public class ProjectsPage extends BasePage<ProjectsPage> {
     }
 
     @Override
-    protected String getPageUrl() throws IOException {
-        return getUrlFromProperty(UrlPropertyReader.Page.PROJECTS);
+    protected String getPageUrl() {
+        return getUrlFromProperty(UrlPageName.PROJECTS);
     }
 
     @Override
-    public ProjectsPage isLoaded() throws Error {
-        try {
-            PageLoadHelper.waitForElementIsClickable(getDriver(), By.id(CREATE_NEW_PROJECT_BUTTON_ID));
-            return this;
-        } catch (Error e) {
-            String errorMessage = "The projects page is not loaded";
-            log.error(errorMessage);
-            throw new Error(errorMessage);
-        }
+    public ProjectsPage isLoaded() {
+        PageLoadHelper.waitForElementIsClickable(getDriver(), By.id(CREATE_NEW_PROJECT_BUTTON_ID));
+        return this;
+    }
+
+    public NewProjectPage clickCreateNewProjectButton() {
+        click(findElementByXpath(CREATE_NEW_PROJECT_BUTTON_ID));
+        return new NewProjectPage(getDriver()).get();
+    }
+
+    public ProjectRow getProjectRow(String projectName) {
+        return new ProjectRow(getDriver(), projectName);
     }
 }

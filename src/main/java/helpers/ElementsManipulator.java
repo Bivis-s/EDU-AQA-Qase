@@ -42,10 +42,10 @@ public abstract class ElementsManipulator {
         return isDisplayed;
     }
 
-    protected boolean isElementDisplayed(WebElement element, int timeout) {
+    protected boolean isElementBecomeVisible(WebElement element) {
         boolean isDisplayed = false;
         try {
-            PageLoadHelper.waitFor(getDriver(), ExpectedConditions.visibilityOf(element));
+            PageLoadHelper.waitForCondition(getDriver(), ExpectedConditions.visibilityOf(element));
             isDisplayed = true;
         } catch (TimeoutException ignored) {
         }
@@ -59,5 +59,9 @@ public abstract class ElementsManipulator {
 
     protected WebElement findElementById(String id) {
         return getDriver().findElement(By.id(id));
+    }
+
+    protected WebElement findInnerElementByXpath(WebElement element, String xpath) {
+        return element.findElement(By.xpath(xpath));
     }
 }

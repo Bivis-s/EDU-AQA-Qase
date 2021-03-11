@@ -1,12 +1,11 @@
 package pageobjects;
 
+import enums.UrlPageName;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import setups.CustomLoadableComponent;
 import utils.readers.UrlPropertyReader;
-
-import java.io.IOException;
 
 @Log4j2
 public abstract class BasePage<T extends CustomLoadableComponent<T>> extends CustomLoadableComponent<T> {
@@ -15,7 +14,7 @@ public abstract class BasePage<T extends CustomLoadableComponent<T>> extends Cus
         PageFactory.initElements(driver, this);
     }
 
-    protected abstract String getPageUrl() throws IOException;
+    protected abstract String getPageUrl();
 
     @Override
     protected T load() {
@@ -23,7 +22,7 @@ public abstract class BasePage<T extends CustomLoadableComponent<T>> extends Cus
     }
 
     @SuppressWarnings("unchecked")
-    public T openPage() throws IOException {
+    public T openPage(){
         getDriver().get(getPageUrl());
         return (T) this;
     }
@@ -39,7 +38,7 @@ public abstract class BasePage<T extends CustomLoadableComponent<T>> extends Cus
         return (T) this;
     }
 
-    protected String getUrlFromProperty(UrlPropertyReader.Page page) throws IOException {
+    protected String getUrlFromProperty(UrlPageName page) {
         return new UrlPropertyReader().getPageUrl(page).getUrl();
     }
 }

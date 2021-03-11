@@ -1,5 +1,6 @@
 package setups;
 
+import enums.PropertyDriverType;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.WebDriver;
@@ -10,25 +11,10 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import property_objects.DriverProperties;
 
 @Log4j2
-public class DriverPropertyFactory {
+public class PropertyDriverFactory {
     private final DriverProperties properties;
 
-    public enum Type {
-        CHROME("chrome"),
-        FIREFOX("firefox");
-
-        private final String value;
-
-        Type(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-    }
-
-    public DriverPropertyFactory(DriverProperties properties) {
+    public PropertyDriverFactory(DriverProperties properties) {
         this.properties = properties;
     }
 
@@ -63,7 +49,7 @@ public class DriverPropertyFactory {
     }
 
     public WebDriver createWebDriver() {
-        Type driverType = properties.getType();
+        PropertyDriverType driverType = properties.getType();
         switch (driverType) {
             case CHROME:
                 return createChromeDriver();

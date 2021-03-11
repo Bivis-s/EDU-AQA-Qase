@@ -6,7 +6,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import utils.readers.DriverPropertyReader;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -15,13 +14,7 @@ public class PropertyDriver implements WebDriver {
     private final WebDriver driver;
 
     public PropertyDriver() {
-        try {
-            this.driver = new DriverPropertyFactory(new DriverPropertyReader().getDriverProperties()).createWebDriver();
-        } catch (IOException e) {
-            String errorMessage = "Driver property file not found";
-            log.error(errorMessage);
-            throw new Error(errorMessage);
-        }
+        this.driver = new PropertyDriverFactory(new DriverPropertyReader().getDriverProperties()).createWebDriver();
     }
 
     @Override

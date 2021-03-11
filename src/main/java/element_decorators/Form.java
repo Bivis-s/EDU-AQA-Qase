@@ -4,12 +4,11 @@ import helpers.PageLoadHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class Form extends BaseElementDecorator<Form> {
-    public static final String FORM_XPATH =
-            "//label[text()='%s']//ancestor::*[contains(@class,'form-group')]//*[contains(@class,'ProseMirror')]";
+public abstract class Form extends BaseElementDecorator<Form> {
+    public static final String FORM_XPATH = "//label[text()='%s']//following-sibling::*";
     public final String labeledFormXpath;
 
-    protected Form(WebDriver driver, String label) {
+    public Form(WebDriver driver, String label) {
         super(driver);
         this.labeledFormXpath = String.format(FORM_XPATH, label);
     }

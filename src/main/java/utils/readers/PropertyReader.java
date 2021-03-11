@@ -2,6 +2,7 @@ package utils.readers;
 
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
+import throwables.PropertyError;
 
 import java.io.File;
 import java.io.FileReader;
@@ -17,13 +18,12 @@ import java.util.stream.Collectors;
 public abstract class PropertyReader {
     private final Properties properties = new Properties();
 
-    public PropertyReader(String path) throws IOException {
+    public PropertyReader(String path) {
         try {
             log.debug("Load property file, path: '" + path + "'");
             properties.load(new FileReader(new File(path)));
         } catch (IOException e) {
-            log.error("Property file '" + path + "' is not found");
-            throw e;
+            throw new PropertyError("Property file '" + path + "' is not found");
         }
     }
 
@@ -32,9 +32,7 @@ public abstract class PropertyReader {
         if (value != null) {
             return value;
         } else {
-            String errorMessage = "There is no such property: '" + key + "'";
-            log.error(errorMessage);
-            throw new Error(errorMessage);
+            throw new PropertyError("There is no such property: '" + key + "'");
         }
     }
 

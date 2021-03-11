@@ -1,5 +1,6 @@
 package tests;
 
+import enums.UrlPageName;
 import lombok.extern.log4j.Log4j2;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -12,8 +13,6 @@ import property_objects.UrlProperties;
 import setups.PropertyDriver;
 import utils.readers.AccountPropertyReader;
 import utils.readers.UrlPropertyReader;
-
-import java.io.IOException;
 
 import static org.testng.Assert.*;
 
@@ -32,7 +31,7 @@ public class TemporaryTestsForTests {
     }
 
     @Test
-    public void accountPropertiesReaderTest() throws IOException {
+    public void accountPropertiesReaderTest() {
         AccountProperties accountProperties =
                 new AccountPropertyReader("existing-user").getAccountsProperties();
         assertNotEquals(accountProperties.getLogin(), "");
@@ -40,8 +39,8 @@ public class TemporaryTestsForTests {
     }
 
     @Test
-    public void urlsPropertiesReaderTest() throws IOException {
-        UrlProperties urlProperties = new UrlPropertyReader().getPageUrl(UrlPropertyReader.Page.PROJECTS);
+    public void urlsPropertiesReaderTest() {
+        UrlProperties urlProperties = new UrlPropertyReader().getPageUrl(UrlPageName.PROJECTS);
         assertEquals(urlProperties.getUrl(), "https://qase.io/projects");
     }
 
@@ -53,7 +52,7 @@ public class TemporaryTestsForTests {
     }
 
     @Test
-    public void clickLoginButtonTest() throws IOException {
+    public void clickLoginButtonTest() {
         HomePage homePage = new HomePage(driver);
         LoginPage loginPage = homePage
                 .openPage()
@@ -62,7 +61,7 @@ public class TemporaryTestsForTests {
     }
 
     @Test
-    public void loginTest() throws IOException {
+    public void loginTest() {
         HomePage homePage = new HomePage(driver);
         AccountProperties accountProperties =
                 new AccountPropertyReader("existing-user").getAccountsProperties();
