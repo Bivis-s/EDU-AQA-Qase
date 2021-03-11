@@ -13,6 +13,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <lombok.version>1.18.18</lombok.version>
         <log4j-core.version>2.14.0</log4j-core.version>
+        <commons-collections4.version>4.4</commons-collections4.version>
         <testng.version>7.1.0</testng.version>
         <selenium.version>3.141.59</selenium.version>
         <bonigarcia.version>4.3.1</bonigarcia.version>
@@ -32,13 +33,12 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
-            <version>4.4</version>
+            <version>${commons-collections4.version}</version>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>${testng.version}</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
