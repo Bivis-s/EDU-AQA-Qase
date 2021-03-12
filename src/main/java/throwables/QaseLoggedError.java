@@ -9,6 +9,6 @@ import lombok.extern.log4j.Log4j2;
 public class QaseLoggedError extends Error {
     public QaseLoggedError(String message) {
         super(message);
-        log.error(message + ", " + getClass().getSimpleName());
+        log.error("[" + getClass().getSimpleName() + "]::: " + message);
     }
 }
