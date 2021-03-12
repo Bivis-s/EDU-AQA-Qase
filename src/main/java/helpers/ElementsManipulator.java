@@ -1,11 +1,13 @@
 package helpers;
 
+import element_decorators.InputForm;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Log4j2
 public abstract class ElementsManipulator {
@@ -21,9 +23,18 @@ public abstract class ElementsManipulator {
         element.click();
     }
 
-    protected void sendKeys(WebElement element, String... keys) {
+    protected void clear(WebElement element) {
+        log.debug("Clear element: '" + element.getTagName() + "'");
+        element.clear();
+    }
+
+    protected void sendKeys(WebElement element, CharSequence... keys) {
         log.debug("Send keys '" + Arrays.toString(keys) + "' to element '" + element.getTagName() + "'");
         element.sendKeys(keys);
+    }
+
+    protected void sendKeysToInputFormByLabel(String inputFormLabel, CharSequence... value) {
+        new InputForm(getDriver(), inputFormLabel).clear().sendKeys(value);
     }
 
     protected String getText(WebElement element) {
@@ -61,7 +72,15 @@ public abstract class ElementsManipulator {
         return getDriver().findElement(By.id(id));
     }
 
+    protected List<WebElement> findElementsByXpath(String xpath) {
+        return getDriver().findElements(By.xpath(xpath));
+    }
+
     protected WebElement findInnerElementByXpath(WebElement element, String xpath) {
         return element.findElement(By.xpath(xpath));
+    }
+
+    public List<WebElement> findInnerElementsByXpath(WebElement element, String xpath) {
+        return element.findElements(By.xpath(xpath));
     }
 }
