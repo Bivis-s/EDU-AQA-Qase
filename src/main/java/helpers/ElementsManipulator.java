@@ -20,26 +20,52 @@ public abstract class ElementsManipulator {
 
     protected void click(WebElement element) {
         log.debug("Click element '" + element.getTagName() + "'");
-        element.click();
+        try {
+            element.click();
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
     }
 
     protected WebElement clear(WebElement element) {
         log.debug("Clear element: '" + element.getTagName() + "'");
-        element.clear();
+        try {
+            element.clear();
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
         return element;
     }
 
     protected void sendKeys(WebElement element, CharSequence... keys) {
         log.debug("Send keys '" + Arrays.toString(keys) + "' to element '" + element.getTagName() + "'");
-        element.sendKeys(keys);
+        try {
+            element.sendKeys(keys);
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
     }
 
     protected void sendKeysToInputFormByLabel(String inputFormLabel, CharSequence... value) {
-        new InputForm(getDriver(), inputFormLabel).clear().sendKeys(value);
+        try {
+            new InputForm(getDriver(), inputFormLabel).clear().sendKeys(value);
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
     }
 
     protected String getText(WebElement element) {
-        String elementText = element.getText();
+        String elementText;
+        try {
+            elementText = element.getText();
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
         log.debug("Get element '" + element.getTagName() + "' text: '" + elementText + "'");
         return elementText;
     }
@@ -47,8 +73,14 @@ public abstract class ElementsManipulator {
     protected boolean isElementDisplayed(WebElement element) {
         boolean isDisplayed = false;
         try {
-            isDisplayed = element.isDisplayed();
-        } catch (NoSuchElementException ignored) {
+            try {
+                isDisplayed = element.isDisplayed();
+            } catch (NoSuchElementException ignored) {
+            }
+        }
+        catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
         }
         log.debug("Is element '" + element.getTagName() + "' displayed: " + isDisplayed);
         return isDisplayed;
@@ -57,31 +89,62 @@ public abstract class ElementsManipulator {
     protected boolean isElementBecomeVisible(WebElement element) {
         boolean isDisplayed = false;
         try {
-            PageLoadHelper.waitForCondition(getDriver(), ExpectedConditions.visibilityOf(element));
-            isDisplayed = true;
-        } catch (TimeoutException ignored) {
+            try {
+                PageLoadHelper.waitForCondition(getDriver(), ExpectedConditions.visibilityOf(element));
+                isDisplayed = true;
+            } catch (TimeoutException ignored) {
+            }
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
         }
+
         log.debug("Is element '" + element.getTagName() + "' displayed: " + isDisplayed);
         return isDisplayed;
     }
 
     protected WebElement findElementByXpath(String xpath) {
-        return getDriver().findElement(By.xpath(xpath));
+        try {
+            return getDriver().findElement(By.xpath(xpath));
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
     }
 
     protected WebElement findElementById(String id) {
-        return getDriver().findElement(By.id(id));
+        try {
+            return getDriver().findElement(By.id(id));
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
     }
 
     protected List<WebElement> findElementsByXpath(String xpath) {
-        return getDriver().findElements(By.xpath(xpath));
+        try {
+            return getDriver().findElements(By.xpath(xpath));
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
     }
 
     protected WebElement findInnerElementByXpath(WebElement element, String xpath) {
-        return element.findElement(By.xpath(xpath));
+        try {
+            return element.findElement(By.xpath(xpath));
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
     }
 
     protected List<WebElement> findInnerElementsByXpath(WebElement element, String xpath) {
-        return element.findElements(By.xpath(xpath));
+        try {
+            return element.findElements(By.xpath(xpath));
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
     }
 }
