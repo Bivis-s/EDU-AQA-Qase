@@ -5,8 +5,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public abstract class Form extends BaseElementDecorator<Form> {
-    public static final String FORM_XPATH = "//label[text()='%s']//following-sibling::*";
-    public final String labeledFormXpath;
+    private static final String FORM_XPATH = "//label[contains(text(),'%s')]/following::*[(contains(@class,'form-control')) and not(contains(@class,'hide')) or (@class='ProseMirror')]";
+    private final String labeledFormXpath;
 
     public Form(WebDriver driver, String label) {
         super(driver);
