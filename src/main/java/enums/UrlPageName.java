@@ -3,7 +3,7 @@ package enums;
 import lombok.Getter;
 
 @Getter
-public enum UrlPageName {
+public enum UrlPageName implements EnumValue {
     HOME("home"),
     LOGIN("login"),
     PROJECTS("projects");
@@ -14,6 +14,7 @@ public enum UrlPageName {
         this.value = value;
     }
 
+    @Override
     public String getValue() {
         return value;
     }

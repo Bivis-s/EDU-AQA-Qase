@@ -1,12 +1,12 @@
 package enums;
 
-public enum PropertyDriverType implements EnumValue {
-    CHROME("chrome"),
-    FIREFOX("firefox");
+public enum ProjectAccessType implements EnumValue {
+    PRIVATE("Private"),
+    PUBLIC("Public");
 
     private final String value;
 
-    PropertyDriverType(String value) {
+    ProjectAccessType(String value) {
         this.value = value;
     }
 
