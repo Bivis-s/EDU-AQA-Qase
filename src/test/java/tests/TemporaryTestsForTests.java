@@ -150,8 +150,60 @@ public class TemporaryTestsForTests {
                 .enterActionIntoStepByNumber(2, "Second step action")
                 .enterInputDataIntoStepByNumber(2, "Second step input data")
                 .enterExpectedResultIntoStepByNumber(2, "Second expected result");
-        log.info(createTestCasePage.getBuiltCaseProperties());
+        log.info(createTestCasePage.getBuiltCaseProperties().toString());
         ProjectPage projectPage = createTestCasePage.clickSaveCaseButton();
         assertNotNull(projectPage.isLoaded());
+    }
+
+    @Test
+    public void signOutTest() {
+        HomePage homePage = new HomePage(driver);
+        AccountProperties accountProperties =
+                new AccountPropertyReader("existing-user").getAccountsProperties();
+        LoginPage loginPage = homePage
+                .openPage()
+                .clickLoginButton()
+                .enterEmail(accountProperties.getLogin())
+                .enterPassword(accountProperties.getPassword())
+                .clickLoginButton()
+                .getUserMenu()
+                .open()
+                .clickSignOutButton();
+        assertNotNull(loginPage.isLoaded());
+    }
+
+    @Test void deleteProjectTest() {
+        Random random = new Random();
+        // Creating
+        HomePage homePage = new HomePage(driver);
+        AccountProperties accountProperties =
+                new AccountPropertyReader("existing-user").getAccountsProperties();
+        ProjectProperties projectProperties = new ProjectProperties();
+        projectProperties.setProjectName("Test" + random.nextInt(9999));
+        projectProperties.setProjectCode("H" + random.nextInt(9999));
+        projectProperties.setDescription("This is Description");
+        projectProperties.setProjectAccessType(ProjectAccessType.PUBLIC);
+        ProjectPage projectPage = homePage
+                .openPage()
+                .clickLoginButton()
+                .enterEmail(accountProperties.getLogin())
+                .enterPassword(accountProperties.getPassword())
+                .clickLoginButton()
+                .clickCreateNewProjectButton()
+                .enterProjectName(projectProperties.getProjectName())
+                .enterProjectCode(projectProperties.getProjectCode())
+                .enterDescription(projectProperties.getDescription())
+                .setProjectAccessType(projectProperties.getProjectAccessType())
+                .clickCreateProjectButton();
+
+        // Deleting
+        ProjectsPage projectsPage = new ProjectsPage(driver).openPage();
+        assertTrue(projectsPage.enterTextInSearchProjectField(projectProperties.getProjectName()).createProjectNameList().contains(projectProperties.getProjectName()));
+        projectsPage
+                .getProjectRowByName(projectProperties.getProjectName())
+                .clickDropdownButton()
+                .clickDropdownDeleteButton()
+                .clickDeleteProjectButton();
+        assertFalse(projectsPage.enterTextInSearchProjectField(projectProperties.getProjectName()).createProjectNameList().contains(projectProperties.getProjectName()));
     }
 }

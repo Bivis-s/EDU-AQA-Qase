@@ -22,10 +22,9 @@ public abstract class BasePage<T extends CustomLoadableComponent<T>> extends Cus
         return refreshPage();
     }
 
-    @SuppressWarnings("unchecked")
     public T openPage(){
         getDriver().get(getPageUrl());
-        return (T) this;
+        return get();
     }
 
     protected void open(String url) {
@@ -43,9 +42,7 @@ public abstract class BasePage<T extends CustomLoadableComponent<T>> extends Cus
         return new UrlPropertyReader().getPageUrl(page).getUrl();
     }
 
-    @SuppressWarnings("unchecked")
-    public T scrollDown() {
+    public void scrollDown() {
         sendKeys(findElementByXpath("//body"), Keys.CONTROL, Keys.END);
-        return (T) this;
     }
 }

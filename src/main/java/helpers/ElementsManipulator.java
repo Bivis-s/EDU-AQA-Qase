@@ -23,9 +23,10 @@ public abstract class ElementsManipulator {
         element.click();
     }
 
-    protected void clear(WebElement element) {
+    protected WebElement clear(WebElement element) {
         log.debug("Clear element: '" + element.getTagName() + "'");
         element.clear();
+        return element;
     }
 
     protected void sendKeys(WebElement element, CharSequence... keys) {
@@ -80,7 +81,7 @@ public abstract class ElementsManipulator {
         return element.findElement(By.xpath(xpath));
     }
 
-    public List<WebElement> findInnerElementsByXpath(WebElement element, String xpath) {
+    protected List<WebElement> findInnerElementsByXpath(WebElement element, String xpath) {
         return element.findElements(By.xpath(xpath));
     }
 }

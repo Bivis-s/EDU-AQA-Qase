@@ -11,6 +11,7 @@ import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import property_objects.CaseProperties;
+import property_objects.CaseStepProperties;
 import throwables.PropertyError;
 
 @Log4j2
@@ -59,32 +60,36 @@ public class CreateTestCasePage extends LoadableAppPage<CreateTestCasePage> {
         return this;
     }
 
-    public CaseProperties getBuiltCaseProperties() {
-        return caseProperties;
-    }
-
     public CreateTestCasePage clickAddStepButtonForTimes(int timesNumber) {
         for (int i = 0; i < timesNumber; i++) {
             scrollDown();
             PageLoadHelper.waitForElementIsClickable(getDriver(), By.id(ADD_STEP_BUTTON_ID));
             click(findElementById(ADD_STEP_BUTTON_ID));
+            caseProperties.addStep(new CaseStepProperties());
         }
         return this;
     }
 
     public CreateTestCasePage enterActionIntoStepByNumber(int stepNum, String action) {
         caseSteps.enterAction(stepNum, action);
+        caseProperties.getSteps().get(stepNum - 1).setAction(action);
         return this;
     }
 
     public CreateTestCasePage enterInputDataIntoStepByNumber(int stepNum, String inputData) {
         caseSteps.enterInputData(stepNum, inputData);
+        caseProperties.getSteps().get(stepNum - 1).setInputData(inputData);
         return this;
     }
 
     public CreateTestCasePage enterExpectedResultIntoStepByNumber(int stepNum, String enterExpectedResult) {
         caseSteps.enterExpectedResult(stepNum, enterExpectedResult);
+        caseProperties.getSteps().get(stepNum - 1).setExpectedResult(enterExpectedResult);
         return this;
+    }
+
+    public CaseProperties getBuiltCaseProperties() {
+        return caseProperties;
     }
 
     public ProjectPage clickSaveCaseButton() {

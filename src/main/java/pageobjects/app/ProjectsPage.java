@@ -16,6 +16,8 @@ import java.util.List;
 public class ProjectsPage extends LoadableAppPage<ProjectsPage> {
     private static final String CREATE_NEW_PROJECT_BUTTON_ID = "createButton";
     private static final String PROJECT_ROW_XPATH = "//*[contains(@class,'project-row')]";
+    private static final String SEARCH_PROJECT_FIELD_XPATH =
+            "//*[contains(@class,'filters-block')]//*[contains(@name,'title')]";
 
     public ProjectsPage(WebDriver driver) {
         super(driver);
@@ -29,6 +31,15 @@ public class ProjectsPage extends LoadableAppPage<ProjectsPage> {
     @Override
     protected String getPageUrl() {
         return getUrlFromProperty(UrlPageName.PROJECTS);
+    }
+
+    public ProjectsPage enterTextInSearchProjectField(String text) {
+        sendKeys(clear(findElementByXpath(SEARCH_PROJECT_FIELD_XPATH)), text);
+        // after entering text into search field the loading message appears not immediately, so wait for message appear
+        waitForLoadingMessageAppear();
+        // then disappear
+        waitForLoadingMessageDisappear();
+        return this;
     }
 
     public NewProjectPage clickCreateNewProjectButton() {
