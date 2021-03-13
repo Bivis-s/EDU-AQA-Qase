@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import throwables.NoSuchElementError;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Log4j2
@@ -34,15 +35,17 @@ public class ProjectsPage extends LoadableAppPage<ProjectsPage> {
     }
 
     public ProjectsPage enterTextInSearchProjectField(String projectName) {
+        log.info("Enter text '" + projectName + "into search project field");
         return enterTextIntoSearchField(findElementByXpath(SEARCH_PROJECT_FIELD_XPATH), projectName);
     }
 
     public NewProjectPage clickCreateNewProjectButton() {
+        log.info("Click create new project button");
         click(findElementById(CREATE_NEW_PROJECT_BUTTON_ID));
         return new NewProjectPage(getDriver()).get();
     }
 
-    public List<ProjectRow> getProjectRowList() {
+    private List<ProjectRow> getProjectRowList() {
         List<ProjectRow> projectRowList = new ArrayList<>();
         for (WebElement rowElement : findElementsByXpath(PROJECT_ROW_XPATH)) {
             projectRowList.add(new ProjectRow(getDriver(), rowElement));
@@ -51,6 +54,7 @@ public class ProjectsPage extends LoadableAppPage<ProjectsPage> {
     }
 
     public ProjectRow getProjectRowByName(String projectName) {
+        log.info("Get project row '" + projectName + "'");
         for (ProjectRow projectRow : getProjectRowList()) {
             if (projectName.equals(projectRow.getProjectName())) {
                 return projectRow;
@@ -64,6 +68,7 @@ public class ProjectsPage extends LoadableAppPage<ProjectsPage> {
         for (ProjectRow projectRow : getProjectRowList()) {
             projectNameList.add(projectRow.getProjectName());
         }
+        log.info("Get project name list '" + Arrays.toString(projectNameList.toArray()) + "'");
         return projectNameList;
     }
 }

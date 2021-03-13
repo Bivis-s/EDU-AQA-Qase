@@ -30,16 +30,19 @@ public class LoginPage extends BasePage<LoginPage> {
     }
 
     public LoginPage enterEmail(String email) {
+        log.info("Enter email '" + email + "'");
         new InputForm(getDriver(), EMAIL_INPUT_LABEL).sendKeys(email);
         return this;
     }
 
     public LoginPage enterPassword(String password) {
+        log.info("Enter password '" + password + "'");
         new InputForm(getDriver(), PASSWORD_INPUT_LABEL).sendKeys(password);
         return this;
     }
 
     public ProjectsPage clickLoginButton() {
+        log.info("Click login button");
         click(findElementById(LOGIN_BUTTON_ID));
         return new ProjectsPage(getDriver()).get();
     }

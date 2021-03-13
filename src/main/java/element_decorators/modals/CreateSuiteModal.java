@@ -25,26 +25,31 @@ public class CreateSuiteModal extends BaseModal<CreateSuiteModal> {
     }
 
     public CreateSuiteModal enterSuiteName(String suiteName) {
+        log.info("Enter suite name '" + suiteName + "'");
         new InputForm(getDriver(), SUITE_NAME_INOUT_LABEL).sendKeys(suiteName);
         return this;
     }
 
     public CreateSuiteModal selectParentSuiteByName(String parentSuiteName) {
+        log.info("Select suite parent suite '" + parentSuiteName + "'");
         new SelectForm(getDriver(), PARENT_SUITE_SELECT_LABEL).click().clickOptionByLabel(parentSuiteName);
         return this;
     }
 
     public CreateSuiteModal enterDescription(String description) {
+        log.info("Enter suite description '" + description + "'");
         new InputForm(getDriver(), DESCRIPTION_INPUT_LABEL).sendKeys(description);
         return this;
     }
 
     public CreateSuiteModal enterPreconditions(String preconditions) {
+        log.info("Enter suite preconditions '" + preconditions + "'");
         new InputForm(getDriver(), PRECONDITIONS_INPUT_LABEL).sendKeys(preconditions);
         return this;
     }
 
     public ProjectPage clickCreateSuiteButton() {
+        log.info("Click create suite button");
         click(findElementById(CREATE_SUITE_BUTTON_ID));
         try {
             Thread.sleep(250);

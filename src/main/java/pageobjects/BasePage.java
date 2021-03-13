@@ -18,16 +18,18 @@ public abstract class BasePage<T extends CustomLoadableComponent<T>> extends Cus
 
     @Override
     protected T load() {
-        return refreshPage();
+        try {
+            return openPage();
+        } catch (Error e) {
+            return refreshPage();
+        }
     }
 
     public T openPage() {
-        getDriver().get(getPageUrl());
+        String pageUrl = getPageUrl();
+        log.info("Open page with URL '" + pageUrl + "'");
+        getDriver().get(pageUrl);
         return get();
-    }
-
-    protected void open(String url) {
-        getDriver().get(url);
     }
 
     @SuppressWarnings("unchecked")
@@ -38,6 +40,7 @@ public abstract class BasePage<T extends CustomLoadableComponent<T>> extends Cus
     }
 
     protected String getUrlFromProperty(UrlPageName page) {
+        log.trace("Get url from property, page '" + page + "'");
         return new UrlPropertyReader().getPageUrl(page).getUrl();
     }
 }

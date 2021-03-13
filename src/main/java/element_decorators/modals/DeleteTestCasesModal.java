@@ -21,11 +21,13 @@ public class DeleteTestCasesModal extends BaseModal<CreateSuiteModal> {
     }
 
     public DeleteTestCasesModal enterTextIntoConfirmField(String text) {
+        log.info("Enter text into confirm field '" + text + "'");
         sendKeys(clear(findElementByXpath(CONFIRM_FIELD_XPATH)), text);
         return this;
     }
 
     public ProjectPage clickDeleteCasesButton() {
+        log.info("Click delete case button");
         click(findElementByXpath(DELETE_BUTTON_XPATH));
         waitAfterClosing();
         return new ProjectPage(getDriver()).get();

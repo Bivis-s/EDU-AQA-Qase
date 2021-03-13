@@ -94,8 +94,8 @@ public class TemporaryTestsForTests {
         AccountProperties accountProperties =
                 new AccountPropertyReader("existing-user").getAccountsProperties();
         ProjectProperties projectProperties = new ProjectProperties();
-        projectProperties.setProjectName("Hohohoh");
-        projectProperties.setProjectCode("HOH");
+        projectProperties.setProjectName("Hohohohhdf");
+        projectProperties.setProjectCode("HOAH3");
         projectProperties.setDescription("This is Description");
         projectProperties.setProjectAccessType(ProjectAccessType.PUBLIC);
         NewProjectPage newProjectPage = homePage
@@ -501,10 +501,32 @@ public class TemporaryTestsForTests {
                 .enterPreconditions("Preconditions")
                 .clickCreateSuiteButton()
                 .getSuiteContainer()
-                .clickCloneSuiteModalBySuiteName("WAV")
+                .clickCloneSuiteButtonBySuiteName("WAV")
                 .clickCloneSuiteButton()
                 .getSuiteContainer()
                 .getSuiteCountOnPage("WAV");
         assertEquals(suiteCountOnPage, 2);
+    }
+
+    @Test
+    public void openProjectPageViaUrl() {
+        String projectCode = "CS" + random.nextInt(9999);
+        HomePage homePage = new HomePage(driver);
+        AccountProperties accountProperties =
+                new AccountPropertyReader("existing-user").getAccountsProperties();
+        ProjectPage projectPage = homePage
+                .openPage()
+                .clickLoginButton()
+                .enterEmail(accountProperties.getLogin())
+                .enterPassword(accountProperties.getPassword())
+                .clickLoginButton()
+                .clickCreateNewProjectButton()
+                .enterProjectName("Clone suite " + random.nextInt(9999))
+                .enterProjectCode(projectCode)
+                .enterDescription("Description!!! " + random.nextInt(9999))
+                .setProjectAccessType(ProjectAccessType.PUBLIC)
+                .clickCreateProjectButton()
+                .openPage(projectCode);
+        assertNotNull(projectPage.isLoaded());
     }
 }

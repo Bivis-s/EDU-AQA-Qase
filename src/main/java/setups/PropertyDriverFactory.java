@@ -56,6 +56,8 @@ public class PropertyDriverFactory {
             case FIREFOX:
                 return createFirefoxDriver();
         }
-        throw new Error("Cannot create WebDriver, unknown driver type '" + driverType.getValue() + "'");
+        String errorMessage = "Cannot create WebDriver, unknown driver type '" + driverType.getValue() + "'";
+        log.error(errorMessage);
+        throw new Error(errorMessage);
     }
 }

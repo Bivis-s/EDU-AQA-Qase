@@ -2,13 +2,11 @@ package utils.readers;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.log4j.Log4j2;
 import property_objects.AccountProperties;
 import throwables.PropertyError;
 
 import java.util.Map;
 
-@Log4j2
 public class AccountPropertyReader extends PropertyReader {
     private static final String ACCOUNTS_PROPERTIES_FILE_PATH = "src/test/resources/properties/accounts.properties";
     @Getter

@@ -26,11 +26,13 @@ public abstract class BaseModal<T extends BaseModal<T>> extends BaseElementDecor
 
     protected abstract String getModalTitle();
 
+    // After clicking on the close button, modal closes instantly,
+    // but the page needs some more time to render updated page
     protected void waitAfterClosing() {
-        // After clicking on the close button, modal closes instantly,
-        // but the page needs some more time to render updated page
+        int timeout = 750;
+        log.trace("Wait after modal closing for time '" + timeout + "millis");
         try {
-            Thread.sleep(750);
+            Thread.sleep(timeout);
         } catch (InterruptedException e) {
             log.error(e.getMessage());
         }

@@ -2,9 +2,11 @@ package element_decorators;
 
 import element_decorators.modals.CloneSuiteModal;
 import element_decorators.modals.DeleteSuiteModal;
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.WebDriver;
 import pageobjects.app.ProjectPage;
 
+@Log4j2
 public class SuiteContainer extends BaseElementDecorator<SuiteContainer> {
     private static final String SUITE_CONTAINER_XPATH = "//*[@id='suitecases-container']";
     private static final String SUITE_XPATH = SUITE_CONTAINER_XPATH +
@@ -36,18 +38,23 @@ public class SuiteContainer extends BaseElementDecorator<SuiteContainer> {
     }
 
     public ProjectPage checkSuiteCheckboxByName(String suiteName) {
+        log.info("Check suite checkbox '" + suiteName + "'");
         click(findElementByXpath(String.format(SUITE_CHECKBOX_XPATH, suiteName)));
         return new ProjectPage(getDriver()).get();
     }
 
+    // check all cases without suite
     public ProjectPage checkStandardSuiteCheckbox() {
+        log.info("Check standard suite checkbox");
         click(findElementByXpath(String.format(SUITE_CHECKBOX_XPATH, TEST_CASES_WITHOUT_SUITE_TITLE)));
         return new ProjectPage(getDriver()).get();
     }
 
     public ProjectPage checkCaseCheckboxByName(String suiteName, String caseName) {
-        // adding class 'visible' to checkbox container to make checkbox visible and clickable
-        addClassToElement(findElementByXpath(String.format(SUIT_CASE_CHECKBOX_CONTAINER_XPATH, TEST_CASES_WITHOUT_SUITE_TITLE, caseName)), "visible");
+        log.info("Check case '" + caseName + "' checkbox in suite '" + suiteName + "'");
+        // adding class 'visible' to checkbox container to make checkbox visible (and clickable)
+        addClassToElement(findElementByXpath(String.format(SUIT_CASE_CHECKBOX_CONTAINER_XPATH,
+                TEST_CASES_WITHOUT_SUITE_TITLE, caseName)), "visible");
         click(findElementByXpath(String.format(SUIT_CASE_CHECKBOX_XPATH, suiteName, caseName)));
         return new ProjectPage(getDriver()).get();
     }
@@ -57,6 +64,7 @@ public class SuiteContainer extends BaseElementDecorator<SuiteContainer> {
     }
 
     public ProjectPage clickCaseByName(String suiteName, String caseName) {
+        log.info("Click case '" + caseName + "' in suite '" + suiteName + "'");
         click(findElementByXpath(String.format(SUITE_CASE_TITLE_XPATH, suiteName, caseName)));
         return new ProjectPage(getDriver()).get();
     }
@@ -66,23 +74,29 @@ public class SuiteContainer extends BaseElementDecorator<SuiteContainer> {
     }
 
     public int getSuiteCountOnPage(String suiteName) {
-        return findElementsByXpath(String.format(SUITE_XPATH, suiteName)).size();
+        int suiteCount = findElementsByXpath(String.format(SUITE_XPATH, suiteName)).size();
+        log.info("Get suite '" + suiteName + "' count on page: " + suiteCount);
+        return suiteCount;
     }
 
     public int getCaseCountOnPage(String suiteName, String caseName) {
-        return findElementsByXpath(String.format(SUITE_CASE_TITLE_XPATH, suiteName, caseName)).size();
+        int caseCount = findElementsByXpath(String.format(SUITE_CASE_TITLE_XPATH, suiteName, caseName)).size();
+        log.info("Get case '" + caseName + "' count in '" + suiteName + "' suite on page: " + caseCount);
+        return caseCount;
     }
 
     public int getCaseCountWithoutSuiteOnPage(String caseName) {
-        return findElementsByXpath(String.format(SUITE_CASE_TITLE_XPATH, TEST_CASES_WITHOUT_SUITE_TITLE, caseName)).size();
+        return getCaseCountOnPage(TEST_CASES_WITHOUT_SUITE_TITLE, caseName);
     }
 
     public DeleteSuiteModal clickDeleteSuiteButtonBySuiteName(String suiteName) {
+        log.info("Click delete button in suite: '" + suiteName + "'");
         click(findElementByXpath(String.format(SUITE_DELETE_BUTTON_XPATH, suiteName)));
         return new DeleteSuiteModal(getDriver());
     }
 
-    public CloneSuiteModal clickCloneSuiteModalBySuiteName(String suiteName) {
+    public CloneSuiteModal clickCloneSuiteButtonBySuiteName(String suiteName) {
+        log.info("Click clone button in suite: '" + suiteName + "'");
         click(findElementByXpath(String.format(SUITE_CLONE_BUTTON_XPATH, suiteName)));
         return new CloneSuiteModal(getDriver());
     }
