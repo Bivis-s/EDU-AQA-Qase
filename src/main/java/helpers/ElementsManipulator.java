@@ -160,11 +160,16 @@ public abstract class ElementsManipulator {
 
     protected WebElement scrollToElement(WebElement element) {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
+        // Sometimes browser has no time to handle scrolling
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            log.error(e.getMessage());
+        }
         return element;
     }
 
-    protected WebElement addClassToElement(WebElement element, String className) {
+    protected void addClassToElement(WebElement element, String className) {
         ((JavascriptExecutor) getDriver()).executeScript(String.format("arguments[0].classList.add('%s');", className), element);
-        return element;
     }
 }

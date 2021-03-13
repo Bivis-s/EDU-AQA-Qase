@@ -1,5 +1,6 @@
 package tests;
 
+import element_decorators.SuiteContainer;
 import enums.ProjectAccessType;
 import enums.UrlPageName;
 import enums.create_case.CreateCaseField;
@@ -53,7 +54,7 @@ public class TemporaryTestsForTests {
     @Test
     public void urlsPropertiesReaderTest() {
         UrlProperties urlProperties = new UrlPropertyReader().getPageUrl(UrlPageName.PROJECTS);
-        assertEquals(urlProperties.getUrl(), "https://qase.io/projects");
+        assertEquals(urlProperties.getUrl(), "https://app.qase.io/projects");
     }
 
     @Test
@@ -213,7 +214,7 @@ public class TemporaryTestsForTests {
         HomePage homePage = new HomePage(driver);
         AccountProperties accountProperties =
                 new AccountPropertyReader("existing-user").getAccountsProperties();
-        boolean isCaseOnPage = homePage
+        int caseCountWithoutSuiteOnPage = homePage
                 .openPage()
                 .clickLoginButton()
                 .enterEmail(accountProperties.getLogin())
@@ -269,8 +270,8 @@ public class TemporaryTestsForTests {
                 .clickSaveCaseButton()
                 .enterTextInSearchCaseField("This is title")
                 .getSuiteContainer()
-                .isCaseOnPage("This is title");
-        assertTrue(isCaseOnPage);
+                .getCaseCountWithoutSuiteOnPage("This is title");
+        assertEquals(caseCountWithoutSuiteOnPage, 2);
     }
 
     @Test
@@ -309,7 +310,7 @@ public class TemporaryTestsForTests {
         HomePage homePage = new HomePage(driver);
         AccountProperties accountProperties =
                 new AccountPropertyReader("existing-user").getAccountsProperties();
-        boolean isSuiteOnPage = homePage
+        int suiteCountOnPage = homePage
                 .openPage()
                 .clickLoginButton()
                 .enterEmail(accountProperties.getLogin())
@@ -327,8 +328,8 @@ public class TemporaryTestsForTests {
                 .enterPreconditions("Preconditions")
                 .clickCreateSuiteButton()
                 .getSuiteContainer()
-                .isSuiteOnPage("WAV");
-        assertTrue(isSuiteOnPage);
+                .getSuiteCountOnPage("WAV");
+        assertEquals(suiteCountOnPage, 1);
     }
 
     @Test
@@ -336,7 +337,7 @@ public class TemporaryTestsForTests {
         HomePage homePage = new HomePage(driver);
         AccountProperties accountProperties =
                 new AccountPropertyReader("existing-user").getAccountsProperties();
-        boolean isCaseOnPage = homePage
+        int caseCountWithoutSuiteOnPage = homePage
                 .openPage()
                 .clickLoginButton()
                 .enterEmail(accountProperties.getLogin())
@@ -373,9 +374,137 @@ public class TemporaryTestsForTests {
                 .checkCaseCheckboxByName("This is title")
                 .clickDeleteTestCasesButton()
                 .enterTextIntoConfirmField("CONFIRM")
-                .clickDeleteButton()
+                .clickDeleteCasesButton()
                 .getSuiteContainer()
-                .isCaseOnPage("This is title");
-        assertFalse(isCaseOnPage);
+                .getCaseCountWithoutSuiteOnPage("This is title");
+        assertEquals(caseCountWithoutSuiteOnPage, 0);
+    }
+
+    @Test
+    public void deleteAnEmptySuite() {
+        HomePage homePage = new HomePage(driver);
+        AccountProperties accountProperties =
+                new AccountPropertyReader("existing-user").getAccountsProperties();
+        int suiteCountOnPage = homePage
+                .openPage()
+                .clickLoginButton()
+                .enterEmail(accountProperties.getLogin())
+                .enterPassword(accountProperties.getPassword())
+                .clickLoginButton()
+                .clickCreateNewProjectButton()
+                .enterProjectName("Create test case " + random.nextInt(9999))
+                .enterProjectCode("C" + random.nextInt(9999))
+                .enterDescription("DESCRIPTION" + random.nextInt(9999))
+                .setProjectAccessType(ProjectAccessType.PUBLIC)
+                .clickCreateProjectButton()
+                .clickCreateNewSuiteButton()
+                .enterSuiteName("WAV")
+                .enterDescription("Description")
+                .enterPreconditions("Preconditions")
+                .clickCreateSuiteButton()
+                .getSuiteContainer()
+                .clickDeleteSuiteButtonBySuiteName("WAV")
+                .clickDeleteSuiteButton()
+                .getSuiteContainer()
+                .getSuiteCountOnPage("WAV");
+        assertEquals(suiteCountOnPage, 0);
+    }
+
+    @Test
+    public void deleteTwoCasesByClickingASuiteCheckox() {
+        HomePage homePage = new HomePage(driver);
+        AccountProperties accountProperties =
+                new AccountPropertyReader("existing-user").getAccountsProperties();
+        SuiteContainer suiteContainer = homePage
+                .openPage()
+                .clickLoginButton()
+                .enterEmail(accountProperties.getLogin())
+                .enterPassword(accountProperties.getPassword())
+                .clickLoginButton()
+                .clickCreateNewProjectButton()
+                .enterProjectName("Create test case " + random.nextInt(9999))
+                .enterProjectCode("C" + random.nextInt(9999))
+                .enterDescription("DESCRIPTION" + random.nextInt(9999))
+                .setProjectAccessType(ProjectAccessType.PRIVATE)
+                .clickCreateProjectButton()
+                .clickCreateNewCaseButton()
+                .enterFieldByName(CreateCaseField.TITLE, "This is title")
+                .enterFieldByName(CreateCaseField.DESCRIPTION, "This is description")
+                .enterFieldByName(CreateCaseField.PRE_CONDITIONS, "This is pre-condition")
+                .enterFieldByName(CreateCaseField.POST_CONDITIONS, "This is post-condition")
+                .selectOptionByName(CreateCaseSelect.STATUS, CaseStatusOption.DRAFT)
+                .selectOptionByName(CreateCaseSelect.SUITE, null) // for test testing
+                .selectOptionByName(CreateCaseSelect.SEVERITY, CaseSeverityOption.MINOR)
+                .selectOptionByName(CreateCaseSelect.PRIORITY, CasePriorityOption.LOW)
+                .selectOptionByName(CreateCaseSelect.TYPE, CaseTypeOption.EXPLORATORY)
+                .selectOptionByName(CreateCaseSelect.MILESTONE, null) // for test testing
+                .selectOptionByName(CreateCaseSelect.BEHAVIOR, CaseBehaviorOption.POSITIVE)
+                .selectOptionByName(CreateCaseSelect.AUTOMATION_STATUS, CaseAutomationStatusOption.NOT_AUTOMATED)
+                .clickAddStepButtonForTimes(2)
+                .enterActionIntoStepByNumber(1, "COWABUNGA")
+                .enterInputDataIntoStepByNumber(1, "Input data!")
+                .enterExpectedResultIntoStepByNumber(1, "Expecteddd")
+                .enterActionIntoStepByNumber(2, "Second step action")
+                .enterInputDataIntoStepByNumber(2, "Second step input data")
+                .enterExpectedResultIntoStepByNumber(2, "Second expected result")
+                .clickSaveCaseButton()
+                .clickCreateNewCaseButton()
+                .enterFieldByName(CreateCaseField.TITLE, "This is title")
+                .enterFieldByName(CreateCaseField.DESCRIPTION, "This is description")
+                .enterFieldByName(CreateCaseField.PRE_CONDITIONS, "This is pre-condition")
+                .enterFieldByName(CreateCaseField.POST_CONDITIONS, "This is post-condition")
+                .selectOptionByName(CreateCaseSelect.STATUS, CaseStatusOption.DRAFT)
+                .selectOptionByName(CreateCaseSelect.SUITE, null) // for test testing
+                .selectOptionByName(CreateCaseSelect.SEVERITY, CaseSeverityOption.MINOR)
+                .selectOptionByName(CreateCaseSelect.PRIORITY, CasePriorityOption.LOW)
+                .selectOptionByName(CreateCaseSelect.TYPE, CaseTypeOption.EXPLORATORY)
+                .selectOptionByName(CreateCaseSelect.MILESTONE, null) // for test testing
+                .selectOptionByName(CreateCaseSelect.BEHAVIOR, CaseBehaviorOption.POSITIVE)
+                .selectOptionByName(CreateCaseSelect.AUTOMATION_STATUS, CaseAutomationStatusOption.NOT_AUTOMATED)
+                .clickAddStepButtonForTimes(2)
+                .enterActionIntoStepByNumber(1, "COWABUNGA")
+                .enterInputDataIntoStepByNumber(1, "Input data!")
+                .enterExpectedResultIntoStepByNumber(1, "Expecteddd")
+                .enterActionIntoStepByNumber(2, "Second step action")
+                .enterInputDataIntoStepByNumber(2, "Second step input data")
+                .enterExpectedResultIntoStepByNumber(2, "Second expected result")
+                .clickSaveCaseButton()
+                .getSuiteContainer()
+                .checkStandardSuiteCheckbox()
+                .clickDeleteTestCasesButton()
+                .enterTextIntoConfirmField("CONFIRM")
+                .clickDeleteCasesButton()
+                .getSuiteContainer();
+        assertEquals(suiteContainer.getCaseCountWithoutSuiteOnPage("This is title"), 0);
+    }
+
+    @Test
+    public void cloneSuiteTest() {
+        HomePage homePage = new HomePage(driver);
+        AccountProperties accountProperties =
+                new AccountPropertyReader("existing-user").getAccountsProperties();
+        int suiteCountOnPage = homePage
+                .openPage()
+                .clickLoginButton()
+                .enterEmail(accountProperties.getLogin())
+                .enterPassword(accountProperties.getPassword())
+                .clickLoginButton()
+                .clickCreateNewProjectButton()
+                .enterProjectName("Clone suite " + random.nextInt(9999))
+                .enterProjectCode("CS" + random.nextInt(9999))
+                .enterDescription("Description!!! " + random.nextInt(9999))
+                .setProjectAccessType(ProjectAccessType.PUBLIC)
+                .clickCreateProjectButton()
+                .clickCreateNewSuiteButton()
+                .enterSuiteName("WAV")
+                .enterDescription("Description")
+                .enterPreconditions("Preconditions")
+                .clickCreateSuiteButton()
+                .getSuiteContainer()
+                .clickCloneSuiteModalBySuiteName("WAV")
+                .clickCloneSuiteButton()
+                .getSuiteContainer()
+                .getSuiteCountOnPage("WAV");
+        assertEquals(suiteCountOnPage, 2);
     }
 }

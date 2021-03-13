@@ -25,15 +25,9 @@ public class DeleteTestCasesModal extends BaseModal<CreateSuiteModal> {
         return this;
     }
 
-    public ProjectPage clickDeleteButton() {
+    public ProjectPage clickDeleteCasesButton() {
         click(findElementByXpath(DELETE_BUTTON_XPATH));
-        // After clicking on the delete button, modal closes instantly,
-        // but project page needs some more time to render updated test case list
-        try {
-            Thread.sleep(750);
-        } catch (InterruptedException e) {
-            log.error(e.getMessage());
-        }
+        waitAfterClosing();
         return new ProjectPage(getDriver()).get();
     }
 }
