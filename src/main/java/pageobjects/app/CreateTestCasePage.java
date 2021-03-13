@@ -62,9 +62,8 @@ public class CreateTestCasePage extends LoadableAppPage<CreateTestCasePage> {
 
     public CreateTestCasePage clickAddStepButtonForTimes(int timesNumber) {
         for (int i = 0; i < timesNumber; i++) {
-            scrollDown();
             PageLoadHelper.waitForElementIsClickable(getDriver(), By.id(ADD_STEP_BUTTON_ID));
-            click(findElementById(ADD_STEP_BUTTON_ID));
+            click(scrollToElement(findElementById(ADD_STEP_BUTTON_ID)));
             caseProperties.addStep(new CaseStepProperties());
         }
         return this;

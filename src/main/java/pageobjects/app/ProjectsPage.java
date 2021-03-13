@@ -33,13 +33,8 @@ public class ProjectsPage extends LoadableAppPage<ProjectsPage> {
         return getUrlFromProperty(UrlPageName.PROJECTS);
     }
 
-    public ProjectsPage enterTextInSearchProjectField(String text) {
-        sendKeys(clear(findElementByXpath(SEARCH_PROJECT_FIELD_XPATH)), text);
-        // after entering text into search field the loading message appears not immediately, so wait for message appear
-        waitForLoadingMessageAppear();
-        // then disappear
-        waitForLoadingMessageDisappear();
-        return this;
+    public ProjectsPage enterTextInSearchProjectField(String projectName) {
+        return enterTextIntoSearchField(findElementByXpath(SEARCH_PROJECT_FIELD_XPATH), projectName);
     }
 
     public NewProjectPage clickCreateNewProjectButton() {

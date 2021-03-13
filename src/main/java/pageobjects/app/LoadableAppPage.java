@@ -5,6 +5,7 @@ import helpers.PageLoadHelper;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import pageobjects.BasePage;
 import throwables.WaitForElementConditionError;
 
@@ -44,6 +45,16 @@ public abstract class LoadableAppPage<T extends LoadableAppPage<T>> extends Base
     @SuppressWarnings("unchecked")
     public T isLoaded() {
         waitForPageLoaded();
+        waitForLoadingMessageDisappear();
+        return (T) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected T enterTextIntoSearchField(WebElement searchField, String text) {
+        sendKeys(clear(searchField), text);
+        // after entering text into search field the loading message appears not immediately, so wait for message appear
+        waitForLoadingMessageAppear();
+        // then disappear
         waitForLoadingMessageDisappear();
         return (T) this;
     }

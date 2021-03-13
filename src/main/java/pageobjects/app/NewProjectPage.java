@@ -13,7 +13,6 @@ import throwables.PropertyError;
 public class NewProjectPage extends LoadableAppPage<NewProjectPage> {
     private static final String CREATE_PROJECT_BUTTON_XPATH =
             "//*[contains(@class,'form-create-project')]//*[contains(@class,'btn') and @type='submit']";
-    //TODO Move to enum
     private static final String PROJECT_NAME_INPUT_LABEL = "Project name";
     private static final String PROJECT_CODE_INPUT_LABEL = "Project Code";
     private static final String DESCRIPTION_INPUT_LABEL = "Description";
