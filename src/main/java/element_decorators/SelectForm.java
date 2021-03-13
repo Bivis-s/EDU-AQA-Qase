@@ -7,8 +7,8 @@ import org.openqa.selenium.WebDriver;
 
 @Log4j2
 public class SelectForm extends BaseElementDecorator<SelectForm> {
-    private static final String SELECT_XPATH = "//label[contains(text(),'%s')]/following::*[contains(@class,'control')]";
-    private static final String OPTION_XPATH = "//*[contains(@class,'menu')]//*[text()='%s']";
+    private static final String SELECT_XPATH = "//label[contains(text(),'%s')]/following::*[contains(@class,'container')]";
+    private static final String OPTION_XPATH = ".//*[contains(@class,'menu')]//*[text()='%s']";
     private final String labeledSelectXpath;
 
     public SelectForm(WebDriver driver, String label) {
@@ -29,7 +29,7 @@ public class SelectForm extends BaseElementDecorator<SelectForm> {
 
     public void clickOptionByLabel(String optionLabel) {
         String labeledOptionXpath = String.format(OPTION_XPATH, optionLabel);
-        PageLoadHelper.waitForElementIsVisible(getDriver(), By.xpath(labeledOptionXpath));
+        PageLoadHelper.waitForElementIsClickable(getDriver(), By.xpath(labeledOptionXpath));
         click(findInnerElementByXpath(getElement(), labeledOptionXpath));
     }
 }
