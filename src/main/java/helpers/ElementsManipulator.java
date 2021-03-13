@@ -70,11 +70,12 @@ public abstract class ElementsManipulator {
         return elementText;
     }
 
-    protected boolean isElementDisplayed(WebElement element) {
-        boolean isDisplayed = false;
+    protected boolean isElementOnPage(By by) {
+        boolean isOnPage = false;
         try {
             try {
-                isDisplayed = element.isDisplayed();
+                findElement(by);
+                isOnPage = true;
             } catch (NoSuchElementException ignored) {
             }
         }
@@ -82,8 +83,8 @@ public abstract class ElementsManipulator {
             log.error(t.getMessage());
             throw t;
         }
-        log.debug("Is element '" + element.getTagName() + "' displayed: " + isDisplayed);
-        return isDisplayed;
+        log.debug("Is element '" + by + "' on page: " + isOnPage);
+        return isOnPage;
     }
 
     protected boolean isElementBecomeVisible(WebElement element) {
@@ -103,9 +104,18 @@ public abstract class ElementsManipulator {
         return isDisplayed;
     }
 
+    protected WebElement findElement(By by) {
+        try {
+            return getDriver().findElement(by);
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
+    }
+
     protected WebElement findElementByXpath(String xpath) {
         try {
-            return getDriver().findElement(By.xpath(xpath));
+            return findElement(By.xpath(xpath));
         } catch (Throwable t) {
             log.error(t.getMessage());
             throw t;
@@ -114,7 +124,7 @@ public abstract class ElementsManipulator {
 
     protected WebElement findElementById(String id) {
         try {
-            return getDriver().findElement(By.id(id));
+            return findElement(By.id(id));
         } catch (Throwable t) {
             log.error(t.getMessage());
             throw t;
@@ -146,5 +156,15 @@ public abstract class ElementsManipulator {
             log.error(t.getMessage());
             throw t;
         }
+    }
+
+    protected WebElement scrollToElement(WebElement element) {
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
+        return element;
+    }
+
+    protected WebElement addClassToElement(WebElement element, String className) {
+        ((JavascriptExecutor) getDriver()).executeScript(String.format("arguments[0].classList.add('%s');", className), element);
+        return element;
     }
 }

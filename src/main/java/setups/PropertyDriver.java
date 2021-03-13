@@ -2,6 +2,7 @@ package setups;
 
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import utils.readers.DriverPropertyReader;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 @Log4j2
-public class PropertyDriver implements WebDriver {
+public class PropertyDriver implements WebDriver, JavascriptExecutor {
     private final WebDriver driver;
 
     public PropertyDriver() {
@@ -24,7 +25,7 @@ public class PropertyDriver implements WebDriver {
             driver.get(url);
         } catch (Throwable t) {
             log.error(t.getMessage());
-            throw  t;
+            throw t;
         }
     }
 
@@ -36,7 +37,7 @@ public class PropertyDriver implements WebDriver {
             return currentUrl;
         } catch (Throwable t) {
             log.error(t.getMessage());
-            throw  t;
+            throw t;
         }
     }
 
@@ -48,7 +49,7 @@ public class PropertyDriver implements WebDriver {
             return title;
         } catch (Throwable t) {
             log.error(t.getMessage());
-            throw  t;
+            throw t;
         }
     }
 
@@ -59,7 +60,7 @@ public class PropertyDriver implements WebDriver {
             return driver.findElements(by);
         } catch (Throwable t) {
             log.error(t.getMessage());
-            throw  t;
+            throw t;
         }
     }
 
@@ -70,7 +71,7 @@ public class PropertyDriver implements WebDriver {
             return driver.findElement(by);
         } catch (Throwable t) {
             log.error(t.getMessage());
-            throw  t;
+            throw t;
         }
     }
 
@@ -80,7 +81,7 @@ public class PropertyDriver implements WebDriver {
             return driver.getPageSource();
         } catch (Throwable t) {
             log.error(t.getMessage());
-            throw  t;
+            throw t;
         }
     }
 
@@ -91,7 +92,7 @@ public class PropertyDriver implements WebDriver {
             driver.close();
         } catch (Throwable t) {
             log.error(t.getMessage());
-            throw  t;
+            throw t;
         }
     }
 
@@ -102,7 +103,7 @@ public class PropertyDriver implements WebDriver {
             driver.quit();
         } catch (Throwable t) {
             log.error(t.getMessage());
-            throw  t;
+            throw t;
         }
     }
 
@@ -112,7 +113,7 @@ public class PropertyDriver implements WebDriver {
             return driver.getWindowHandles();
         } catch (Throwable t) {
             log.error(t.getMessage());
-            throw  t;
+            throw t;
         }
     }
 
@@ -122,7 +123,7 @@ public class PropertyDriver implements WebDriver {
             return driver.getWindowHandle();
         } catch (Throwable t) {
             log.error(t.getMessage());
-            throw  t;
+            throw t;
         }
     }
 
@@ -132,7 +133,7 @@ public class PropertyDriver implements WebDriver {
             return driver.switchTo();
         } catch (Throwable t) {
             log.error(t.getMessage());
-            throw  t;
+            throw t;
         }
     }
 
@@ -142,7 +143,7 @@ public class PropertyDriver implements WebDriver {
             return driver.navigate();
         } catch (Throwable t) {
             log.error(t.getMessage());
-            throw  t;
+            throw t;
         }
     }
 
@@ -152,7 +153,27 @@ public class PropertyDriver implements WebDriver {
             return driver.manage();
         } catch (Throwable t) {
             log.error(t.getMessage());
-            throw  t;
+            throw t;
+        }
+    }
+
+    @Override
+    public Object executeScript(String script, Object... args) {
+        try {
+            return ((JavascriptExecutor) driver).executeScript(script, args);
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
+    }
+
+    @Override
+    public Object executeAsyncScript(String script, Object... args) {
+        try {
+            return ((JavascriptExecutor) driver).executeAsyncScript(script, args);
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
         }
     }
 }
