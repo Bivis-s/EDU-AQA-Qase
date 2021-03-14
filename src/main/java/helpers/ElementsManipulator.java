@@ -129,10 +129,10 @@ public abstract class ElementsManipulator {
     }
 
     protected WebElement scrollToElement(WebElement element) {
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'start'});", element);
         // Sometimes browser has no time to handle scrolling
         try {
-            Thread.sleep(50);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             log.error(e.getMessage());
         }

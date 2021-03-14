@@ -9,7 +9,9 @@ import enums.create_case.select_options.SelectOption;
 import helpers.PageLoadHelper;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import property_objects.CaseProperties;
 import property_objects.CaseStepProperties;
 import throwables.PropertyError;
@@ -64,9 +66,17 @@ public class CreateTestCasePage extends LoadableAppPage<CreateTestCasePage> {
 
     public CreateTestCasePage clickAddStepButtonForTimes(int timesNumber) {
         log.info("Click add step button for '" + timesNumber + "' times");
+        WebElement element = findElementById(ADD_STEP_BUTTON_ID);
         for (int i = 0; i < timesNumber; i++) {
             PageLoadHelper.waitForElementIsClickable(getDriver(), By.id(ADD_STEP_BUTTON_ID));
-            click(scrollToElement(findElementById(ADD_STEP_BUTTON_ID)));
+            try {
+                scrollPageDown();
+                click(element);
+                // sometimes it need to scroll page down twice to click add step button
+            } catch (ElementClickInterceptedException e) {
+                scrollPageDown();
+                click(element);
+            }
             caseProperties.addStep(new CaseStepProperties());
         }
         return this;

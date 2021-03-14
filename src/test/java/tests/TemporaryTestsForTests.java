@@ -94,8 +94,8 @@ public class TemporaryTestsForTests {
         AccountProperties accountProperties =
                 new AccountPropertyReader("existing-user").getAccountsProperties();
         ProjectProperties projectProperties = new ProjectProperties();
-        projectProperties.setProjectName("Hohohohhdf");
-        projectProperties.setProjectCode("HOAH3");
+        projectProperties.setProjectName("Hohohohhdf" + random.nextInt(9999));
+        projectProperties.setProjectCode("HOAH3" + random.nextInt(9999));
         projectProperties.setDescription("This is Description");
         projectProperties.setProjectAccessType(ProjectAccessType.PUBLIC);
         NewProjectPage newProjectPage = homePage

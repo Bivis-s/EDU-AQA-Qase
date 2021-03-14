@@ -29,7 +29,7 @@ public abstract class BaseModal<T extends BaseModal<T>> extends BaseElementDecor
     // After clicking on the close button, modal closes instantly,
     // but the page needs some more time to render updated page
     protected void waitAfterClosing() {
-        int timeout = 750;
+        int timeout = 2000;
         log.trace("Wait after modal closing for time '" + timeout + "millis");
         try {
             Thread.sleep(timeout);
