@@ -9,9 +9,9 @@ import pageobjects.app.ProjectPage;
 
 public class ProjectRow extends BaseElementDecorator<ProjectRow> {
     private final WebElement rowElement;
-    public final static String DROPDOWN_BUTTON_XPATH = "./*[contains(@class,'dropdown')]//*[contains(@class,'btn')]";
-    public final static String DROPDOWN_ITEM_XPATH = "./following::*[contains(@class,'dropdown-item')]//*[contains(text(),'%s')]"; // //*[contains(@class,'project-row')]//*[contains(@class,'dropdown')]//*[contains(@class,'btn')]/following::*[contains(@class,'dropdown-item')]//*[contains(text(),'Delete')]
-    public final static String PROJECT_TITLE_XPATH = "./*[contains(@class,'title')";
+    public final static String DROPDOWN_BUTTON_XPATH = ".//*[contains(@class,'dropdown')]//*[contains(@class,'btn')]";
+    public final static String DROPDOWN_ITEM_XPATH = ".//following::*[contains(@class,'dropdown-item')]//*[contains(text(),'%s')]";
+    public final static String PROJECT_TITLE_XPATH = ".//*[contains(@class,'title')]";
     public final static String DROPDOWN_DELETE_BUTTON_TEXT = "Delete";
 
     public ProjectRow(WebDriver driver, WebElement rowElement) {

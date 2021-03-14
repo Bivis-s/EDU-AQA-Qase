@@ -29,10 +29,12 @@ import static org.testng.Assert.*;
 @Log4j2
 public class TemporaryTestsForTests {
     private PropertyDriver driver;
+    private Random random;
 
     @BeforeMethod(alwaysRun = true)
     public void setUp() {
         driver = new PropertyDriver();
+        random = new Random();
     }
 
     @AfterMethod(alwaysRun = true)
@@ -65,7 +67,7 @@ public class TemporaryTestsForTests {
     public void clickLoginButtonTest() {
         HomePage homePage = new HomePage(driver);
         LoginPage loginPage = homePage
-                .openPage()
+                .openPageByUrl()
                 .clickLoginButton();
         assertNotNull(loginPage.isLoaded());
     }
@@ -76,7 +78,7 @@ public class TemporaryTestsForTests {
         AccountProperties accountProperties =
                 new AccountPropertyReader("existing-user").getAccountsProperties();
         ProjectsPage projectsPage = homePage
-                .openPage()
+                .openPageByUrl()
                 .clickLoginButton()
                 .enterEmail(accountProperties.getLogin())
                 .enterPassword(accountProperties.getPassword())
@@ -96,7 +98,7 @@ public class TemporaryTestsForTests {
         projectProperties.setDescription("This is Description");
         projectProperties.setProjectAccessType(ProjectAccessType.PUBLIC);
         NewProjectPage newProjectPage = homePage
-                .openPage()
+                .openPageByUrl()
                 .clickLoginButton()
                 .enterEmail(accountProperties.getLogin())
                 .enterPassword(accountProperties.getPassword())
@@ -114,12 +116,11 @@ public class TemporaryTestsForTests {
 
     @Test
     public void createTestCaseTest() {
-        Random random = new Random();
         HomePage homePage = new HomePage(driver);
         AccountProperties accountProperties =
                 new AccountPropertyReader("existing-user").getAccountsProperties();
         CreateTestCasePage createTestCasePage = homePage
-                .openPage()
+                .openPageByUrl()
                 .clickLoginButton()
                 .enterEmail(accountProperties.getLogin())
                 .enterPassword(accountProperties.getPassword())
@@ -150,8 +151,231 @@ public class TemporaryTestsForTests {
                 .enterActionIntoStepByNumber(2, "Second step action")
                 .enterInputDataIntoStepByNumber(2, "Second step input data")
                 .enterExpectedResultIntoStepByNumber(2, "Second expected result");
-        log.info(createTestCasePage.getBuiltCaseProperties());
+        log.info(createTestCasePage.getBuiltCaseProperties().toString());
         ProjectPage projectPage = createTestCasePage.clickSaveCaseButton();
         assertNotNull(projectPage.isLoaded());
+    }
+
+    @Test
+    public void signOutTest() {
+        HomePage homePage = new HomePage(driver);
+        AccountProperties accountProperties =
+                new AccountPropertyReader("existing-user").getAccountsProperties();
+        LoginPage loginPage = homePage
+                .openPageByUrl()
+                .clickLoginButton()
+                .enterEmail(accountProperties.getLogin())
+                .enterPassword(accountProperties.getPassword())
+                .clickLoginButton()
+                .getUserMenu()
+                .openUserMenuDropdown()
+                .clickSignOutButton();
+        assertNotNull(loginPage.isLoaded());
+    }
+
+    @Test
+    void deleteProjectTest() {
+        // Creating
+        HomePage homePage = new HomePage(driver);
+        AccountProperties accountProperties =
+                new AccountPropertyReader("existing-user").getAccountsProperties();
+        ProjectProperties projectProperties = new ProjectProperties();
+        projectProperties.setProjectName("Test" + random.nextInt(9999));
+        projectProperties.setProjectCode("H" + random.nextInt(9999));
+        projectProperties.setDescription("This is Description");
+        projectProperties.setProjectAccessType(ProjectAccessType.PUBLIC);
+        ProjectPage projectPage = homePage
+                .openPageByUrl()
+                .clickLoginButton()
+                .enterEmail(accountProperties.getLogin())
+                .enterPassword(accountProperties.getPassword())
+                .clickLoginButton()
+                .clickCreateNewProjectButton()
+                .enterProjectName(projectProperties.getProjectName())
+                .enterProjectCode(projectProperties.getProjectCode())
+                .enterDescription(projectProperties.getDescription())
+                .setProjectAccessType(projectProperties.getProjectAccessType())
+                .clickCreateProjectButton();
+
+        // Deleting
+        ProjectsPage projectsPage = new ProjectsPage(driver).openPageByUrl();
+        assertTrue(projectsPage.enterTextInSearchProjectField(projectProperties.getProjectName()).createProjectNameList().contains(projectProperties.getProjectName()));
+        projectsPage
+                .getProjectRowByName(projectProperties.getProjectName())
+                .clickDropdownButton()
+                .clickDropdownDeleteButton()
+                .clickDeleteProjectButton();
+        assertFalse(projectsPage.enterTextInSearchProjectField(projectProperties.getProjectName()).createProjectNameList().contains(projectProperties.getProjectName()));
+    }
+
+    @Test
+    public void createTwoTestCaseTest() {
+        HomePage homePage = new HomePage(driver);
+        AccountProperties accountProperties =
+                new AccountPropertyReader("existing-user").getAccountsProperties();
+        boolean isCaseOnPage = homePage
+                .openPageByUrl()
+                .clickLoginButton()
+                .enterEmail(accountProperties.getLogin())
+                .enterPassword(accountProperties.getPassword())
+                .clickLoginButton()
+                .clickCreateNewProjectButton()
+                .enterProjectName("Create test case " + random.nextInt(9999))
+                .enterProjectCode("C" + random.nextInt(9999))
+                .enterDescription("DESCRIPTION" + random.nextInt(9999))
+                .setProjectAccessType(ProjectAccessType.PRIVATE)
+                .clickCreateProjectButton()
+                .clickCreateNewCaseButton()
+                .enterFieldByName(CreateCaseField.TITLE, "This is title")
+                .enterFieldByName(CreateCaseField.DESCRIPTION, "This is description")
+                .enterFieldByName(CreateCaseField.PRE_CONDITIONS, "This is pre-condition")
+                .enterFieldByName(CreateCaseField.POST_CONDITIONS, "This is post-condition")
+                .selectOptionByName(CreateCaseSelect.STATUS, CaseStatusOption.DRAFT)
+                .selectOptionByName(CreateCaseSelect.SUITE, null) // for test testing
+                .selectOptionByName(CreateCaseSelect.SEVERITY, CaseSeverityOption.MINOR)
+                .selectOptionByName(CreateCaseSelect.PRIORITY, CasePriorityOption.LOW)
+                .selectOptionByName(CreateCaseSelect.TYPE, CaseTypeOption.EXPLORATORY)
+                .selectOptionByName(CreateCaseSelect.MILESTONE, null) // for test testing
+                .selectOptionByName(CreateCaseSelect.BEHAVIOR, CaseBehaviorOption.POSITIVE)
+                .selectOptionByName(CreateCaseSelect.AUTOMATION_STATUS, CaseAutomationStatusOption.NOT_AUTOMATED)
+                .clickAddStepButtonForTimes(2)
+                .enterActionIntoStepByNumber(1, "COWABUNGA")
+                .enterInputDataIntoStepByNumber(1, "Input data!")
+                .enterExpectedResultIntoStepByNumber(1, "Expecteddd")
+                .enterActionIntoStepByNumber(2, "Second step action")
+                .enterInputDataIntoStepByNumber(2, "Second step input data")
+                .enterExpectedResultIntoStepByNumber(2, "Second expected result")
+                .clickSaveCaseButton()
+                .clickCreateNewCaseButton()
+                .enterFieldByName(CreateCaseField.TITLE, "This is title")
+                .enterFieldByName(CreateCaseField.DESCRIPTION, "This is description")
+                .enterFieldByName(CreateCaseField.PRE_CONDITIONS, "This is pre-condition")
+                .enterFieldByName(CreateCaseField.POST_CONDITIONS, "This is post-condition")
+                .selectOptionByName(CreateCaseSelect.STATUS, CaseStatusOption.DRAFT)
+                .selectOptionByName(CreateCaseSelect.SUITE, null) // for test testing
+                .selectOptionByName(CreateCaseSelect.SEVERITY, CaseSeverityOption.MINOR)
+                .selectOptionByName(CreateCaseSelect.PRIORITY, CasePriorityOption.LOW)
+                .selectOptionByName(CreateCaseSelect.TYPE, CaseTypeOption.EXPLORATORY)
+                .selectOptionByName(CreateCaseSelect.MILESTONE, null) // for test testing
+                .selectOptionByName(CreateCaseSelect.BEHAVIOR, CaseBehaviorOption.POSITIVE)
+                .selectOptionByName(CreateCaseSelect.AUTOMATION_STATUS, CaseAutomationStatusOption.NOT_AUTOMATED)
+                .clickAddStepButtonForTimes(2)
+                .enterActionIntoStepByNumber(1, "COWABUNGA")
+                .enterInputDataIntoStepByNumber(1, "Input data!")
+                .enterExpectedResultIntoStepByNumber(1, "Expecteddd")
+                .enterActionIntoStepByNumber(2, "Second step action")
+                .enterInputDataIntoStepByNumber(2, "Second step input data")
+                .enterExpectedResultIntoStepByNumber(2, "Second expected result")
+                .clickSaveCaseButton()
+                .enterTextInSearchCaseField("This is title")
+                .getSuiteContainer()
+                .isCaseOnPage("This is title");
+        assertTrue(isCaseOnPage);
+    }
+
+    @Test
+    public void createTwoSuiteTest() {
+        HomePage homePage = new HomePage(driver);
+        AccountProperties accountProperties =
+                new AccountPropertyReader("existing-user").getAccountsProperties();
+        ProjectPage projectPage = homePage
+                .openPageByUrl()
+                .clickLoginButton()
+                .enterEmail(accountProperties.getLogin())
+                .enterPassword(accountProperties.getPassword())
+                .clickLoginButton()
+                .clickCreateNewProjectButton()
+                .enterProjectName("Create test case " + random.nextInt(9999))
+                .enterProjectCode("C" + random.nextInt(9999))
+                .enterDescription("DESCRIPTION" + random.nextInt(9999))
+                .setProjectAccessType(ProjectAccessType.PUBLIC)
+                .clickCreateProjectButton()
+                .clickCreateNewSuiteButton()
+                .enterSuiteName("WAV")
+                .enterDescription("Description")
+                .enterPreconditions("Preconditions")
+                .clickCreateSuiteButton()
+                .clickCreateNewSuiteButton()
+                .enterSuiteName("WAV_inner")
+                .enterDescription("Description")
+                .enterPreconditions("Preconditions")
+                .selectParentSuiteByName("WAV")
+                .clickCreateSuiteButton();
+        assertNotNull(projectPage.isLoaded());
+    }
+
+    @Test
+    public void createSuiteAndAssertItOnPageTest() {
+        HomePage homePage = new HomePage(driver);
+        AccountProperties accountProperties =
+                new AccountPropertyReader("existing-user").getAccountsProperties();
+        boolean isSuiteOnPage = homePage
+                .openPageByUrl()
+                .clickLoginButton()
+                .enterEmail(accountProperties.getLogin())
+                .enterPassword(accountProperties.getPassword())
+                .clickLoginButton()
+                .clickCreateNewProjectButton()
+                .enterProjectName("Create test case " + random.nextInt(9999))
+                .enterProjectCode("C" + random.nextInt(9999))
+                .enterDescription("DESCRIPTION" + random.nextInt(9999))
+                .setProjectAccessType(ProjectAccessType.PUBLIC)
+                .clickCreateProjectButton()
+                .clickCreateNewSuiteButton()
+                .enterSuiteName("WAV")
+                .enterDescription("Description")
+                .enterPreconditions("Preconditions")
+                .clickCreateSuiteButton()
+                .getSuiteContainer()
+                .isSuiteOnPage("WAV");
+        assertTrue(isSuiteOnPage);
+    }
+
+    @Test
+    public void deleteTestCaseTest() {
+        HomePage homePage = new HomePage(driver);
+        AccountProperties accountProperties =
+                new AccountPropertyReader("existing-user").getAccountsProperties();
+        boolean isCaseOnPage = homePage
+                .openPageByUrl()
+                .clickLoginButton()
+                .enterEmail(accountProperties.getLogin())
+                .enterPassword(accountProperties.getPassword())
+                .clickLoginButton()
+                .clickCreateNewProjectButton()
+                .enterProjectName("Create test case " + random.nextInt(9999))
+                .enterProjectCode("C" + random.nextInt(9999))
+                .enterDescription("DESCRIPTION" + random.nextInt(9999))
+                .setProjectAccessType(ProjectAccessType.PRIVATE)
+                .clickCreateProjectButton()
+                .clickCreateNewCaseButton()
+                .enterFieldByName(CreateCaseField.TITLE, "This is title")
+                .enterFieldByName(CreateCaseField.DESCRIPTION, "This is description")
+                .enterFieldByName(CreateCaseField.PRE_CONDITIONS, "This is pre-condition")
+                .enterFieldByName(CreateCaseField.POST_CONDITIONS, "This is post-condition")
+                .selectOptionByName(CreateCaseSelect.STATUS, CaseStatusOption.DRAFT)
+                .selectOptionByName(CreateCaseSelect.SUITE, null) // for test testing
+                .selectOptionByName(CreateCaseSelect.SEVERITY, CaseSeverityOption.MINOR)
+                .selectOptionByName(CreateCaseSelect.PRIORITY, CasePriorityOption.LOW)
+                .selectOptionByName(CreateCaseSelect.TYPE, CaseTypeOption.EXPLORATORY)
+                .selectOptionByName(CreateCaseSelect.MILESTONE, null) // for test testing
+                .selectOptionByName(CreateCaseSelect.BEHAVIOR, CaseBehaviorOption.POSITIVE)
+                .selectOptionByName(CreateCaseSelect.AUTOMATION_STATUS, CaseAutomationStatusOption.NOT_AUTOMATED)
+                .clickAddStepButtonForTimes(2)
+                .enterActionIntoStepByNumber(1, "COWABUNGA")
+                .enterInputDataIntoStepByNumber(1, "Input data!")
+                .enterExpectedResultIntoStepByNumber(1, "Expecteddd")
+                .enterActionIntoStepByNumber(2, "Second step action")
+                .enterInputDataIntoStepByNumber(2, "Second step input data")
+                .enterExpectedResultIntoStepByNumber(2, "Second expected result")
+                .clickSaveCaseButton()
+                .getSuiteContainer()
+                .checkCaseCheckboxByName("This is title")
+                .clickDeleteTestCasesButton()
+                .enterTextIntoConfirmField("CONFIRM")
+                .clickDeleteButton()
+                .getSuiteContainer()
+                .isCaseOnPage("This is title");
+        assertFalse(isCaseOnPage);
     }
 }
