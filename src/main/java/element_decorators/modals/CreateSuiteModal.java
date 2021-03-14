@@ -47,9 +47,8 @@ public class CreateSuiteModal extends BaseModal<CreateSuiteModal> {
     public ProjectPage clickCreateSuiteButton() {
         click(findElementById(CREATE_SUITE_BUTTON_ID));
         try {
-            Thread.sleep(250);
-        } catch (InterruptedException e) {
-            log.error("FUCK");
+            Thread.sleep(750);
+        } catch (InterruptedException ignored) {
         }
         return new ProjectPage(getDriver()).get();
     }

@@ -20,7 +20,7 @@ public class UserMenu extends BaseElementDecorator<UserMenu> {
         setElement(findElementByXpath(USER_MENU_XPATH));
     }
 
-    public UserMenu open() {
+    public UserMenu openUserMenuDropdown() {
         super.click(getElement());
         return this;
     }

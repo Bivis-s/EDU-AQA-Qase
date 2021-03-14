@@ -21,7 +21,7 @@ public abstract class BasePage<T extends CustomLoadableComponent<T>> extends Cus
         return refreshPage();
     }
 
-    public T openPage() {
+    public T openPageByUrl() {
         getDriver().get(getPageUrl());
         return get();
     }

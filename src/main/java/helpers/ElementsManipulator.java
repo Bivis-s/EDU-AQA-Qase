@@ -73,13 +73,10 @@ public abstract class ElementsManipulator {
     protected boolean isElementOnPage(By by) {
         boolean isOnPage = false;
         try {
-            try {
-                findElement(by);
-                isOnPage = true;
-            } catch (NoSuchElementException ignored) {
-            }
-        }
-        catch (Throwable t) {
+            findElement(by);
+            isOnPage = true;
+        } catch (NoSuchElementException ignored) {
+        } catch (Throwable t) {
             log.error(t.getMessage());
             throw t;
         }
@@ -90,11 +87,9 @@ public abstract class ElementsManipulator {
     protected boolean isElementBecomeVisible(WebElement element) {
         boolean isDisplayed = false;
         try {
-            try {
-                PageLoadHelper.waitForCondition(getDriver(), ExpectedConditions.visibilityOf(element));
-                isDisplayed = true;
-            } catch (TimeoutException ignored) {
-            }
+            PageLoadHelper.waitForCondition(getDriver(), ExpectedConditions.visibilityOf(element));
+            isDisplayed = true;
+        } catch (TimeoutException ignored) {
         } catch (Throwable t) {
             log.error(t.getMessage());
             throw t;
