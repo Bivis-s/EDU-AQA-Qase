@@ -68,7 +68,7 @@ public class TemporaryTestsForTests {
     public void clickLoginButtonTest() {
         HomePage homePage = new HomePage(driver);
         LoginPage loginPage = homePage
-                .openPage()
+                .openPageByUrl()
                 .clickLoginButton();
         assertNotNull(loginPage.isLoaded());
     }
@@ -79,7 +79,7 @@ public class TemporaryTestsForTests {
         AccountProperties accountProperties =
                 new AccountPropertyReader("existing-user").getAccountsProperties();
         ProjectsPage projectsPage = homePage
-                .openPage()
+                .openPageByUrl()
                 .clickLoginButton()
                 .enterEmail(accountProperties.getLogin())
                 .enterPassword(accountProperties.getPassword())
@@ -99,7 +99,7 @@ public class TemporaryTestsForTests {
         projectProperties.setDescription("This is Description");
         projectProperties.setProjectAccessType(ProjectAccessType.PUBLIC);
         NewProjectPage newProjectPage = homePage
-                .openPage()
+                .openPageByUrl()
                 .clickLoginButton()
                 .enterEmail(accountProperties.getLogin())
                 .enterPassword(accountProperties.getPassword())
@@ -121,7 +121,7 @@ public class TemporaryTestsForTests {
         AccountProperties accountProperties =
                 new AccountPropertyReader("existing-user").getAccountsProperties();
         CreateTestCasePage createTestCasePage = homePage
-                .openPage()
+                .openPageByUrl()
                 .clickLoginButton()
                 .enterEmail(accountProperties.getLogin())
                 .enterPassword(accountProperties.getPassword())
@@ -163,13 +163,13 @@ public class TemporaryTestsForTests {
         AccountProperties accountProperties =
                 new AccountPropertyReader("existing-user").getAccountsProperties();
         LoginPage loginPage = homePage
-                .openPage()
+                .openPageByUrl()
                 .clickLoginButton()
                 .enterEmail(accountProperties.getLogin())
                 .enterPassword(accountProperties.getPassword())
                 .clickLoginButton()
                 .getUserMenu()
-                .open()
+                .openUserMenuDropdown()
                 .clickSignOutButton();
         assertNotNull(loginPage.isLoaded());
     }
@@ -186,7 +186,7 @@ public class TemporaryTestsForTests {
         projectProperties.setDescription("This is Description");
         projectProperties.setProjectAccessType(ProjectAccessType.PUBLIC);
         ProjectPage projectPage = homePage
-                .openPage()
+                .openPageByUrl()
                 .clickLoginButton()
                 .enterEmail(accountProperties.getLogin())
                 .enterPassword(accountProperties.getPassword())
@@ -199,7 +199,7 @@ public class TemporaryTestsForTests {
                 .clickCreateProjectButton();
 
         // Deleting
-        ProjectsPage projectsPage = new ProjectsPage(driver).openPage();
+        ProjectsPage projectsPage = new ProjectsPage(driver).openPageByUrl();
         assertTrue(projectsPage.enterTextInSearchProjectField(projectProperties.getProjectName()).createProjectNameList().contains(projectProperties.getProjectName()));
         projectsPage
                 .getProjectRowByName(projectProperties.getProjectName())
@@ -215,7 +215,7 @@ public class TemporaryTestsForTests {
         AccountProperties accountProperties =
                 new AccountPropertyReader("existing-user").getAccountsProperties();
         int caseCountWithoutSuiteOnPage = homePage
-                .openPage()
+                .openPageByUrl()
                 .clickLoginButton()
                 .enterEmail(accountProperties.getLogin())
                 .enterPassword(accountProperties.getPassword())
@@ -280,7 +280,7 @@ public class TemporaryTestsForTests {
         AccountProperties accountProperties =
                 new AccountPropertyReader("existing-user").getAccountsProperties();
         ProjectPage projectPage = homePage
-                .openPage()
+                .openPageByUrl()
                 .clickLoginButton()
                 .enterEmail(accountProperties.getLogin())
                 .enterPassword(accountProperties.getPassword())
@@ -311,7 +311,7 @@ public class TemporaryTestsForTests {
         AccountProperties accountProperties =
                 new AccountPropertyReader("existing-user").getAccountsProperties();
         int suiteCountOnPage = homePage
-                .openPage()
+                .openPageByUrl()
                 .clickLoginButton()
                 .enterEmail(accountProperties.getLogin())
                 .enterPassword(accountProperties.getPassword())
@@ -338,7 +338,7 @@ public class TemporaryTestsForTests {
         AccountProperties accountProperties =
                 new AccountPropertyReader("existing-user").getAccountsProperties();
         int caseCountWithoutSuiteOnPage = homePage
-                .openPage()
+                .openPageByUrl()
                 .clickLoginButton()
                 .enterEmail(accountProperties.getLogin())
                 .enterPassword(accountProperties.getPassword())
@@ -386,7 +386,7 @@ public class TemporaryTestsForTests {
         AccountProperties accountProperties =
                 new AccountPropertyReader("existing-user").getAccountsProperties();
         int suiteCountOnPage = homePage
-                .openPage()
+                .openPageByUrl()
                 .clickLoginButton()
                 .enterEmail(accountProperties.getLogin())
                 .enterPassword(accountProperties.getPassword())
@@ -416,7 +416,7 @@ public class TemporaryTestsForTests {
         AccountProperties accountProperties =
                 new AccountPropertyReader("existing-user").getAccountsProperties();
         SuiteContainer suiteContainer = homePage
-                .openPage()
+                .openPageByUrl()
                 .clickLoginButton()
                 .enterEmail(accountProperties.getLogin())
                 .enterPassword(accountProperties.getPassword())
@@ -484,7 +484,7 @@ public class TemporaryTestsForTests {
         AccountProperties accountProperties =
                 new AccountPropertyReader("existing-user").getAccountsProperties();
         int suiteCountOnPage = homePage
-                .openPage()
+                .openPageByUrl()
                 .clickLoginButton()
                 .enterEmail(accountProperties.getLogin())
                 .enterPassword(accountProperties.getPassword())
@@ -515,7 +515,7 @@ public class TemporaryTestsForTests {
         AccountProperties accountProperties =
                 new AccountPropertyReader("existing-user").getAccountsProperties();
         ProjectPage projectPage = homePage
-                .openPage()
+                .openPageByUrl()
                 .clickLoginButton()
                 .enterEmail(accountProperties.getLogin())
                 .enterPassword(accountProperties.getPassword())

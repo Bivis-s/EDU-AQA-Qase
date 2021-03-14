@@ -20,15 +20,15 @@ public abstract class BasePage<T extends CustomLoadableComponent<T>> extends Cus
     @Override
     protected T load() {
         try {
-            return openPage();
+            return openPageByUrl();
         } catch (Error e) {
             return refreshPage();
         }
     }
 
-    public T openPage() {
+    public T openPageByUrl() {
         String pageUrl = getPageUrl();
-        log.info("Open page with URL '" + pageUrl + "'");
+        log.info("Open page by URL '" + pageUrl + "'");
         getDriver().get(pageUrl);
         return get();
     }
