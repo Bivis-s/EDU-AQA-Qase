@@ -7,7 +7,12 @@ public class InputForm extends Form {
         super(driver, label);
     }
 
-    public void sendKeys(String... keys) {
+    public InputForm clear() {
+        clear(getElement());
+        return this;
+    }
+
+    public void sendKeys(CharSequence... keys) {
         sendKeys(getElement(), keys);
     }
 }

@@ -33,6 +33,16 @@ public class PageLoadHelper {
         }
     }
 
+    public static void waitForElementIsInvisible(WebDriver driver, By by) {
+        try {
+            log.debug("Wait for element '" + by + "' to become visible for '" + TIMEOUT + "' seconds maximum");
+            new WebDriverWait(driver, TIMEOUT)
+                    .until(ExpectedConditions.invisibilityOfElementLocated(by));
+        } catch (WebDriverException e) {
+            throw new WaitForElementConditionError("Element '" + by + "' does not become visible");
+        }
+    }
+
     public static void waitForCondition(WebDriver driver, ExpectedCondition<WebElement> expectedConditions) {
         new WebDriverWait(driver, TIMEOUT).until(expectedConditions);
     }

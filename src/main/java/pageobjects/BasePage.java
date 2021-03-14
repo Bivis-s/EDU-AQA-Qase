@@ -2,6 +2,7 @@ package pageobjects;
 
 import enums.UrlPageName;
 import lombok.extern.log4j.Log4j2;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import setups.CustomLoadableComponent;
@@ -40,5 +41,11 @@ public abstract class BasePage<T extends CustomLoadableComponent<T>> extends Cus
 
     protected String getUrlFromProperty(UrlPageName page) {
         return new UrlPropertyReader().getPageUrl(page).getUrl();
+    }
+
+    @SuppressWarnings("unchecked")
+    public T scrollDown() {
+        sendKeys(findElementByXpath("//body"), Keys.CONTROL, Keys.END);
+        return (T) this;
     }
 }
