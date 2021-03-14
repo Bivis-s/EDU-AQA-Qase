@@ -2,6 +2,7 @@ package setups;
 
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import utils.readers.DriverPropertyReader;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 @Log4j2
-public class PropertyDriver implements WebDriver {
+public class PropertyDriver implements WebDriver, JavascriptExecutor {
     private final WebDriver driver;
 
     public PropertyDriver() {
@@ -19,75 +20,160 @@ public class PropertyDriver implements WebDriver {
 
     @Override
     public void get(String url) {
-        log.debug("Get url '" + url + "'");
-        driver.get(url);
+        try {
+            log.debug("Get url '" + url + "'");
+            driver.get(url);
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
     }
 
     @Override
     public String getCurrentUrl() {
-        String currentUrl = driver.getCurrentUrl();
-        log.debug("Get current url '" + currentUrl + "'");
-        return currentUrl;
+        try {
+            String currentUrl = driver.getCurrentUrl();
+            log.debug("Get current url '" + currentUrl + "'");
+            return currentUrl;
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
     }
 
     @Override
     public String getTitle() {
-        String title = driver.getTitle();
-        log.debug("Get title '" + title + "'");
-        return title;
+        try {
+            String title = driver.getTitle();
+            log.debug("Get title '" + title + "'");
+            return title;
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
     }
 
     @Override
     public List<WebElement> findElements(By by) {
-        log.trace("Find elementS by '" + by.toString() + "'");
-        return driver.findElements(by);
+        try {
+            log.trace("Find elementS by '" + by.toString() + "'");
+            return driver.findElements(by);
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
     }
 
     @Override
     public WebElement findElement(By by) {
-        log.trace("Find element by '" + by.toString() + "'");
-        return driver.findElement(by);
+        try {
+            log.trace("Find element by '" + by.toString() + "'");
+            return driver.findElement(by);
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
     }
 
     @Override
     public String getPageSource() {
-        return driver.getPageSource();
+        try {
+            return driver.getPageSource();
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
     }
 
     @Override
     public void close() {
-        log.debug("Close WebDriver");
-        driver.close();
+        try {
+            log.debug("Close WebDriver");
+            driver.close();
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
     }
 
     @Override
     public void quit() {
-        log.debug("Quit WebDriver");
-        driver.quit();
+        try {
+            log.debug("Quit WebDriver");
+            driver.quit();
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
     }
 
     @Override
     public Set<String> getWindowHandles() {
-        return driver.getWindowHandles();
+        try {
+            return driver.getWindowHandles();
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
     }
 
     @Override
     public String getWindowHandle() {
-        return driver.getWindowHandle();
+        try {
+            return driver.getWindowHandle();
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
     }
 
     @Override
     public TargetLocator switchTo() {
-        return driver.switchTo();
+        try {
+            return driver.switchTo();
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
     }
 
     @Override
     public Navigation navigate() {
-        return driver.navigate();
+        try {
+            return driver.navigate();
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
     }
 
     @Override
     public Options manage() {
-        return driver.manage();
+        try {
+            return driver.manage();
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
+    }
+
+    @Override
+    public Object executeScript(String script, Object... args) {
+        try {
+            return ((JavascriptExecutor) driver).executeScript(script, args);
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
+    }
+
+    @Override
+    public Object executeAsyncScript(String script, Object... args) {
+        try {
+            return ((JavascriptExecutor) driver).executeAsyncScript(script, args);
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
+        }
     }
 }

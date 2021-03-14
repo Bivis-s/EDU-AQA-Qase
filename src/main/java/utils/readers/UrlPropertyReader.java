@@ -12,18 +12,18 @@ public class UrlPropertyReader extends PropertyReader {
         super(URLS_PROPERTIES_FILE_PATH);
     }
 
-    public String getDomain() {
-        return getString("domain");
+    public String getDomain(String pageName) {
+        return getString(pageName + "_domain");
     }
 
     private String getPageUrl(String pageName) {
-        return getDomain() + getString(pageName + "_path");
+        return getDomain(pageName) + getString(pageName + "_path");
     }
 
     public UrlProperties getPageUrl(UrlPageName page) {
         String pageName = page.getValue();
         UrlProperties properties = new UrlProperties();
-        properties.setUrl(getDomain() + getString(pageName + "_path"));
+        properties.setUrl(getPageUrl(pageName));
         return properties;
     }
 }
