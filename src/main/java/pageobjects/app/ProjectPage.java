@@ -34,7 +34,7 @@ public class ProjectPage extends LoadableAppPage<ProjectPage> {
     }
 
     @Override
-    public ProjectPage openPage() {
+    public ProjectPage openPageByUrl() {
         throw new PropertyError("This page has dynamic ULR, please use different method to open the page");
     }
 
