@@ -6,6 +6,7 @@ import io.restassured.http.Header;
 import io.restassured.http.Headers;
 import io.restassured.response.Response;
 import lombok.extern.log4j.Log4j2;
+import org.testng.Assert;
 import property_objects.AccountProperties;
 import property_objects.ApiUrlsProperties;
 
@@ -35,7 +36,10 @@ public class QaseApiAdapter extends BaseApiAdapter {
         if (responseStatus.equals("true")) {
             log.info("Response status: " + responseStatus);
         } else if (responseStatus.equals("false")) {
-            log.error("Response status: " + responseStatus + ", error fields: " + response.then().extract().path("errorFields"));
+            String failMessage = "Response status: " + responseStatus +
+                    ", error fields: " + response.then().extract().path("errorFields");
+            log.error(failMessage);
+            Assert.fail(failMessage);
         }
     }
 

@@ -6,6 +6,7 @@ import api.objects.CreateNewSuiteRequest;
 import element_decorators.SuiteContainer;
 import enums.ProjectAccessType;
 import enums.UrlPageName;
+import enums.api.CreateNewProjectAccess;
 import enums.create_case.CreateCaseField;
 import enums.create_case.CreateCaseSelect;
 import enums.create_case.select_options.*;
@@ -573,6 +574,7 @@ public class TemporaryTestsForTests {
                 .title("An api project " + random.nextInt(999))
                 .code(projectCode)
                 .description("API API API")
+                .access(CreateNewProjectAccess.NONE)
                 .build();
         String suiteName = "An api suite";
         CreateNewSuiteRequest createNewSuiteRequest = CreateNewSuiteRequest.builder()
