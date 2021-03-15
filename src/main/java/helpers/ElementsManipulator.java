@@ -128,8 +128,19 @@ public abstract class ElementsManipulator {
         }
     }
 
+    protected void executeJavaScript(String script) {
+        log.debug("Execute script '" + script + "'");
+        ((JavascriptExecutor) getDriver()).executeScript(script);
+    }
+
+    protected WebElement executeJavaScriptToElement(String script, WebElement element) {
+        log.debug("Execute script '" + script + "' to element '" + element.getTagName() + "'");
+        ((JavascriptExecutor) getDriver()).executeScript(script, element);
+        return element;
+    }
+
     protected WebElement scrollToElement(WebElement element) {
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'start'});", element);
+        executeJavaScriptToElement("arguments[0].scrollIntoView(false);", element);
         // Sometimes browser has no time to handle scrolling
         try {
             Thread.sleep(100);
@@ -141,6 +152,6 @@ public abstract class ElementsManipulator {
 
     protected void addClassToElement(WebElement element, String className) {
         log.debug("Add class '" + className + "' to element '" + element.getTagName() + "'");
-        ((JavascriptExecutor) getDriver()).executeScript(String.format("arguments[0].classList.add('%s');", className), element);
+        executeJavaScriptToElement(String.format("arguments[0].classList.add('%s');", className), element);
     }
 }

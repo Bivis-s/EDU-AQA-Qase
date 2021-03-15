@@ -2,7 +2,6 @@ package pageobjects;
 
 import enums.UrlPageName;
 import lombok.extern.log4j.Log4j2;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import setups.CustomLoadableComponent;
@@ -47,7 +46,7 @@ public abstract class BasePage<T extends CustomLoadableComponent<T>> extends Cus
 
     @SuppressWarnings("unchecked")
     public T scrollPageDown() {
-        ((JavascriptExecutor) getDriver()).executeScript("window.scrollTo(0,document.body.scrollHeight);");
+        executeJavaScript("window.scrollTo(0,document.body.scrollHeight);");
         // Sometimes browser has no time to handle scrolling down
         try {
             Thread.sleep(500);
