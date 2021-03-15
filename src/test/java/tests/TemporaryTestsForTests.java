@@ -1,5 +1,8 @@
 package tests;
 
+import api.adapters.QaseApiAdapter;
+import api.objects.CreateNewProjectRequest;
+import api.objects.CreateNewSuiteRequest;
 import element_decorators.SuiteContainer;
 import enums.ProjectAccessType;
 import enums.UrlPageName;
@@ -21,6 +24,8 @@ import property_objects.ProjectProperties;
 import property_objects.UrlProperties;
 import setups.PropertyDriver;
 import utils.readers.AccountPropertyReader;
+import utils.readers.ApiUrlsPropertyReader;
+import utils.readers.DriverPropertyReader;
 import utils.readers.UrlPropertyReader;
 
 import java.util.Random;
@@ -34,7 +39,7 @@ public class TemporaryTestsForTests {
 
     @BeforeMethod(alwaysRun = true)
     public void setUp() {
-        driver = new PropertyDriver();
+        driver = new PropertyDriver(new DriverPropertyReader().getDriverProperties());
         random = new Random();
     }
 
@@ -49,6 +54,7 @@ public class TemporaryTestsForTests {
                 new AccountPropertyReader("existing-user").getAccountsProperties();
         assertNotEquals(accountProperties.getLogin(), "");
         assertNotEquals(accountProperties.getPassword(), "");
+        assertEquals(accountProperties.getApiToken(), "");
     }
 
     @Test
@@ -528,5 +534,65 @@ public class TemporaryTestsForTests {
                 .clickCreateProjectButton()
                 .openPage(projectCode);
         assertNotNull(projectPage.isLoaded());
+    }
+
+    @Test
+    public void createProjectViaApiTest() {
+        String projectCode = "G" + (char)(random.nextInt('Z' - 'A' + 1) + 'A');
+        AccountProperties accountProperties =
+                new AccountPropertyReader("existing-user").getAccountsProperties();
+        QaseApiAdapter qaseApiAdapter = new QaseApiAdapter(
+                new AccountPropertyReader("existing-user").getAccountsProperties(),
+                new ApiUrlsPropertyReader().getApiUrlProperties());
+        CreateNewProjectRequest request = CreateNewProjectRequest.builder()
+                .title("An api project " + random.nextInt(999))
+                .code(projectCode)
+                .description("API API API")
+                .build();
+        qaseApiAdapter.createNewProject(request);
+        new HomePage(driver)
+                .openPageByUrl()
+                .clickLoginButton()
+                .enterEmail(accountProperties.getLogin())
+                .enterPassword(accountProperties.getPassword())
+                .clickLoginButton();
+        ProjectPage projectPage = new ProjectPage(driver)
+                .openPage(projectCode);
+        assertNotNull(projectPage.isLoaded());
+    }
+
+    @Test
+    public void createSuiteViaApiTest() {
+        String projectCode = "ST" + (char)(random.nextInt('Z' - 'A' + 1) + 'A');
+        AccountProperties accountProperties =
+                new AccountPropertyReader("existing-user").getAccountsProperties();
+        QaseApiAdapter qaseApiAdapter = new QaseApiAdapter(
+                new AccountPropertyReader("existing-user").getAccountsProperties(),
+                new ApiUrlsPropertyReader().getApiUrlProperties());
+        CreateNewProjectRequest request = CreateNewProjectRequest.builder()
+                .title("An api project " + random.nextInt(999))
+                .code(projectCode)
+                .description("API API API")
+                .build();
+        String suiteName = "An api suite";
+        CreateNewSuiteRequest createNewSuiteRequest = CreateNewSuiteRequest.builder()
+                .title(suiteName)
+                .description("An api description")
+                .preconditions("An api preconditions")
+                .build();
+        qaseApiAdapter
+                .createNewProject(request)
+                .createNewSuite(projectCode, createNewSuiteRequest);
+        new HomePage(driver)
+                .openPageByUrl()
+                .clickLoginButton()
+                .enterEmail(accountProperties.getLogin())
+                .enterPassword(accountProperties.getPassword())
+                .clickLoginButton();
+        int suiteCountOnPage = new ProjectPage(driver)
+                .openPage(projectCode)
+                .getSuiteContainer()
+                .getSuiteCountOnPage(suiteName);
+        assertEquals(suiteCountOnPage, 1);
     }
 }
