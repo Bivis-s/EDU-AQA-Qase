@@ -2,11 +2,9 @@ package property_objects;
 
 import enums.ProjectAccessType;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-public class ProjectProperties {
+public class ProjectProperties implements Properties {
     private String projectName;
     private String projectCode;
     private String description;

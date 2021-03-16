@@ -1,11 +1,9 @@
 package property_objects;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-public class AccountProperties {
+public class AccountProperties implements Properties {
     private String login;
     private String password;
     private String apiToken;
