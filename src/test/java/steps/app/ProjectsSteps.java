@@ -7,15 +7,18 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.openqa.selenium.WebDriver;
+import pageobjects.app.DeleteProjectPage;
 import pageobjects.app.NewProjectPage;
 import pageobjects.app.ProjectsPage;
 import property_objects.ProjectProperties;
-import utils.DataGenerator;
+import utils.DateGenerator;
 import utils.RandomStringGenerator;
 import world.World;
 import wrappers.PropertiesWrapper;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.not;
 import static org.testng.Assert.assertNotNull;
 
 @Log4j2
@@ -25,12 +28,11 @@ public class ProjectsSteps {
     private final PropertiesWrapper<ProjectProperties> projectPropertiesWrapper;
     private ProjectsPage projectsPage;
     private NewProjectPage newProjectPage;
+    private DeleteProjectPage deleteProjectPage;
 
     @Before
-    public void initPages() {
-        WebDriver driver = world.getDriver();
-        projectsPage = new ProjectsPage(driver);
-        newProjectPage = new NewProjectPage(driver);
+    public void initProjectsPage() {
+        projectsPage = new ProjectsPage(world.getDriver());
     }
 
     @Then("The projects page is opened")
@@ -55,12 +57,12 @@ public class ProjectsSteps {
 
     @When("Click the 'Create new project' button in the upper left corner")
     public void clickTheCreateNewProjectButtonInTheUpperLeftCorner() {
-        projectsPage.clickCreateNewProjectButton();
+        newProjectPage = projectsPage.clickCreateNewProjectButton();
     }
 
     @And("Enter a valid project name")
     public void enterAValidProjectName() {
-        newProjectPage.enterProjectName(DataGenerator.getCurrentFullData() + " | " + world.getScenario().getName());
+        newProjectPage.enterProjectName(DateGenerator.getCurrentFullDate() + " | " + world.getScenario().getName());
     }
 
     @And("Enter a valid project code")
@@ -82,5 +84,35 @@ public class ProjectsSteps {
     public void clickTheCreateProjectButton() {
         projectPropertiesWrapper.setProperties(newProjectPage.getBuiltProjectProperties());
         newProjectPage.clickCreateProjectButton();
+    }
+
+    @And("Enter a project name into search project field")
+    public void enterAProjectNameIntoSearchProjectField() {
+        projectsPage.enterTextInSearchProjectField(projectPropertiesWrapper.getProperties().getProjectName());
+    }
+
+    @When("Click the three-dotted button to the right of project name on the projects page")
+    public void clickTheThreeDottedButtonToTheRightOfProjectNameOnTheProjectsPage() {
+        projectsPage
+                .getProjectRowByName(projectPropertiesWrapper.getProperties().getProjectName())
+                .clickDropdownButton();
+    }
+
+    @And("Click the 'Delete' text in the drop-down under three-dotted button")
+    public void clickTheDeleteTextInTheDropDownUnderThreeDottedButton() {
+        deleteProjectPage = projectsPage
+                .getProjectRowByName(projectPropertiesWrapper.getProperties().getProjectName())
+                .clickDropdownDeleteButton();
+    }
+
+    @And("Click the 'Delete project' button on the delete project page")
+    public void clickTheDeleteProjectButtonOnTheDeleteProjectPage() {
+        deleteProjectPage.clickDeleteProjectButton();
+    }
+
+    @And("There is no such project on the projects page")
+    public void thereIsNoSuchProjectOnTheProjectsPage() {
+        String projectName = projectPropertiesWrapper.getProperties().getProjectName();
+        assertThat(projectsPage.getProjectNamesList(), not(hasItem(projectName)));
     }
 }

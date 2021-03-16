@@ -4,7 +4,6 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.openqa.selenium.WebDriver;
 import pageobjects.app.ProjectPage;
 import property_objects.ProjectProperties;
 import world.World;
@@ -21,8 +20,7 @@ public class ProjectSteps {
 
     @Before
     public void initPages() {
-        WebDriver driver = world.getDriver();
-        projectPage = new ProjectPage(driver);
+        projectPage = new ProjectPage(world.getDriver());
     }
 
     @Then("The project is opened")
