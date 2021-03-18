@@ -1,11 +1,9 @@
 package property_objects;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-public class CaseStepProperties {
+public class CaseStepProperties implements Properties {
     private String action;
     private String inputData;
     private String expectedResult;

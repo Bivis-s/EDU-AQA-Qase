@@ -5,7 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import utils.readers.DriverPropertyReader;
+import property_objects.DriverProperties;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,8 +15,8 @@ import java.util.Set;
 public class PropertyDriver implements WebDriver, JavascriptExecutor {
     private final WebDriver driver;
 
-    public PropertyDriver() {
-        this.driver = new PropertyDriverFactory(new DriverPropertyReader().getDriverProperties()).createWebDriver();
+    public PropertyDriver(DriverProperties driverProperties) {
+        this.driver = new PropertyDriverFactory(driverProperties).createWebDriver();
     }
 
     @Override

@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-public class CaseProperties {
+public class CaseProperties implements Properties {
     private Map<CreateCaseField, String> textFieldMap;
     private Map<CreateCaseSelect, SelectOption> selectMap;
     private List<CaseStepProperties> steps;
 
-    public CaseProperties() {
+    {
         textFieldMap = new HashMap<>();
         selectMap = new HashMap<>();
         steps = new ArrayList<>();
