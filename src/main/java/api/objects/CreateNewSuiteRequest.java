@@ -6,7 +6,7 @@ import lombok.Value;
 
 @Value
 @Builder
-public class CreateNewSuiteRequest {
+public class CreateNewSuiteRequest implements ApiRequest {
     String title;
     String description;
     String preconditions;

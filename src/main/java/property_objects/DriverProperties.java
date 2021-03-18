@@ -2,11 +2,9 @@ package property_objects;
 
 import enums.PropertyDriverType;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-public class DriverProperties {
+public class DriverProperties implements Properties {
     private PropertyDriverType type;
     private boolean headless;
     private boolean incognito;

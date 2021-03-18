@@ -63,7 +63,7 @@ public class ProjectsPage extends LoadableAppPage<ProjectsPage> {
         throw new NoSuchElementError("There is no project with name: '" + projectName + "'");
     }
 
-    public List<String> createProjectNameList() {
+    public List<String> getProjectNamesList() {
         List<String> projectNameList = new ArrayList<>();
         for (ProjectRow projectRow : getProjectRowList()) {
             projectNameList.add(projectRow.getProjectName());

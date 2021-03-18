@@ -51,7 +51,7 @@ public class BaseApiAdapter {
      * @return Response object
      */
     protected Response post(Headers headers, String requestUrl, String requestBody) {
-        log.debug("Send post request with body '" + requestBody + "' to URL: " + requestUrl);
+        log.debug("Send post request with headers " + headers.toString() + " body '" + requestBody + "' to URL: " + requestUrl);
         return given()
                 .headers(headers)
                 .body(requestBody)
