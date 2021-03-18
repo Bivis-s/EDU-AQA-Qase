@@ -1,14 +1,20 @@
 package property_objects;
 
+import api.objects.CreateNewProjectRequest;
 import enums.ProjectAccessType;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-public class ProjectProperties {
+public class ProjectProperties implements Properties {
     private String projectName;
     private String projectCode;
     private String description;
     private ProjectAccessType projectAccessType;
+
+    // ProjectAccessType is not set
+    public void setByApiRequest(CreateNewProjectRequest request) {
+        setProjectName(request.getTitle());
+        setProjectCode(request.getCode());
+        setDescription(request.getDescription());
+    }
 }

@@ -3,8 +3,10 @@ package helpers;
 import element_decorators.InputForm;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
-import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import java.util.Arrays;
 import java.util.List;
@@ -70,35 +72,6 @@ public abstract class ElementsManipulator {
         return elementText;
     }
 
-    protected boolean isElementOnPage(By by) {
-        boolean isOnPage = false;
-        try {
-            findElement(by);
-            isOnPage = true;
-        } catch (NoSuchElementException ignored) {
-        } catch (Throwable t) {
-            log.error(t.getMessage());
-            throw t;
-        }
-        log.debug("Is element '" + by + "' on page: " + isOnPage);
-        return isOnPage;
-    }
-
-    protected boolean isElementBecomeVisible(WebElement element) {
-        boolean isDisplayed = false;
-        try {
-            PageLoadHelper.waitForCondition(getDriver(), ExpectedConditions.visibilityOf(element));
-            isDisplayed = true;
-        } catch (TimeoutException ignored) {
-        } catch (Throwable t) {
-            log.error(t.getMessage());
-            throw t;
-        }
-
-        log.debug("Is element '" + element.getTagName() + "' displayed: " + isDisplayed);
-        return isDisplayed;
-    }
-
     protected WebElement findElement(By by) {
         try {
             return getDriver().findElement(by);
@@ -137,6 +110,7 @@ public abstract class ElementsManipulator {
 
     protected WebElement findInnerElementByXpath(WebElement element, String xpath) {
         try {
+            log.debug("Find inner element in '" + element.getTagName() + "' by xpath '" + xpath + "'");
             return element.findElement(By.xpath(xpath));
         } catch (Throwable t) {
             log.error(t.getMessage());
@@ -146,6 +120,7 @@ public abstract class ElementsManipulator {
 
     protected List<WebElement> findInnerElementsByXpath(WebElement element, String xpath) {
         try {
+            log.debug("Find inner elementS in '" + element.getTagName() + "' by xpath '" + xpath + "'");
             return element.findElements(By.xpath(xpath));
         } catch (Throwable t) {
             log.error(t.getMessage());
@@ -153,13 +128,30 @@ public abstract class ElementsManipulator {
         }
     }
 
-    protected WebElement scrollToElement(WebElement element) {
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
+    protected void executeJavaScript(String script) {
+        log.debug("Execute script '" + script + "'");
+        ((JavascriptExecutor) getDriver()).executeScript(script);
+    }
+
+    protected WebElement executeJavaScriptToElement(String script, WebElement element) {
+        log.debug("Execute script '" + script + "' to element '" + element.getTagName() + "'");
+        ((JavascriptExecutor) getDriver()).executeScript(script, element);
         return element;
     }
 
-    protected WebElement addClassToElement(WebElement element, String className) {
-        ((JavascriptExecutor) getDriver()).executeScript(String.format("arguments[0].classList.add('%s');", className), element);
+    protected WebElement scrollToElement(WebElement element) {
+        executeJavaScriptToElement("arguments[0].scrollIntoView(false);", element);
+        // Sometimes browser has no time to handle scrolling
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            log.error(e.getMessage());
+        }
         return element;
+    }
+
+    protected void addClassToElement(WebElement element, String className) {
+        log.debug("Add class '" + className + "' to element '" + element.getTagName() + "'");
+        executeJavaScriptToElement(String.format("arguments[0].classList.add('%s');", className), element);
     }
 }

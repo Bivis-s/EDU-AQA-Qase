@@ -28,6 +28,7 @@ public class SelectForm extends BaseElementDecorator<SelectForm> {
     }
 
     public void clickOptionByLabel(String optionLabel) {
+        log.info("Select option '" + optionLabel + "'");
         String labeledOptionXpath = String.format(OPTION_XPATH, optionLabel);
         PageLoadHelper.waitForElementIsClickable(getDriver(), By.xpath(labeledOptionXpath));
         click(findInnerElementByXpath(getElement(), labeledOptionXpath));

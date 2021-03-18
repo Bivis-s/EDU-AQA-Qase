@@ -35,24 +35,28 @@ public class NewProjectPage extends LoadableAppPage<NewProjectPage> {
     }
 
     public NewProjectPage enterProjectName(String projectName) {
+        log.info("Enter project name '" + projectName + "'");
         sendKeysToInputFormByLabel(PROJECT_NAME_INPUT_LABEL, projectName);
         projectProperties.setProjectName(projectName);
         return this;
     }
 
     public NewProjectPage enterProjectCode(String projectCode) {
+        log.info("Enter project code '" + projectCode + "'");
         sendKeysToInputFormByLabel(PROJECT_CODE_INPUT_LABEL, projectCode);
         projectProperties.setProjectCode(projectCode);
         return this;
     }
 
     public NewProjectPage enterDescription(String description) {
+        log.info("Enter project description '" + description + "'");
         sendKeysToInputFormByLabel(DESCRIPTION_INPUT_LABEL, description);
         projectProperties.setDescription(description);
         return this;
     }
 
     public NewProjectPage setProjectAccessType(ProjectAccessType projectAccessType) {
+        log.info("Set project access type '" + projectAccessType.getValue() + "'");
         new CheckContainer(getDriver(), PROJECT_ACCESS_TYPE_CHECK_LABEL).checkByLabel(projectAccessType.getValue());
         projectProperties.setProjectAccessType(projectAccessType);
         return this;
@@ -63,6 +67,7 @@ public class NewProjectPage extends LoadableAppPage<NewProjectPage> {
     }
 
     public ProjectPage clickCreateProjectButton() {
+        log.info("Click create project button");
         click(findElementByXpath(CREATE_PROJECT_BUTTON_XPATH));
         return new ProjectPage(getDriver()).get();
     }

@@ -9,7 +9,9 @@ import enums.create_case.select_options.SelectOption;
 import helpers.PageLoadHelper;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import property_objects.CaseProperties;
 import property_objects.CaseStepProperties;
 import throwables.PropertyError;
@@ -38,32 +40,43 @@ public class CreateTestCasePage extends LoadableAppPage<CreateTestCasePage> {
         throw new PropertyError("There is no static url for create test case page");
     }
 
-    public CreateTestCasePage enterFieldByName(CreateCaseField name, String text) {
+    public CreateTestCasePage enterFieldByName(CreateCaseField fieldName, String text) {
         if (text != null) {
-            new InputForm(getDriver(), name.getValue()).sendKeys(text);
-            caseProperties.addTextField(name, text);
+            log.info("Enter text '" + text + "' in field '" + fieldName.getValue() + "'");
+            new InputForm(getDriver(), fieldName.getValue()).sendKeys(text);
+            caseProperties.addTextField(fieldName, text);
         } else {
-            log.error(name.getValue() + " field has not been entered, because text is null");
+            log.error(fieldName.getValue() + " field has not been entered, because text is null");
         }
         return this;
     }
 
-    public CreateTestCasePage selectOptionByName(CreateCaseSelect name, SelectOption option) {
+    public CreateTestCasePage selectOptionByName(CreateCaseSelect selectName, SelectOption option) {
         if (option != null) {
-            new SelectForm(getDriver(), name.getValue())
+            log.info("Select option '" + option.getValue() + "' in select '" + selectName.getValue() + "'");
+            new SelectForm(getDriver(), selectName.getValue())
                     .click()
                     .clickOptionByLabel(option.getValue());
-            caseProperties.addSelect(name, option);
+            caseProperties.addSelect(selectName, option);
         } else {
-            log.error(name.getValue() + " select has not been set, because option is null");
+            log.error(selectName.getValue() + " select has not been set, because option is null");
         }
         return this;
     }
 
     public CreateTestCasePage clickAddStepButtonForTimes(int timesNumber) {
+        log.info("Click add step button for '" + timesNumber + "' times");
+        WebElement element = findElementById(ADD_STEP_BUTTON_ID);
         for (int i = 0; i < timesNumber; i++) {
             PageLoadHelper.waitForElementIsClickable(getDriver(), By.id(ADD_STEP_BUTTON_ID));
-            click(scrollToElement(findElementById(ADD_STEP_BUTTON_ID)));
+            try {
+                scrollPageDown();
+                click(element);
+                // sometimes it need to scroll page down twice to click add step button
+            } catch (ElementClickInterceptedException e) {
+                scrollPageDown();
+                click(element);
+            }
             caseProperties.addStep(new CaseStepProperties());
         }
         return this;
@@ -92,6 +105,7 @@ public class CreateTestCasePage extends LoadableAppPage<CreateTestCasePage> {
     }
 
     public ProjectPage clickSaveCaseButton() {
+        log.info("Click save case button");
         PageLoadHelper.waitForElementIsClickable(getDriver(), By.id(SAVE_CASE_BUTTON_ID));
         click(findElementById(SAVE_CASE_BUTTON_ID));
         return new ProjectPage(getDriver()).get();

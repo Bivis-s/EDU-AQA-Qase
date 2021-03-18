@@ -2,13 +2,11 @@ package utils.readers;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.log4j.Log4j2;
 import property_objects.AccountProperties;
 import throwables.PropertyError;
 
 import java.util.Map;
 
-@Log4j2
 public class AccountPropertyReader extends PropertyReader {
     private static final String ACCOUNTS_PROPERTIES_FILE_PATH = "src/test/resources/properties/accounts.properties";
     @Getter
@@ -29,28 +27,32 @@ public class AccountPropertyReader extends PropertyReader {
         }
     }
 
-    private String getLogin() {
-        String login = getAccountPropertiesMap().get(getAccountName() + "_login");
+    private String getProperty(String propertyEnding) {
+        String login = getAccountPropertiesMap().get(getAccountName() + propertyEnding);
         if (login != null && !login.equals("")) {
             return login;
         } else {
-            throw new PropertyError("Account '" + accountName + "' login is empty, please fill in the line in the properties file, path: " + ACCOUNTS_PROPERTIES_FILE_PATH);
+            throw new PropertyError("Account '" + accountName + "' property '" + propertyEnding + "' is empty, please fill in the line in the properties file, path: " + ACCOUNTS_PROPERTIES_FILE_PATH);
         }
     }
 
+    private String getLogin() {
+        return getProperty("_login");
+    }
+
     private String getPassword() {
-        String password = getAccountPropertiesMap().get(getAccountName() + "_password");
-        if (password != null && !password.equals("")) {
-            return password;
-        } else {
-            throw new PropertyError("Account '" + accountName + "' password is empty, please fill in the line in the properties file, path: " + ACCOUNTS_PROPERTIES_FILE_PATH);
-        }
+        return getProperty("_password");
+    }
+
+    private String getApiToken() {
+        return getProperty("_api-token");
     }
 
     public AccountProperties getAccountsProperties() {
         AccountProperties properties = new AccountProperties();
         properties.setLogin(getLogin());
         properties.setPassword(getPassword());
+        properties.setApiToken(getApiToken());
         return properties;
     }
 }

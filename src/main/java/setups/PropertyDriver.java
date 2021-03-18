@@ -5,8 +5,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import utils.readers.DriverPropertyReader;
+import property_objects.DriverProperties;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -14,8 +15,8 @@ import java.util.Set;
 public class PropertyDriver implements WebDriver, JavascriptExecutor {
     private final WebDriver driver;
 
-    public PropertyDriver() {
-        this.driver = new PropertyDriverFactory(new DriverPropertyReader().getDriverProperties()).createWebDriver();
+    public PropertyDriver(DriverProperties driverProperties) {
+        this.driver = new PropertyDriverFactory(driverProperties).createWebDriver();
     }
 
     @Override
@@ -24,7 +25,7 @@ public class PropertyDriver implements WebDriver, JavascriptExecutor {
             log.debug("Get url '" + url + "'");
             driver.get(url);
         } catch (Throwable t) {
-            log.error(t.getMessage());
+            log.trace(t.getMessage());
             throw t;
         }
     }
@@ -36,7 +37,7 @@ public class PropertyDriver implements WebDriver, JavascriptExecutor {
             log.debug("Get current url '" + currentUrl + "'");
             return currentUrl;
         } catch (Throwable t) {
-            log.error(t.getMessage());
+            log.trace(t.getMessage());
             throw t;
         }
     }
@@ -48,7 +49,7 @@ public class PropertyDriver implements WebDriver, JavascriptExecutor {
             log.debug("Get title '" + title + "'");
             return title;
         } catch (Throwable t) {
-            log.error(t.getMessage());
+            log.trace(t.getMessage());
             throw t;
         }
     }
@@ -59,7 +60,7 @@ public class PropertyDriver implements WebDriver, JavascriptExecutor {
             log.trace("Find elementS by '" + by.toString() + "'");
             return driver.findElements(by);
         } catch (Throwable t) {
-            log.error(t.getMessage());
+            log.trace(t.getMessage());
             throw t;
         }
     }
@@ -70,7 +71,7 @@ public class PropertyDriver implements WebDriver, JavascriptExecutor {
             log.trace("Find element by '" + by.toString() + "'");
             return driver.findElement(by);
         } catch (Throwable t) {
-            log.error(t.getMessage());
+            log.trace(t.getMessage());
             throw t;
         }
     }
@@ -80,7 +81,7 @@ public class PropertyDriver implements WebDriver, JavascriptExecutor {
         try {
             return driver.getPageSource();
         } catch (Throwable t) {
-            log.error(t.getMessage());
+            log.trace(t.getMessage());
             throw t;
         }
     }
@@ -91,7 +92,7 @@ public class PropertyDriver implements WebDriver, JavascriptExecutor {
             log.debug("Close WebDriver");
             driver.close();
         } catch (Throwable t) {
-            log.error(t.getMessage());
+            log.trace(t.getMessage());
             throw t;
         }
     }
@@ -102,7 +103,7 @@ public class PropertyDriver implements WebDriver, JavascriptExecutor {
             log.debug("Quit WebDriver");
             driver.quit();
         } catch (Throwable t) {
-            log.error(t.getMessage());
+            log.trace(t.getMessage());
             throw t;
         }
     }
@@ -112,7 +113,7 @@ public class PropertyDriver implements WebDriver, JavascriptExecutor {
         try {
             return driver.getWindowHandles();
         } catch (Throwable t) {
-            log.error(t.getMessage());
+            log.trace(t.getMessage());
             throw t;
         }
     }
@@ -122,7 +123,7 @@ public class PropertyDriver implements WebDriver, JavascriptExecutor {
         try {
             return driver.getWindowHandle();
         } catch (Throwable t) {
-            log.error(t.getMessage());
+            log.trace(t.getMessage());
             throw t;
         }
     }
@@ -132,7 +133,7 @@ public class PropertyDriver implements WebDriver, JavascriptExecutor {
         try {
             return driver.switchTo();
         } catch (Throwable t) {
-            log.error(t.getMessage());
+            log.trace(t.getMessage());
             throw t;
         }
     }
@@ -142,7 +143,7 @@ public class PropertyDriver implements WebDriver, JavascriptExecutor {
         try {
             return driver.navigate();
         } catch (Throwable t) {
-            log.error(t.getMessage());
+            log.trace(t.getMessage());
             throw t;
         }
     }
@@ -152,7 +153,7 @@ public class PropertyDriver implements WebDriver, JavascriptExecutor {
         try {
             return driver.manage();
         } catch (Throwable t) {
-            log.error(t.getMessage());
+            log.trace(t.getMessage());
             throw t;
         }
     }
@@ -160,9 +161,10 @@ public class PropertyDriver implements WebDriver, JavascriptExecutor {
     @Override
     public Object executeScript(String script, Object... args) {
         try {
+            log.debug("Execute js script '" + script + "' with args: '" + Arrays.toString(args) + "'");
             return ((JavascriptExecutor) driver).executeScript(script, args);
         } catch (Throwable t) {
-            log.error(t.getMessage());
+            log.trace(t.getMessage());
             throw t;
         }
     }
@@ -170,9 +172,10 @@ public class PropertyDriver implements WebDriver, JavascriptExecutor {
     @Override
     public Object executeAsyncScript(String script, Object... args) {
         try {
+            log.debug("Execute js async script '" + script + "' with args: '" + Arrays.toString(args) + "'");
             return ((JavascriptExecutor) driver).executeAsyncScript(script, args);
         } catch (Throwable t) {
-            log.error(t.getMessage());
+            log.trace(t.getMessage());
             throw t;
         }
     }

@@ -1,10 +1,8 @@
 package utils.readers;
 
 import enums.UrlPageName;
-import lombok.extern.log4j.Log4j2;
 import property_objects.UrlProperties;
 
-@Log4j2
 public class UrlPropertyReader extends PropertyReader {
     private static final String URLS_PROPERTIES_FILE_PATH = "src/test/resources/properties/urls.properties";
 

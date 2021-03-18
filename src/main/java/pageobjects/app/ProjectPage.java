@@ -3,6 +3,7 @@ package pageobjects.app;
 import element_decorators.SuiteContainer;
 import element_decorators.modals.CreateSuiteModal;
 import element_decorators.modals.DeleteTestCasesModal;
+import enums.UrlPageName;
 import helpers.PageLoadHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -29,7 +30,17 @@ public class ProjectPage extends LoadableAppPage<ProjectPage> {
 
     @Override
     protected String getPageUrl() {
-        throw new PropertyError("There is no static url for project page");
+        return getUrlFromProperty(UrlPageName.PROJECT);
+    }
+
+    @Override
+    public ProjectPage openPageByUrl() {
+        throw new PropertyError("This page has dynamic ULR, please use different method to open the page");
+    }
+
+    public ProjectPage openPage(String projectCode) {
+        getDriver().get(getPageUrl() + projectCode);
+        return get();
     }
 
     public CreateTestCasePage clickCreateNewCaseButton() {

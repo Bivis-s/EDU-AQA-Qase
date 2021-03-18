@@ -51,6 +51,7 @@ public abstract class LoadableAppPage<T extends LoadableAppPage<T>> extends Base
 
     @SuppressWarnings("unchecked")
     protected T enterTextIntoSearchField(WebElement searchField, String text) {
+        log.info("Enter text '" + text + "into search field");
         sendKeys(clear(searchField), text);
         // after entering text into search field the loading message appears not immediately, so wait for message appear
         waitForLoadingMessageAppear();

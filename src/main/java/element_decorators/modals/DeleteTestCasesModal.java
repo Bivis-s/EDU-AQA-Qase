@@ -21,19 +21,15 @@ public class DeleteTestCasesModal extends BaseModal<CreateSuiteModal> {
     }
 
     public DeleteTestCasesModal enterTextIntoConfirmField(String text) {
+        log.info("Enter text into confirm field '" + text + "'");
         sendKeys(clear(findElementByXpath(CONFIRM_FIELD_XPATH)), text);
         return this;
     }
 
-    public ProjectPage clickDeleteButton() {
+    public ProjectPage clickDeleteCasesButton() {
+        log.info("Click delete case button");
         click(findElementByXpath(DELETE_BUTTON_XPATH));
-        // After clicking on the delete button, modal closes instantly,
-        // but project page needs some more time to render updated test case list
-        try {
-            Thread.sleep(750);
-        } catch (InterruptedException e) {
-            log.error(e.getMessage());
-        }
+        waitAfterClosing();
         return new ProjectPage(getDriver()).get();
     }
 }

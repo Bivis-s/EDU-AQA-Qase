@@ -26,6 +26,7 @@ public class HomePage extends BasePage<HomePage> {
     }
 
     public LoginPage clickLoginButton() {
+        log.info("Click login button");
         click(findElementById(SIGN_IN_BUTTON_ID));
         return new LoginPage(getDriver()).get();
     }

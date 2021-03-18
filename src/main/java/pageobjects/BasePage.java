@@ -18,16 +18,18 @@ public abstract class BasePage<T extends CustomLoadableComponent<T>> extends Cus
 
     @Override
     protected T load() {
-        return refreshPage();
+        try {
+            return openPageByUrl();
+        } catch (Error e) {
+            return refreshPage();
+        }
     }
 
     public T openPageByUrl() {
-        getDriver().get(getPageUrl());
+        String pageUrl = getPageUrl();
+        log.info("Open page by URL '" + pageUrl + "'");
+        getDriver().get(pageUrl);
         return get();
-    }
-
-    protected void open(String url) {
-        getDriver().get(url);
     }
 
     @SuppressWarnings("unchecked")
@@ -38,6 +40,19 @@ public abstract class BasePage<T extends CustomLoadableComponent<T>> extends Cus
     }
 
     protected String getUrlFromProperty(UrlPageName page) {
+        log.trace("Get url from property, page '" + page + "'");
         return new UrlPropertyReader().getPageUrl(page).getUrl();
+    }
+
+    @SuppressWarnings("unchecked")
+    public T scrollPageDown() {
+        executeJavaScript("window.scrollTo(0,document.body.scrollHeight);");
+        // Sometimes browser has no time to handle scrolling down
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            log.error(e.getMessage());
+        }
+        return (T) this;
     }
 }

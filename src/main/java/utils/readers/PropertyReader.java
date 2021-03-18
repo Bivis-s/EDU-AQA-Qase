@@ -20,7 +20,7 @@ public abstract class PropertyReader {
 
     public PropertyReader(String path) {
         try {
-            log.debug("Load property file, path: '" + path + "'");
+            log.trace("Load property file, path: '" + path + "'");
             properties.load(new FileReader(new File(path)));
         } catch (IOException e) {
             throw new PropertyError("Property file '" + path + "' is not found");

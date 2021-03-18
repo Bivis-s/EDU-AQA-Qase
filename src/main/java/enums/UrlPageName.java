@@ -6,7 +6,8 @@ import lombok.Getter;
 public enum UrlPageName implements EnumValue {
     HOME("home"),
     LOGIN("login"),
-    PROJECTS("projects");
+    PROJECTS("projects"),
+    PROJECT("project");
 
     private final String value;
 
