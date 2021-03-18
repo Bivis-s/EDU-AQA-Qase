@@ -59,7 +59,7 @@ public class ProjectSteps {
     @Then("There is/are {int} (the )case(s) without suite on the project page")
     public void thereIsTheCaseOnProjectPage(int expectedCountOfCases) {
         int actualCountOfCases =
-                projectPage.getSuiteContainer().getCaseCountWithoutSuiteOnPage(casePropertiesWrapper.getCaseTitle());
+                projectPage.getSuiteContainer().getCaseWithoutSuiteCountAtAll();
         assertEquals(actualCountOfCases, expectedCountOfCases);
     }
 
@@ -134,5 +134,10 @@ public class ProjectSteps {
     @When("Click the `Delete suite` button in the modal")
     public void clickTheDeleteSuiteButtonInTheModal() {
         deleteSuiteModal.clickDeleteSuiteButton();
+    }
+
+    @And("Check the checkbox near the suite name `Test cases without suite`")
+    public void checkTheCheckboxNearTheSuiteNameTestCasesWithoutSuite() {
+        projectPage.getSuiteContainer().checkCasesWithoutSuiteCheckbox();
     }
 }

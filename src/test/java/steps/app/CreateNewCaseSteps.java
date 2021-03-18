@@ -8,11 +8,14 @@ import io.cucumber.java.en.And;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import pageobjects.app.CreateTestCasePage;
+import property_objects.CaseProperties;
 import property_objects.wrappers.CasePropertiesWrapper;
 import property_objects.wrappers.ProjectPropertiesWrapper;
 import utils.EnumUtils;
 import utils.RandomStringGenerator;
 import world.World;
+
+import java.util.HashSet;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -111,7 +114,8 @@ public class CreateNewCaseSteps {
 
     @And("Click the `Save` button")
     public void clickTheSaveButton() {
-        casePropertiesWrapper.setCaseProperties(casePage.getBuiltCaseProperties());
+        CaseProperties caseProperties = casePage.getBuiltCaseProperties();
+        casePropertiesWrapper.setCaseProperties(caseProperties);
         casePage.clickSaveCaseButton();
     }
 

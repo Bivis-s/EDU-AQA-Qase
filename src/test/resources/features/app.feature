@@ -29,7 +29,7 @@ Feature: App
     Given The 'existing-user' was created
     And A private project is created via api
     And The user is logged in
-    And The project is opened
+    And Open the project
     When Click the `Create new case` button
     And Fill out the case title field with valid data
     And Fill out the case description field with valid data
@@ -57,6 +57,7 @@ Feature: App
     Given The 'existing-user' was created
     And A private project is created via api
     And The user is logged in
+    And Open the project
     And A case without suite is created in the project via gui
     And The project is opened
     And Check the checkbox near the case name
@@ -84,8 +85,22 @@ Feature: App
     And A private project is created via api
     And The user is logged in
     And A suite is created in the project via gui
-    And The project is opened
+    And Open the project
     And Hover over the suite name, then click the trash icon to the right of the suite name
     When Click the `Delete suite` button in the modal
     Then Open the project
     And There are 0 suites on the project page
+
+  Scenario: Delete two cases by clicking a suite checkbox
+    Given The 'existing-user' was created
+    And A private project is created via api
+    And The user is logged in
+    And A case without suite is created in the project via gui
+    And A case without suite is created in the project via gui
+    And The project is opened
+    And Check the checkbox near the suite name `Test cases without suite`
+    And Click the gray `Delete` button in the controls block at the top
+    And Enter 'CONFIRM' into field in the modal
+    When Click the `Delete` button in the modal
+    Then Open the project
+    And There are 0 cases without suite on the project page
