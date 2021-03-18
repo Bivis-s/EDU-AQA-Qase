@@ -50,12 +50,12 @@ public class ProjectsSteps {
         projectsPage.getUserMenu().clickUserAvatar();
     }
 
-    @And("Click the 'Sign out' text")
+    @And("Click the `Sign out` text")
     public void clickTheSignOutText() {
         projectsPage.getUserMenu().clickSignOutButton();
     }
 
-    @When("Click the 'Create new project' button in the upper left corner")
+    @When("Click the `Create new project` button in the upper left corner")
     public void clickTheCreateNewProjectButtonInTheUpperLeftCorner() {
         newProjectPage = projectsPage.clickCreateNewProjectButton();
     }
@@ -75,12 +75,12 @@ public class ProjectsSteps {
         newProjectPage.enterDescription(RandomStringGenerator.createRandomLatinSentence(10));
     }
 
-    @And("Set the project access type 'private'")
+    @And("Set the project access type `private`")
     public void setTheProjectAccessTypePrivate() {
         newProjectPage.setProjectAccessType(ProjectAccessType.PRIVATE);
     }
 
-    @And("Click the 'Create project' button")
+    @And("Click the `Create project` button")
     public void clickTheCreateProjectButton() {
         projectPropertiesWrapper.setProperties(newProjectPage.getBuiltProjectProperties());
         newProjectPage.clickCreateProjectButton();
@@ -98,14 +98,14 @@ public class ProjectsSteps {
                 .clickDropdownButton();
     }
 
-    @And("Click the 'Delete' text in the drop-down under three-dotted button")
+    @And("Click the `Delete` text in the drop-down under three-dotted button")
     public void clickTheDeleteTextInTheDropDownUnderThreeDottedButton() {
         deleteProjectPage = projectsPage
                 .getProjectRowByName(projectPropertiesWrapper.getProperties().getProjectName())
                 .clickDropdownDeleteButton();
     }
 
-    @And("Click the 'Delete project' button on the delete project page")
+    @And("Click the `Delete project` button on the delete project page")
     public void clickTheDeleteProjectButtonOnTheDeleteProjectPage() {
         deleteProjectPage.clickDeleteProjectButton();
     }

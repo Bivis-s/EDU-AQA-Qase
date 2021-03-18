@@ -5,6 +5,9 @@ import com.github.javafaker.Faker;
 import java.util.Random;
 
 public class RandomStringGenerator {
+    private RandomStringGenerator() {
+    }
+
     private static char getRandomCharInRange(char start, char end) {
         Random random = new Random();
         return (char) (random.nextInt(end - start + 1) + start);
