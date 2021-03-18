@@ -143,7 +143,7 @@ public abstract class ElementsManipulator {
         executeJavaScriptToElement("arguments[0].scrollIntoView(false);", element);
         // Sometimes browser has no time to handle scrolling
         try {
-            Thread.sleep(100);
+            Thread.sleep(250);
         } catch (InterruptedException e) {
             log.error(e.getMessage());
         }

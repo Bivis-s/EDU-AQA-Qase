@@ -5,15 +5,15 @@ import enums.api.CreateNewProjectAccess;
 import io.cucumber.java.en.And;
 import lombok.RequiredArgsConstructor;
 import property_objects.ProjectProperties;
+import property_objects.wrappers.ProjectPropertiesWrapper;
 import utils.DateGenerator;
 import utils.RandomStringGenerator;
 import world.World;
-import wrappers.PropertiesWrapper;
 
 @RequiredArgsConstructor
 public class ApiSteps {
     private final World world;
-    private final PropertiesWrapper<ProjectProperties> projectPropertiesWrapper;
+    private final ProjectPropertiesWrapper projectPropertiesWrapper;
 
     @And("A private project is created via api")
     public void aPrivateProjectIsCreatedViaApi() {
@@ -25,7 +25,7 @@ public class ApiSteps {
                 .build();
         ProjectProperties projectProperties = new ProjectProperties();
         projectProperties.setByApiRequest(createNewProjectRequest);
-        projectPropertiesWrapper.setProperties(projectProperties);
+        projectPropertiesWrapper.setProjectProperties(projectProperties);
         world.getApiAdapter().createNewProject(createNewProjectRequest);
     }
 }

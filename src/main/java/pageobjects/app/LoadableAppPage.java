@@ -30,10 +30,11 @@ public abstract class LoadableAppPage<T extends LoadableAppPage<T>> extends Base
     protected abstract void waitForPageLoaded();
 
     protected void waitForLoadingMessageAppear() {
+        // Use sleep, but not WebDriverWait because sometimes the loading message may not appear
         try {
-            PageLoadHelper.waitForElementIsVisible(getDriver(), By.xpath(CONTENT_LOADING_MESSAGE_XPATH));
-        } catch (WaitForElementConditionError e) {
-            log.error("Ignore " + e.getMessage());
+            Thread.sleep(250);
+        } catch (InterruptedException e) {
+            log.error(e);
         }
     }
 

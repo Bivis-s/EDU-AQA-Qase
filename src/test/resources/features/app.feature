@@ -24,3 +24,31 @@ Feature: App
     Then Open the projects page
     And Enter a project name into search project field
     And There is no such project on the projects page
+
+  Scenario: Create a case without a suite with all valid data in a private project
+    Given The 'existing-user' was created
+    And A private project is created via api
+    And The user is logged in
+    And The project is opened
+    When Click the `Create new case` button
+    And Fill out the case title field with valid data
+    And Fill out the case description field with valid data
+    And Fill out the case pre-conditions field with valid data
+    And Fill out the case post-conditions field with valid data
+    And Select random status
+    And Select random severity
+    And Select random priority
+    And Select random type
+    And Select random behavior
+    And Select random automation status
+    And Click `Add step` button 2 times
+    And Fill out step number 1 action with valid data
+    And Fill out step number 1 input data with valid data
+    And Fill out step number 1 expected result with valid data
+    And Fill out step number 2 action with valid data
+    And Fill out step number 2 input data with valid data
+    And Fill out step number 2 expected result with valid data
+    And Click the `Save` button
+    And The project is opened
+    And Enter a case name into search case field
+    Then There is 1 the case without suite on the project page

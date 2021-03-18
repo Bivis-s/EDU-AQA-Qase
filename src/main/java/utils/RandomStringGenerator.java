@@ -50,4 +50,8 @@ public class RandomStringGenerator {
         }
         return stringBuilder.toString();
     }
+
+    public static String createCurrentDateAndWords(int wordCount) {
+        return DateGenerator.getCurrentFullDate() + " | " + createRandomLatinSentence(wordCount);
+    }
 }
