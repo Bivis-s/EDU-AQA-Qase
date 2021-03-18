@@ -1,11 +1,10 @@
 package steps.app;
 
 import element_decorators.modals.CreateSuiteModal;
+import element_decorators.modals.DeleteSuiteModal;
 import element_decorators.modals.DeleteTestCasesModal;
-import enums.create_case.CreateCaseField;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +29,7 @@ public class ProjectSteps {
     private ProjectPage projectPage;
     private DeleteTestCasesModal deleteTestCasesModal;
     private CreateSuiteModal createSuiteModal;
+    private DeleteSuiteModal deleteSuiteModal;
 
     @Before
     public void initPages() {
@@ -109,10 +109,30 @@ public class ProjectSteps {
         suitePropertiesWrapper.setSuiteProperties(createSuiteModal.getBuiltSuiteProperties());
     }
 
-    @And("There are/is {int} (the )suite(s) without suite on the project page")
+    @And("There are/is {int} (the )suite(s) on the project page")
     public void thereAreSuitesWithoutSuiteOnTheProjectPage(int expectedCountOfSuites) {
         int actualCountOfSuites =
                 projectPage.getSuiteContainer().getSuiteCountOnPage(suitePropertiesWrapper.getSuiteName());
         assertEquals(actualCountOfSuites, expectedCountOfSuites);
+    }
+
+    @And("A suite is created in the project via gui")
+    public void aSuiteIsCreatedInTheProjectViaGui() {
+        openTheProject();
+        clickTheCreateNewSuiteButton();
+        fillOutTheSuiteNameOnCreateSuiteModalWithValidData();
+        clickTheCreateButtonOnCreateSuiteModal();
+    }
+
+    @And("Hover over the suite name, then click the trash icon to the right of the suite name")
+    public void hoverOverTheSuiteNameThenClickTheTrashIconToTheRightOfTheSuiteName() {
+        deleteSuiteModal = projectPage
+                        .getSuiteContainer()
+                        .clickDeleteSuiteButtonBySuiteName(suitePropertiesWrapper.getSuiteName());
+    }
+
+    @When("Click the `Delete suite` button in the modal")
+    public void clickTheDeleteSuiteButtonInTheModal() {
+        deleteSuiteModal.clickDeleteSuiteButton();
     }
 }

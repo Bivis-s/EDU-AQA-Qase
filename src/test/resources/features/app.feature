@@ -77,4 +77,15 @@ Feature: App
     And Fill out the suite precondition on create suite modal with valid data
     When Click the `Create` button on create suite modal
     Then Open the project
-    And There are 1 suites without suite on the project page
+    And There are 1 suites on the project page
+
+  Scenario: Delete an empty suite
+    Given The 'existing-user' was created
+    And A private project is created via api
+    And The user is logged in
+    And A suite is created in the project via gui
+    And The project is opened
+    And Hover over the suite name, then click the trash icon to the right of the suite name
+    When Click the `Delete suite` button in the modal
+    Then Open the project
+    And There are 0 suites on the project page
