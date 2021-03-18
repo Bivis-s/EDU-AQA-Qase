@@ -1,8 +1,10 @@
 package steps.app;
 
+import element_decorators.modals.DeleteTestCasesModal;
 import enums.create_case.CreateCaseField;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +14,6 @@ import property_objects.wrappers.CasePropertiesWrapper;
 import property_objects.wrappers.ProjectPropertiesWrapper;
 import world.World;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.not;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
@@ -25,6 +24,7 @@ public class ProjectSteps {
     private final ProjectPropertiesWrapper projectPropertiesWrapper;
     private final CasePropertiesWrapper casePropertiesWrapper;
     private ProjectPage projectPage;
+    private DeleteTestCasesModal deleteTestCasesModal;
 
     @Before
     public void initPages() {
@@ -33,8 +33,12 @@ public class ProjectSteps {
 
     @Then("The project is opened")
     public void theProjectIsOpened() {
-        String projectCode = projectPropertiesWrapper.getProjectProperties().getProjectCode();
-        assertNotNull(projectPage.openPage(projectCode));
+        assertNotNull(projectPage.isLoaded());
+    }
+
+    @Then("Open the project")
+    public void openTheProject() {
+        projectPage.openPageByProjectCode(projectPropertiesWrapper.getProjectCode());
     }
 
     @When("Click the `Create new case` button")
@@ -44,13 +48,33 @@ public class ProjectSteps {
 
     @And("Enter a case name into search case field")
     public void enterACaseNameIntoSearchCaseField() {
-        String caseName = casePropertiesWrapper.getCaseProperties().getTextFieldMap().get(CreateCaseField.TITLE);
-        projectPage.enterTextInSearchCaseField(caseName);
+        projectPage.enterTextInSearchCaseField(casePropertiesWrapper.getCaseTitle());
     }
 
     @Then("There is/are {int} (the )case(s) without suite on the project page")
-    public void thereIsTheCaseOnProjectPage(int countOfCases) {
-        String caseName = casePropertiesWrapper.getCaseProperties().getTextFieldMap().get(CreateCaseField.TITLE);
-        assertEquals(projectPage.getSuiteContainer().getCaseCountWithoutSuiteOnPage(caseName), countOfCases);
+    public void thereIsTheCaseOnProjectPage(int expectedCountOfCases) {
+        int actualCountOfCases =
+                projectPage.getSuiteContainer().getCaseCountWithoutSuiteOnPage(casePropertiesWrapper.getCaseTitle());
+        assertEquals(actualCountOfCases, expectedCountOfCases);
+    }
+
+    @And("Check the checkbox near the case name")
+    public void checkTheCheckboxNearTheCaseName() {
+        projectPage.getSuiteContainer().checkCaseWithoutCheckboxByName(casePropertiesWrapper.getCaseTitle());
+    }
+
+    @And("Click the gray `Delete` button in the controls block at the top")
+    public void clickTheGrayDeleteButtonInTheControlsBlockAtTheTop() {
+        deleteTestCasesModal = projectPage.clickDeleteTestCasesButton();
+    }
+
+    @And("Enter {string} into field in the modal")
+    public void enterCONFIRMIntoFieldInTheModal(String text) {
+        deleteTestCasesModal.enterTextIntoConfirmField(text);
+    }
+
+    @When("Click the `Delete` button in the modal")
+    public void clickTheDeleteButtonInTheModal() {
+        deleteTestCasesModal.clickDeleteCasesButton();
     }
 }

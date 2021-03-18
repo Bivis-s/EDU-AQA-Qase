@@ -3,6 +3,7 @@ package pageobjects.app;
 import element_decorators.CaseSteps;
 import element_decorators.InputForm;
 import element_decorators.SelectForm;
+import enums.UrlPageName;
 import enums.create_case.CreateCaseField;
 import enums.create_case.CreateCaseSelect;
 import enums.create_case.select_options.SelectOption;
@@ -37,7 +38,17 @@ public class CreateTestCasePage extends LoadableAppPage<CreateTestCasePage> {
 
     @Override
     protected String getPageUrl() {
-        throw new PropertyError("There is no static url for create test case page");
+        return getUrlFromProperty(UrlPageName.CREATE_NEW_CASE);
+    }
+
+    @Override
+    public CreateTestCasePage openPageByUrl() {
+        throw new PropertyError("This page has dynamic ULR, please use different method to open the page");
+    }
+
+    public CreateTestCasePage openPageByProjectCode(String projectCode) {
+        getDriver().get(String.format(getPageUrl(), projectCode));
+        return get();
     }
 
     public CreateTestCasePage enterFieldByName(CreateCaseField fieldName, String text) {

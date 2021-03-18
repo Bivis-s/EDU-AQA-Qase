@@ -59,7 +59,7 @@ public class SuiteContainer extends BaseElementDecorator<SuiteContainer> {
         return new ProjectPage(getDriver()).get();
     }
 
-    public ProjectPage checkCaseCheckboxByName(String caseName) {
+    public ProjectPage checkCaseWithoutCheckboxByName(String caseName) {
         return checkCaseCheckboxByName(TEST_CASES_WITHOUT_SUITE_TITLE, caseName);
     }
 

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import pageobjects.app.CreateTestCasePage;
 import property_objects.wrappers.CasePropertiesWrapper;
+import property_objects.wrappers.ProjectPropertiesWrapper;
 import utils.EnumUtils;
 import utils.RandomStringGenerator;
 import world.World;
@@ -18,11 +19,16 @@ import world.World;
 public class CreateNewCaseSteps {
     private final World world;
     private final CasePropertiesWrapper casePropertiesWrapper;
+    private final ProjectPropertiesWrapper projectPropertiesWrapper;
     private CreateTestCasePage casePage;
 
     @Before
     public void initPage() {
         casePage = new CreateTestCasePage(world.getDriver());
+    }
+
+    private void openCreateCasePageByProjectCode(String projectCode) {
+        casePage.openPageByProjectCode(projectCode);
     }
 
     @And("Fill out the case title field with valid data")
@@ -107,5 +113,12 @@ public class CreateNewCaseSteps {
     public void clickTheSaveButton() {
         casePropertiesWrapper.setCaseProperties(casePage.getBuiltCaseProperties());
         casePage.clickSaveCaseButton();
+    }
+
+    @And("A case without suite is created in the project via gui")
+    public void aCaseWithoutSuiteIsCreatedInTheProjectViaGui() {
+        openCreateCasePageByProjectCode(projectPropertiesWrapper.getProjectProperties().getProjectCode());
+        fillOutTheCaseTitleFieldWithValidData();
+        clickTheSaveButton();
     }
 }

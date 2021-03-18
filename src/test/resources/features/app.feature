@@ -49,6 +49,19 @@ Feature: App
     And Fill out step number 2 input data with valid data
     And Fill out step number 2 expected result with valid data
     And Click the `Save` button
-    And The project is opened
+    And Open the project
     And Enter a case name into search case field
     Then There is 1 the case without suite on the project page
+
+  Scenario: Delete a case without suite
+    Given The 'existing-user' was created
+    And A private project is created via api
+    And The user is logged in
+    And A case without suite is created in the project via gui
+    And The project is opened
+    And Check the checkbox near the case name
+    And Click the gray `Delete` button in the controls block at the top
+    And Enter 'CONFIRM' into field in the modal
+    When Click the `Delete` button in the modal
+    Then Open the project
+    And There are 0 cases without suite on the project page

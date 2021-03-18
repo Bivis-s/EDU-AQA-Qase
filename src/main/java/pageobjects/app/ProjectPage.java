@@ -38,8 +38,8 @@ public class ProjectPage extends LoadableAppPage<ProjectPage> {
         throw new PropertyError("This page has dynamic ULR, please use different method to open the page");
     }
 
-    public ProjectPage openPage(String projectCode) {
-        getDriver().get(getPageUrl() + projectCode);
+    public ProjectPage openPageByProjectCode(String projectCode) {
+        getDriver().get(String.format(getPageUrl(), projectCode));
         return get();
     }
 

@@ -6,4 +6,8 @@ import property_objects.ProjectProperties;
 @Data
 public class ProjectPropertiesWrapper {
     ProjectProperties projectProperties;
+
+    public String getProjectCode() {
+        return projectProperties.getProjectCode();
+    }
 }
