@@ -1,5 +1,6 @@
 package steps.app;
 
+import element_decorators.modals.CloneSuiteModal;
 import element_decorators.modals.CreateSuiteModal;
 import element_decorators.modals.DeleteSuiteModal;
 import element_decorators.modals.DeleteTestCasesModal;
@@ -30,6 +31,7 @@ public class ProjectSteps {
     private DeleteTestCasesModal deleteTestCasesModal;
     private CreateSuiteModal createSuiteModal;
     private DeleteSuiteModal deleteSuiteModal;
+    private CloneSuiteModal cloneSuiteModal;
 
     @Before
     public void initPages() {
@@ -109,26 +111,18 @@ public class ProjectSteps {
         suitePropertiesWrapper.setSuiteProperties(createSuiteModal.getBuiltSuiteProperties());
     }
 
-    @And("There are/is {int} (the )suite(s) on the project page")
+    @And("There are/is {int} (the )suite(s) on the project page( with same name)")
     public void thereAreSuitesWithoutSuiteOnTheProjectPage(int expectedCountOfSuites) {
         int actualCountOfSuites =
                 projectPage.getSuiteContainer().getSuiteCountOnPage(suitePropertiesWrapper.getSuiteName());
         assertEquals(actualCountOfSuites, expectedCountOfSuites);
     }
 
-    @And("A suite is created in the project via gui")
-    public void aSuiteIsCreatedInTheProjectViaGui() {
-        openTheProject();
-        clickTheCreateNewSuiteButton();
-        fillOutTheSuiteNameOnCreateSuiteModalWithValidData();
-        clickTheCreateButtonOnCreateSuiteModal();
-    }
-
     @And("Hover over the suite name, then click the trash icon to the right of the suite name")
     public void hoverOverTheSuiteNameThenClickTheTrashIconToTheRightOfTheSuiteName() {
         deleteSuiteModal = projectPage
-                        .getSuiteContainer()
-                        .clickDeleteSuiteButtonBySuiteName(suitePropertiesWrapper.getSuiteName());
+                .getSuiteContainer()
+                .clickDeleteSuiteButtonBySuiteName(suitePropertiesWrapper.getSuiteName());
     }
 
     @When("Click the `Delete suite` button in the modal")
@@ -139,5 +133,17 @@ public class ProjectSteps {
     @And("Check the checkbox near the suite name `Test cases without suite`")
     public void checkTheCheckboxNearTheSuiteNameTestCasesWithoutSuite() {
         projectPage.getSuiteContainer().checkCasesWithoutSuiteCheckbox();
+    }
+
+    @And("Hover over the suite name, then click the copy icon to the right of the suite name")
+    public void hoverOverTheSuiteNameThenClickTheCopyIconToTheRightOfTheSuiteName() {
+        cloneSuiteModal = projectPage
+                .getSuiteContainer()
+                .clickCloneSuiteButtonBySuiteName(suitePropertiesWrapper.getSuiteName());
+    }
+
+    @When("Click the `Clone` button in the modal")
+    public void clickTheCloneButtonInTheModal() {
+        cloneSuiteModal.clickCloneSuiteButton();
     }
 }

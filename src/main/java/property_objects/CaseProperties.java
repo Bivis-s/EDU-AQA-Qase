@@ -1,5 +1,6 @@
 package property_objects;
 
+import api.objects.CreateNewProjectRequest;
 import enums.create_case.CreateCaseField;
 import enums.create_case.CreateCaseSelect;
 import enums.create_case.select_options.SelectOption;

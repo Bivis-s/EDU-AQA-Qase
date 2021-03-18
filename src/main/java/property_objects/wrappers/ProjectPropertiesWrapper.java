@@ -10,4 +10,8 @@ public class ProjectPropertiesWrapper {
     public String getProjectCode() {
         return projectProperties.getProjectCode();
     }
+
+    public String getProjectName() {
+        return projectProperties.getProjectName();
+    }
 }

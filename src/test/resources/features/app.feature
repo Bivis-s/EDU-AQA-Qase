@@ -84,7 +84,7 @@ Feature: App
     Given The 'existing-user' was created
     And A private project is created via api
     And The user is logged in
-    And A suite is created in the project via gui
+    And A suite is created in the project via api
     And Open the project
     And Hover over the suite name, then click the trash icon to the right of the suite name
     When Click the `Delete suite` button in the modal
@@ -97,10 +97,21 @@ Feature: App
     And The user is logged in
     And A case without suite is created in the project via gui
     And A case without suite is created in the project via gui
-    And The project is opened
+    And Open the project
     And Check the checkbox near the suite name `Test cases without suite`
     And Click the gray `Delete` button in the controls block at the top
     And Enter 'CONFIRM' into field in the modal
     When Click the `Delete` button in the modal
     Then Open the project
     And There are 0 cases without suite on the project page
+
+  Scenario: Clone a suite
+    Given The 'existing-user' was created
+    And A private project is created via api
+    And A suite is created in the project via api
+    And The user is logged in
+    And Open the project
+    And Hover over the suite name, then click the copy icon to the right of the suite name
+    When Click the `Clone` button in the modal
+    Then Open the project
+    And There is 2 suites on the project page with same name
