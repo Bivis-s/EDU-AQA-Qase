@@ -65,3 +65,16 @@ Feature: App
     When Click the `Delete` button in the modal
     Then Open the project
     And There are 0 cases without suite on the project page
+
+  Scenario: Create a suite with all valid data
+    Given The 'existing-user' was created
+    And A private project is created via api
+    And The user is logged in
+    And Open the project
+    And Click the `Create new suite` button
+    And Fill out the suite name on create suite modal with valid data
+    And Fill out the suite description on create suite modal with valid data
+    And Fill out the suite precondition on create suite modal with valid data
+    When Click the `Create` button on create suite modal
+    Then Open the project
+    And There are 1 suites without suite on the project page

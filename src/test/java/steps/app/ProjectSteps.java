@@ -1,5 +1,6 @@
 package steps.app;
 
+import element_decorators.modals.CreateSuiteModal;
 import element_decorators.modals.DeleteTestCasesModal;
 import enums.create_case.CreateCaseField;
 import io.cucumber.java.Before;
@@ -12,6 +13,8 @@ import lombok.extern.log4j.Log4j2;
 import pageobjects.app.ProjectPage;
 import property_objects.wrappers.CasePropertiesWrapper;
 import property_objects.wrappers.ProjectPropertiesWrapper;
+import property_objects.wrappers.SuitePropertiesWrapper;
+import utils.RandomStringGenerator;
 import world.World;
 
 import static org.testng.Assert.assertEquals;
@@ -23,8 +26,10 @@ public class ProjectSteps {
     private final World world;
     private final ProjectPropertiesWrapper projectPropertiesWrapper;
     private final CasePropertiesWrapper casePropertiesWrapper;
+    private final SuitePropertiesWrapper suitePropertiesWrapper;
     private ProjectPage projectPage;
     private DeleteTestCasesModal deleteTestCasesModal;
+    private CreateSuiteModal createSuiteModal;
 
     @Before
     public void initPages() {
@@ -76,5 +81,38 @@ public class ProjectSteps {
     @When("Click the `Delete` button in the modal")
     public void clickTheDeleteButtonInTheModal() {
         deleteTestCasesModal.clickDeleteCasesButton();
+    }
+
+    @And("Click the `Create new suite` button")
+    public void clickTheCreateNewSuiteButton() {
+        createSuiteModal = projectPage.clickCreateNewSuiteButton();
+    }
+
+    @And("Fill out the suite name on create suite modal with valid data")
+    public void fillOutTheSuiteNameOnCreateSuiteModalWithValidData() {
+        createSuiteModal.enterSuiteName(RandomStringGenerator.createRandomLatinSentence(5));
+    }
+
+    @And("Fill out the suite description on create suite modal with valid data")
+    public void fillOutTheSuiteDescriptionOnCreateSuiteModalWithValidData() {
+        createSuiteModal.enterDescription(RandomStringGenerator.createRandomLatinSentence(10));
+    }
+
+    @And("Fill out the suite precondition on create suite modal with valid data")
+    public void fillOutTheSuitePreconditionOnCreateSuiteModalWithValidData() {
+        createSuiteModal.enterPreconditions(RandomStringGenerator.createRandomLatinSentence(2));
+    }
+
+    @When("Click the `Create` button on create suite modal")
+    public void clickTheCreateButtonOnCreateSuiteModal() {
+        createSuiteModal.clickCreateSuiteButton();
+        suitePropertiesWrapper.setSuiteProperties(createSuiteModal.getBuiltSuiteProperties());
+    }
+
+    @And("There are/is {int} (the )suite(s) without suite on the project page")
+    public void thereAreSuitesWithoutSuiteOnTheProjectPage(int expectedCountOfSuites) {
+        int actualCountOfSuites =
+                projectPage.getSuiteContainer().getSuiteCountOnPage(suitePropertiesWrapper.getSuiteName());
+        assertEquals(actualCountOfSuites, expectedCountOfSuites);
     }
 }
