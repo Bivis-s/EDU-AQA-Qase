@@ -1,0 +1,22 @@
+version: 2.1
+jobs:
+  test:
+    docker:
+      - image: circleci/openjdk:8-browsers
+    steps:
+      - checkout
+      - run:
+          name: Clean and install
+          command: mvn clean install
+      - run:
+          name: Test
+          command: mvn test
+      - store_test_results:
+          path: target/surefire-reports/junitreports
+      - store_artifacts:
+          path: target/cucumber-html-reports/
+
+workflows:
+  commit:
+    jobs:
+      - test
