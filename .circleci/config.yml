@@ -6,15 +6,21 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Clean and install
-          command: mvn clean install
+          name: Clean
+          command: mvn clean
       - run:
           name: Test
           command: mvn test
+      - run:
+          name: Generate Allure report
+          command: mvn allure:report
+
       - store_test_results:
           path: target/surefire-reports/junitreports
       - store_artifacts:
           path: target/cucumber-html-reports/
+      - store_artifacts:
+          path: target/site/allure-maven-plugin/
 
 workflows:
   commit:
