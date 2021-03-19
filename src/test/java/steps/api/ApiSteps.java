@@ -28,20 +28,20 @@ public class ApiSteps {
                 .access(CreateNewProjectAccess.NONE)
                 .build();
         ProjectProperties projectProperties = new ProjectProperties();
-        projectProperties.setByApiRequest(createNewProjectRequest);
+        projectProperties.setPropertiesByApiRequest(createNewProjectRequest);
         projectPropertiesWrapper.setProjectProperties(projectProperties);
         worldContext.getApiAdapter().createNewProject(createNewProjectRequest);
     }
 
     @And("A suite is created in the project via api")
-    public void aSuiteIsCreatedInTheProjectViaGui() {
+    public void aSuiteIsCreatedInTheProjectViaApi() {
         CreateNewSuiteRequest createNewSuiteRequest = CreateNewSuiteRequest.builder()
-                .title(RandomStringGenerator.createCurrentDateAndWords(2))
+                .title(RandomStringGenerator.createCurrentDateAndLatinSentence(2))
                 .description(RandomStringGenerator.createRandomLatinSentence(5))
                 .preconditions(RandomStringGenerator.createRandomLatinSentence(5))
                 .build();
         SuiteProperties suiteProperties = new SuiteProperties();
-        suiteProperties.setByApiRequest(createNewSuiteRequest);
+        suiteProperties.setPropertiesByApiRequest(createNewSuiteRequest);
         suitePropertiesWrapper.setSuiteProperties(suiteProperties);
         worldContext.getApiAdapter().createNewSuite(projectPropertiesWrapper.getProjectCode(), createNewSuiteRequest);
     }

@@ -3,7 +3,7 @@ package property_objects;
 import lombok.Data;
 
 @Data
-public class ApiUrlsProperties implements Properties {
+public class ApiUrlsProperties {
     private String createNewProjectUrl;
     private String createNewSuiteUrl;
 }

@@ -2,6 +2,7 @@ package steps.prelogin;
 
 import api.adapters.QaseApiAdapter;
 import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -37,22 +38,22 @@ public class PreLoginSteps {
                 new ApiUrlsPropertyReader().getApiUrlProperties()));
     }
 
-    @Given("Home page is opened")
+    @And("Home page is opened")
     public void homePageIsOpened() {
         homePage.openPageByUrl();
     }
 
-    @When("Click the login button in the upper right corner")
+    @And("Click the login button in the upper right corner")
     public void clickTheLoginButtonInTheUpperRightCorner() {
         loginPage = homePage.clickLoginButton();
     }
 
-    @When("Enter email to the email field")
+    @And("Enter email to the email field")
     public void enterUserEmailToTheEmailField() {
         loginPage.enterEmail(accountProperties.getLogin());
     }
 
-    @When("Enter password to the field")
+    @And("Enter password to the field")
     public void enterUserPasswordToTheField() {
         loginPage.enterPassword(accountProperties.getPassword());
     }
@@ -62,7 +63,7 @@ public class PreLoginSteps {
         loginPage.clickLoginButton();
     }
 
-    @Given("The user is logged in")
+    @And("The user is logged in")
     public void loginUnderUserData() {
         homePageIsOpened();
         clickTheLoginButtonInTheUpperRightCorner();

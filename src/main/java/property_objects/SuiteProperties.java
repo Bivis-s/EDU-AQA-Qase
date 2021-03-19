@@ -11,7 +11,7 @@ public class SuiteProperties {
     private String precondition;
 
     // parentSuiteName is not set
-    public void setByApiRequest(CreateNewSuiteRequest request) {
+    public void setPropertiesByApiRequest(CreateNewSuiteRequest request) {
         setName(request.getTitle());
         setDescription(request.getDescription());
         setPrecondition(request.getPreconditions());
