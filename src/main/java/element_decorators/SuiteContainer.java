@@ -19,8 +19,10 @@ public class SuiteContainer extends BaseElementDecorator<SuiteContainer> {
     private static final String SUITE_CLONE_BUTTON_XPATH = SUITE_HEADER_XPATH +
             "//*[contains(@class,'copy')]//ancestor::*[contains(@class,'suite-control')]";
     private static final String SUITE_CASE_TITLE_XPATH =
+            SUITE_XPATH + "//*[contains(@class,'case-row-title')]";
+    private static final String SUITE_CASE_TITLE_BY_CASE_NAME_XPATH =
             SUITE_XPATH + "//*[contains(@class,'case-row-title') and contains(text(),'%s')]";
-    private static final String SUIT_CASE_ROW_XPATH = SUITE_CASE_TITLE_XPATH +
+    private static final String SUIT_CASE_ROW_XPATH = SUITE_CASE_TITLE_BY_CASE_NAME_XPATH +
             "//ancestor::*[contains(@class,'case d-flex')]";
     private static final String SUIT_CASE_CHECKBOX_XPATH =
             SUIT_CASE_ROW_XPATH + "//input/following::*";
@@ -44,7 +46,7 @@ public class SuiteContainer extends BaseElementDecorator<SuiteContainer> {
     }
 
     // check all cases without suite
-    public ProjectPage checkStandardSuiteCheckbox() {
+    public ProjectPage checkCasesWithoutSuiteCheckbox() {
         log.info("Check standard suite checkbox");
         click(findElementByXpath(String.format(SUITE_CHECKBOX_XPATH, TEST_CASES_WITHOUT_SUITE_TITLE)));
         return new ProjectPage(getDriver()).get();
@@ -59,13 +61,13 @@ public class SuiteContainer extends BaseElementDecorator<SuiteContainer> {
         return new ProjectPage(getDriver()).get();
     }
 
-    public ProjectPage checkCaseCheckboxByName(String caseName) {
+    public ProjectPage checkCaseWithoutCheckboxByName(String caseName) {
         return checkCaseCheckboxByName(TEST_CASES_WITHOUT_SUITE_TITLE, caseName);
     }
 
     public ProjectPage clickCaseByName(String suiteName, String caseName) {
         log.info("Click case '" + caseName + "' in suite '" + suiteName + "'");
-        click(findElementByXpath(String.format(SUITE_CASE_TITLE_XPATH, suiteName, caseName)));
+        click(findElementByXpath(String.format(SUITE_CASE_TITLE_BY_CASE_NAME_XPATH, suiteName, caseName)));
         return new ProjectPage(getDriver()).get();
     }
 
@@ -79,13 +81,21 @@ public class SuiteContainer extends BaseElementDecorator<SuiteContainer> {
         return suiteCount;
     }
 
+    public int getCaseCountInSuiteBySuiteName(String suiteName) {
+        return findElementsByXpath(String.format(SUITE_CASE_TITLE_XPATH, suiteName)).size();
+    }
+
+    public int getCaseWithoutSuiteCount() {
+        return findElementsByXpath(String.format(SUITE_CASE_TITLE_XPATH, TEST_CASES_WITHOUT_SUITE_TITLE)).size();
+    }
+
     public int getCaseCountOnPage(String suiteName, String caseName) {
-        int caseCount = findElementsByXpath(String.format(SUITE_CASE_TITLE_XPATH, suiteName, caseName)).size();
+        int caseCount = findElementsByXpath(String.format(SUITE_CASE_TITLE_BY_CASE_NAME_XPATH, suiteName, caseName)).size();
         log.info("Get case '" + caseName + "' count in '" + suiteName + "' suite on page: " + caseCount);
         return caseCount;
     }
 
-    public int getCaseCountWithoutSuiteOnPage(String caseName) {
+    public int getCaseCountWithoutSuiteOnPageByCaseName(String caseName) {
         return getCaseCountOnPage(TEST_CASES_WITHOUT_SUITE_TITLE, caseName);
     }
 

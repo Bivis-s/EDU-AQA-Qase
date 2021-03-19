@@ -10,11 +10,10 @@ import lombok.extern.log4j.Log4j2;
 import pageobjects.app.DeleteProjectPage;
 import pageobjects.app.NewProjectPage;
 import pageobjects.app.ProjectsPage;
-import property_objects.ProjectProperties;
+import property_objects.wrappers.ProjectPropertiesWrapper;
 import utils.DateGenerator;
 import utils.RandomStringGenerator;
 import world.World;
-import wrappers.PropertiesWrapper;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -25,7 +24,7 @@ import static org.testng.Assert.assertNotNull;
 @RequiredArgsConstructor
 public class ProjectsSteps {
     private final World world;
-    private final PropertiesWrapper<ProjectProperties> projectPropertiesWrapper;
+    private final ProjectPropertiesWrapper projectPropertiesWrapper;
     private ProjectsPage projectsPage;
     private NewProjectPage newProjectPage;
     private DeleteProjectPage deleteProjectPage;
@@ -40,7 +39,7 @@ public class ProjectsSteps {
         assertNotNull(projectsPage.isLoaded());
     }
 
-    @When("Open the projects page")
+    @And("Open the projects page")
     public void openTheProjectsPage() {
         projectsPage.openPageByUrl();
     }
@@ -82,26 +81,26 @@ public class ProjectsSteps {
 
     @And("Click the `Create project` button")
     public void clickTheCreateProjectButton() {
-        projectPropertiesWrapper.setProperties(newProjectPage.getBuiltProjectProperties());
+        projectPropertiesWrapper.setProjectProperties(newProjectPage.getBuiltProjectProperties());
         newProjectPage.clickCreateProjectButton();
     }
 
     @And("Enter a project name into search project field")
     public void enterAProjectNameIntoSearchProjectField() {
-        projectsPage.enterTextInSearchProjectField(projectPropertiesWrapper.getProperties().getProjectName());
+        projectsPage.enterTextInSearchProjectField(projectPropertiesWrapper.getProjectProperties().getProjectName());
     }
 
     @When("Click the three-dotted button to the right of project name on the projects page")
     public void clickTheThreeDottedButtonToTheRightOfProjectNameOnTheProjectsPage() {
         projectsPage
-                .getProjectRowByName(projectPropertiesWrapper.getProperties().getProjectName())
+                .getProjectRowByName(projectPropertiesWrapper.getProjectProperties().getProjectName())
                 .clickDropdownButton();
     }
 
     @And("Click the `Delete` text in the drop-down under three-dotted button")
     public void clickTheDeleteTextInTheDropDownUnderThreeDottedButton() {
         deleteProjectPage = projectsPage
-                .getProjectRowByName(projectPropertiesWrapper.getProperties().getProjectName())
+                .getProjectRowByName(projectPropertiesWrapper.getProjectProperties().getProjectName())
                 .clickDropdownDeleteButton();
     }
 
@@ -112,7 +111,7 @@ public class ProjectsSteps {
 
     @And("There is no such project on the projects page")
     public void thereIsNoSuchProjectOnTheProjectsPage() {
-        String projectName = projectPropertiesWrapper.getProperties().getProjectName();
+        String projectName = projectPropertiesWrapper.getProjectProperties().getProjectName();
         assertThat(projectsPage.getProjectNamesList(), not(hasItem(projectName)));
     }
 }

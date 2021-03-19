@@ -49,7 +49,7 @@ public abstract class BasePage<T extends CustomLoadableComponent<T>> extends Cus
         executeJavaScript("window.scrollTo(0,document.body.scrollHeight);");
         // Sometimes browser has no time to handle scrolling down
         try {
-            Thread.sleep(500);
+            Thread.sleep(750);
         } catch (InterruptedException e) {
             log.error(e.getMessage());
         }

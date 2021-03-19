@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-public class CaseProperties implements Properties {
+public class CaseProperties {
     private Map<CreateCaseField, String> textFieldMap;
     private Map<CreateCaseSelect, SelectOption> selectMap;
     private List<CaseStepProperties> steps;

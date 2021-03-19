@@ -1,0 +1,153 @@
+package steps.app;
+
+import enums.create_case.CreateCaseField;
+import enums.create_case.CreateCaseSelect;
+import enums.create_case.select_options.*;
+import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import pageobjects.app.CreateTestCasePage;
+import property_objects.CaseProperties;
+import property_objects.wrappers.CasePropertiesWrapper;
+import property_objects.wrappers.ProjectPropertiesWrapper;
+import utils.EnumUtils;
+import utils.RandomStringGenerator;
+import world.World;
+
+@Log4j2
+@RequiredArgsConstructor
+public class CreateNewCaseSteps {
+    private final World world;
+    private final CasePropertiesWrapper casePropertiesWrapper;
+    private final ProjectPropertiesWrapper projectPropertiesWrapper;
+    private CreateTestCasePage casePage;
+
+    @Before
+    public void initPage() {
+        casePage = new CreateTestCasePage(world.getDriver());
+    }
+
+    private void openCreateCasePageByProjectCode(String projectCode) {
+        casePage.openPageByProjectCode(projectCode);
+    }
+
+    @And("Fill out the case title field with valid data")
+    public void fillOutTheCaseTitleFieldWithValidData() {
+        casePage.enterFieldByName(CreateCaseField.TITLE,
+                RandomStringGenerator.createCurrentDateAndLatinSentence(2));
+    }
+
+    @And("Fill out the case description field with valid data")
+    public void fillOutTheCaseDescriptionFieldWithValidData() {
+        casePage.enterFieldByName(CreateCaseField.DESCRIPTION,
+                RandomStringGenerator.createRandomLatinSentence(10));
+    }
+
+    @And("Fill out the case pre-conditions field with valid data")
+    public void fillOutTheCasePreConditionsFieldWithValidData() {
+        casePage.enterFieldByName(CreateCaseField.PRE_CONDITIONS,
+                RandomStringGenerator.createRandomLatinSentence(10));
+    }
+
+    @And("Fill out the case post-conditions field with valid data")
+    public void fillOutTheCasePostConditionsFieldWithValidData() {
+        casePage.enterFieldByName(CreateCaseField.POST_CONDITIONS,
+                RandomStringGenerator.createRandomLatinSentence(10));
+    }
+
+    @And("Fill out case title, description, pre-conditions, post-conditions")
+    public void fillOutCaseTitleDescriptionPreConditionsPostConditions() {
+        fillOutTheCaseTitleFieldWithValidData();
+        fillOutTheCaseDescriptionFieldWithValidData();
+        fillOutTheCasePreConditionsFieldWithValidData();
+        fillOutTheCasePostConditionsFieldWithValidData();
+    }
+
+    @And("Select random status")
+    public void selectRandomStatus() {
+        casePage.selectOptionByName(CreateCaseSelect.STATUS, EnumUtils.getRandomValue(CaseStatusOption.class));
+    }
+
+    @And("Select random severity")
+    public void selectRandomSeverity() {
+        casePage.selectOptionByName(CreateCaseSelect.SEVERITY, EnumUtils.getRandomValue(CaseSeverityOption.class));
+    }
+
+    @And("Select random priority")
+    public void selectRandomPriority() {
+        casePage.selectOptionByName(CreateCaseSelect.PRIORITY, EnumUtils.getRandomValue(CasePriorityOption.class));
+    }
+
+    @And("Select random type")
+    public void selectRandomType() {
+        casePage.selectOptionByName(CreateCaseSelect.TYPE, EnumUtils.getRandomValue(CaseTypeOption.class));
+    }
+
+    @And("Select random behavior")
+    public void selectRandomBehavior() {
+        casePage.selectOptionByName(CreateCaseSelect.BEHAVIOR, EnumUtils.getRandomValue(CaseBehaviorOption.class));
+    }
+
+    @And("Select random automation status")
+    public void selectRandomAutomationStatus() {
+        casePage.selectOptionByName(CreateCaseSelect.AUTOMATION_STATUS,
+                EnumUtils.getRandomValue(CaseAutomationStatusOption.class));
+    }
+
+    @And("Select random status, severity, priority, type, behavior, automation status")
+    public void selectRandomStatusSeverityPriorityTypeBehaviorAutomationStatus() {
+        selectRandomStatus();
+        selectRandomSeverity();
+        selectRandomPriority();
+        selectRandomType();
+        selectRandomBehavior();
+        selectRandomAutomationStatus();
+    }
+
+    @And("Click `Add step` button {int} times")
+    public void clickAddStepButtonTimes(int numberOfClicks) {
+        casePage.clickAddStepButtonForTimes(numberOfClicks);
+    }
+
+    @And("Fill out step number {int} action with valid data")
+    public void fillOutStepActionWithValidData(int stepNumber) {
+        casePage.enterActionIntoStepByNumber(stepNumber,
+                RandomStringGenerator.createRandomLatinSentence(5));
+    }
+
+    @And("Fill out step number {int} input data with valid data")
+    public void fillOutStepInputDataWithValidData(int stepNumber) {
+        casePage.enterInputDataIntoStepByNumber(stepNumber,
+                RandomStringGenerator.createRandomLatinSentence(5));
+    }
+
+    @And("Fill out step number {int} expected result with valid data")
+    public void fillOutStepExpectedResultWithValidData(int stepNumber) {
+        casePage.enterExpectedResultIntoStepByNumber(stepNumber,
+                RandomStringGenerator.createRandomLatinSentence(5));
+    }
+
+    @And("Fill upt step number {int} action, input data, expected result with valid data")
+    public void fillUptStepNumberActionInputDataExpectedResultWithValidData(int stepNumber) {
+        fillOutStepActionWithValidData(stepNumber);
+        fillOutStepInputDataWithValidData(stepNumber);
+        fillOutStepExpectedResultWithValidData(stepNumber);
+    }
+
+    @And("Click the `Save` button")
+    public void clickTheSaveButton() {
+        CaseProperties caseProperties = casePage.getBuiltCaseProperties();
+        casePropertiesWrapper.setCaseProperties(caseProperties);
+        casePage.clickSaveCaseButton();
+    }
+
+    @And("{int} case(s) without suite is/are created in the project via gui")
+    public void casesWithoutSuiteAreCreatedInTheProjectViaGui(int numberOfCases) {
+        for (int i = 0; i < numberOfCases; i++) {
+            openCreateCasePageByProjectCode(projectPropertiesWrapper.getProjectProperties().getProjectCode());
+            fillOutTheCaseTitleFieldWithValidData();
+            clickTheSaveButton();
+        }
+    }
+}

@@ -7,7 +7,8 @@ public enum UrlPageName implements EnumValue {
     HOME("home"),
     LOGIN("login"),
     PROJECTS("projects"),
-    PROJECT("project");
+    PROJECT("project"),
+    CREATE_NEW_CASE("create_test_case");
 
     private final String value;
 

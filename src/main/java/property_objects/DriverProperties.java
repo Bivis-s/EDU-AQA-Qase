@@ -4,7 +4,7 @@ import enums.PropertyDriverType;
 import lombok.Data;
 
 @Data
-public class DriverProperties implements Properties {
+public class DriverProperties {
     private PropertyDriverType type;
     private boolean headless;
     private boolean incognito;
