@@ -1,5 +1,6 @@
 Feature: App
 
+  @caseId=3
   Scenario: Create a private project with all valid data
     Given The 'existing_user' was created
     And The user is logged in
@@ -12,6 +13,7 @@ Feature: App
     And Click the `Create project` button
     Then The project is opened
 
+  @caseId=4
   Scenario: Delete an empty project using project search
     Given The 'existing_user' was created
     And A private project is created via api
@@ -25,6 +27,7 @@ Feature: App
     And Enter a project name into search project field
     And There is no such project on the projects page
 
+  @caseId=5
   Scenario: Create a case without a suite with all valid data in a private project
     Given The 'existing_user' was created
     And A private project is created via api
@@ -53,6 +56,7 @@ Feature: App
     And Enter a case name into search case field
     Then There is 1 the case without suite on the project page
 
+  @caseId=6
   Scenario: Delete a case without suite
     Given The 'existing_user' was created
     And A private project is created via api
@@ -67,6 +71,7 @@ Feature: App
     Then Open the project
     And There are 0 cases without suite on the project page
 
+  @caseId=7
   Scenario: Create a suite with all valid data
     Given The 'existing_user' was created
     And A private project is created via api
@@ -80,6 +85,7 @@ Feature: App
     Then Open the project
     And There are 1 suites on the project page
 
+  @caseId=8
   Scenario: Delete an empty suite
     Given The 'existing_user' was created
     And A private project is created via api
@@ -91,6 +97,7 @@ Feature: App
     Then Open the project
     And There are 0 suites on the project page
 
+  @caseId=16
   Scenario: Delete two cases by clicking a suite checkbox
     Given The 'existing_user' was created
     And A private project is created via api
@@ -105,6 +112,7 @@ Feature: App
     Then Open the project
     And There are 0 cases without suite on the project page
 
+  @caseId=18
   Scenario: Clone a suite
     Given The 'existing_user' was created
     And A private project is created via api

@@ -1,5 +1,6 @@
 Feature: Authorization
 
+  @caseId=1
   Scenario: Login via existing_user user data
     Given The 'existing_user' was created
     And Home page is opened
@@ -9,6 +10,7 @@ Feature: Authorization
     And Click the login button under fields
     Then The projects page is opened
 
+  @caseId=2
   Scenario:
     Given The 'existing_user' was created
     And The user is logged in
