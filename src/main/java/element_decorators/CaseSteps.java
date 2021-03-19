@@ -30,7 +30,13 @@ public class CaseSteps extends BaseElementDecorator<CaseSteps> {
         return findInnerElementsByXpath(getElement(), STEP_XPATH);
     }
 
-    // counting starts form 1 | TODO add JavaDoc
+    /**
+     * Enters {@param text} into step field number {@param stepNum}
+     *
+     * @param fieldXpath xpath of step field (for example action or expected result)
+     * @param stepNum number of step on the page (counting starts form 1)
+     * @param text text to enter
+     */
     private void enterStepField(String fieldXpath, int stepNum, String text) {
         PageLoadHelper.waitForElementIsClickable(getDriver(), By.xpath(fieldXpath));
         sendKeys(findInnerElementByXpath(getStepList().get(stepNum - 1), fieldXpath), text);

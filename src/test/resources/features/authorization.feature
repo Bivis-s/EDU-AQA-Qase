@@ -1,7 +1,7 @@
 Feature: Authorization
 
-  Scenario: Login via existing-user user data
-    Given The 'existing-user' was created
+  Scenario: Login via existing_user user data
+    Given The 'existing_user' was created
     And Home page is opened
     When Click the login button in the upper right corner
     And Enter email to the email field
@@ -10,7 +10,7 @@ Feature: Authorization
     Then The projects page is opened
 
   Scenario:
-    Given The 'existing-user' was created
+    Given The 'existing_user' was created
     And The user is logged in
     When Open the projects page
     And Click the user's avatar in the upper right corner

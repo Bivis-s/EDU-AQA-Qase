@@ -9,6 +9,9 @@ import java.util.Map;
 
 public class AccountPropertyReader extends PropertyReader {
     private static final String ACCOUNTS_PROPERTIES_FILE_PATH = "src/test/resources/properties/accounts.properties";
+    private static final String LOGIN_ENDING = "_login";
+    private static final String PASSWORD_ENDING = "_password";
+    private static final String API_TOKEN_ENDING = "_api_token";
     @Getter
     @Setter
     private String accountName;
@@ -36,16 +39,31 @@ public class AccountPropertyReader extends PropertyReader {
         }
     }
 
+    /**
+     * Returns environment variables is it not null, else returns property from accounts.properties file
+     *
+     * @param propertyEnding for example: bivis_login=Bivis-s | _login - property login
+     * @return environment variable or property
+     */
+    private String getSystemEnvOrProperty(String propertyEnding) {
+        String loginEnv = System.getenv(accountName + propertyEnding);
+        if (loginEnv != null) {
+            return loginEnv;
+        } else {
+            return getProperty(propertyEnding);
+        }
+    }
+
     private String getLogin() {
-        return getProperty("_login");
+        return getSystemEnvOrProperty(LOGIN_ENDING);
     }
 
     private String getPassword() {
-        return getProperty("_password");
+        return getSystemEnvOrProperty(PASSWORD_ENDING);
     }
 
     private String getApiToken() {
-        return getProperty("_api-token");
+        return getSystemEnvOrProperty(API_TOKEN_ENDING);
     }
 
     public AccountProperties getAccountsProperties() {

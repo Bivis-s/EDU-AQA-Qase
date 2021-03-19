@@ -9,10 +9,11 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import throwables.WaitForElementConditionError;
+import utils.readers.TimeoutsPropertyReader;
 
 @Log4j2
 public class PageLoadHelper {
-    private static final int TIMEOUT = 10; //TODO MOVE TO PROPERTIES FILE
+    private static final int TIMEOUT = new TimeoutsPropertyReader().getGlobalWebdriverWaitTimeout();
 
     public static void waitForElementIsClickable(WebDriver driver, By by) {
         try {
