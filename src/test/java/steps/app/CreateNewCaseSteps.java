@@ -13,21 +13,19 @@ import property_objects.wrappers.CasePropertiesWrapper;
 import property_objects.wrappers.ProjectPropertiesWrapper;
 import utils.EnumUtils;
 import utils.RandomStringGenerator;
-import world.World;
-
-import java.util.HashSet;
+import world_context.WorldContext;
 
 @Log4j2
 @RequiredArgsConstructor
 public class CreateNewCaseSteps {
-    private final World world;
+    private final WorldContext worldContext;
     private final CasePropertiesWrapper casePropertiesWrapper;
     private final ProjectPropertiesWrapper projectPropertiesWrapper;
     private CreateTestCasePage casePage;
 
     @Before
     public void initPage() {
-        casePage = new CreateTestCasePage(world.getDriver());
+        casePage = new CreateTestCasePage(worldContext.getDriver());
     }
 
     private void openCreateCasePageByProjectCode(String projectCode) {

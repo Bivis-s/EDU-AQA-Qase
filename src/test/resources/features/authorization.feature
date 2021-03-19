@@ -11,7 +11,7 @@ Feature: Authorization
     Then The projects page is opened
 
   @caseId=2
-  Scenario:
+  Scenario: Sign out through user menu dropdown
     Given The 'existing_user' was created
     And The user is logged in
     When Open the projects page

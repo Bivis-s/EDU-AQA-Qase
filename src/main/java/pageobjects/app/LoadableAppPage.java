@@ -7,7 +7,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import pageobjects.BasePage;
-import throwables.WaitForElementConditionError;
 
 
 /**
