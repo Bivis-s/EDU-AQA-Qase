@@ -1,6 +1,5 @@
 package property_objects;
 
-import api.objects.CreateNewProjectRequest;
 import enums.create_case.CreateCaseField;
 import enums.create_case.CreateCaseSelect;
 import enums.create_case.select_options.SelectOption;
@@ -12,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-public class CaseProperties implements Properties {
+public class CaseProperties {
     private Map<CreateCaseField, String> textFieldMap;
     private Map<CreateCaseSelect, SelectOption> selectMap;
     private List<CaseStepProperties> steps;

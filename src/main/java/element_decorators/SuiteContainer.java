@@ -18,7 +18,7 @@ public class SuiteContainer extends BaseElementDecorator<SuiteContainer> {
             "//*[contains(@class,'trash')]//ancestor::*[contains(@class,'suite-control')]";
     private static final String SUITE_CLONE_BUTTON_XPATH = SUITE_HEADER_XPATH +
             "//*[contains(@class,'copy')]//ancestor::*[contains(@class,'suite-control')]";
-    private static final String SUITE_CASE_TITLE__XPATH =
+    private static final String SUITE_CASE_TITLE_XPATH =
             SUITE_XPATH + "//*[contains(@class,'case-row-title')]";
     private static final String SUITE_CASE_TITLE_BY_CASE_NAME_XPATH =
             SUITE_XPATH + "//*[contains(@class,'case-row-title') and contains(text(),'%s')]";
@@ -81,12 +81,12 @@ public class SuiteContainer extends BaseElementDecorator<SuiteContainer> {
         return suiteCount;
     }
 
-    public int getCaseCountInSuiteBySuiteNameAtAll(String suiteName) {
-        return findElementsByXpath(String.format(SUITE_CASE_TITLE__XPATH, suiteName)).size();
+    public int getCaseCountInSuiteBySuiteName(String suiteName) {
+        return findElementsByXpath(String.format(SUITE_CASE_TITLE_XPATH, suiteName)).size();
     }
 
-    public int getCaseWithoutSuiteCountAtAll() {
-        return findElementsByXpath(String.format(SUITE_CASE_TITLE__XPATH, TEST_CASES_WITHOUT_SUITE_TITLE)).size();
+    public int getCaseWithoutSuiteCount() {
+        return findElementsByXpath(String.format(SUITE_CASE_TITLE_XPATH, TEST_CASES_WITHOUT_SUITE_TITLE)).size();
     }
 
     public int getCaseCountOnPage(String suiteName, String caseName) {

@@ -43,7 +43,7 @@ public class ProjectSteps {
         assertNotNull(projectPage.isLoaded());
     }
 
-    @Then("Open the project")
+    @Then("Open the (created )project")
     public void openTheProject() {
         projectPage.openPageByProjectCode(projectPropertiesWrapper.getProjectCode());
     }
@@ -61,7 +61,7 @@ public class ProjectSteps {
     @Then("There is/are {int} (the )case(s) without suite on the project page")
     public void thereIsTheCaseOnProjectPage(int expectedCountOfCases) {
         int actualCountOfCases =
-                projectPage.getSuiteContainer().getCaseWithoutSuiteCountAtAll();
+                projectPage.getSuiteContainer().getCaseWithoutSuiteCount();
         assertEquals(actualCountOfCases, expectedCountOfCases);
     }
 
@@ -70,17 +70,17 @@ public class ProjectSteps {
         projectPage.getSuiteContainer().checkCaseWithoutCheckboxByName(casePropertiesWrapper.getCaseTitle());
     }
 
-    @And("Click the gray `Delete` button in the controls block at the top")
-    public void clickTheGrayDeleteButtonInTheControlsBlockAtTheTop() {
+    @And("Click the `Delete` button in the controls block at the top")
+    public void clickTheDeleteButtonInTheControlsBlockAtTheTop() {
         deleteTestCasesModal = projectPage.clickDeleteTestCasesButton();
     }
 
-    @And("Enter {string} into field in the modal")
+    @And("Enter {string} into field in the delete test case modal")
     public void enterCONFIRMIntoFieldInTheModal(String text) {
         deleteTestCasesModal.enterTextIntoConfirmField(text);
     }
 
-    @When("Click the `Delete` button in the modal")
+    @When("Click the `Delete` button in the delete test case modal")
     public void clickTheDeleteButtonInTheModal() {
         deleteTestCasesModal.clickDeleteCasesButton();
     }
@@ -105,6 +105,13 @@ public class ProjectSteps {
         createSuiteModal.enterPreconditions(RandomStringGenerator.createRandomLatinSentence(2));
     }
 
+    @And("Fill out suite name, description, precondition on create suite modal with valid data")
+    public void fillOutSuiteNameDescriptionAndPreconditionOnCreateSuiteModalWithValidData() {
+        fillOutTheSuiteNameOnCreateSuiteModalWithValidData();
+        fillOutTheSuiteDescriptionOnCreateSuiteModalWithValidData();
+        fillOutTheSuitePreconditionOnCreateSuiteModalWithValidData();
+    }
+
     @When("Click the `Create` button on create suite modal")
     public void clickTheCreateButtonOnCreateSuiteModal() {
         createSuiteModal.clickCreateSuiteButton();
@@ -125,7 +132,7 @@ public class ProjectSteps {
                 .clickDeleteSuiteButtonBySuiteName(suitePropertiesWrapper.getSuiteName());
     }
 
-    @When("Click the `Delete suite` button in the modal")
+    @When("Click the `Delete suite` button in the delete suite modal")
     public void clickTheDeleteSuiteButtonInTheModal() {
         deleteSuiteModal.clickDeleteSuiteButton();
     }
@@ -142,7 +149,7 @@ public class ProjectSteps {
                 .clickCloneSuiteButtonBySuiteName(suitePropertiesWrapper.getSuiteName());
     }
 
-    @When("Click the `Clone` button in the modal")
+    @When("Click the `Clone` button in the clone suite modal")
     public void clickTheCloneButtonInTheModal() {
         cloneSuiteModal.clickCloneSuiteButton();
     }

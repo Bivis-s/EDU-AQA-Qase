@@ -39,7 +39,7 @@ public class ProjectsSteps {
         assertNotNull(projectsPage.isLoaded());
     }
 
-    @When("Open the projects page")
+    @And("Open the projects page")
     public void openTheProjectsPage() {
         projectsPage.openPageByUrl();
     }

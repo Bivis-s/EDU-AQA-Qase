@@ -15,8 +15,6 @@ import utils.EnumUtils;
 import utils.RandomStringGenerator;
 import world.World;
 
-import java.util.HashSet;
-
 @Log4j2
 @RequiredArgsConstructor
 public class CreateNewCaseSteps {
@@ -37,7 +35,7 @@ public class CreateNewCaseSteps {
     @And("Fill out the case title field with valid data")
     public void fillOutTheCaseTitleFieldWithValidData() {
         casePage.enterFieldByName(CreateCaseField.TITLE,
-                RandomStringGenerator.createCurrentDateAndWords(2));
+                RandomStringGenerator.createCurrentDateAndLatinSentence(2));
     }
 
     @And("Fill out the case description field with valid data")
@@ -56,6 +54,14 @@ public class CreateNewCaseSteps {
     public void fillOutTheCasePostConditionsFieldWithValidData() {
         casePage.enterFieldByName(CreateCaseField.POST_CONDITIONS,
                 RandomStringGenerator.createRandomLatinSentence(10));
+    }
+
+    @And("Fill out case title, description, pre-conditions, post-conditions")
+    public void fillOutCaseTitleDescriptionPreConditionsPostConditions() {
+        fillOutTheCaseTitleFieldWithValidData();
+        fillOutTheCaseDescriptionFieldWithValidData();
+        fillOutTheCasePreConditionsFieldWithValidData();
+        fillOutTheCasePostConditionsFieldWithValidData();
     }
 
     @And("Select random status")
@@ -89,6 +95,16 @@ public class CreateNewCaseSteps {
                 EnumUtils.getRandomValue(CaseAutomationStatusOption.class));
     }
 
+    @And("Select random status, severity, priority, type, behavior, automation status")
+    public void selectRandomStatusSeverityPriorityTypeBehaviorAutomationStatus() {
+        selectRandomStatus();
+        selectRandomSeverity();
+        selectRandomPriority();
+        selectRandomType();
+        selectRandomBehavior();
+        selectRandomAutomationStatus();
+    }
+
     @And("Click `Add step` button {int} times")
     public void clickAddStepButtonTimes(int numberOfClicks) {
         casePage.clickAddStepButtonForTimes(numberOfClicks);
@@ -112,6 +128,13 @@ public class CreateNewCaseSteps {
                 RandomStringGenerator.createRandomLatinSentence(5));
     }
 
+    @And("Fill upt step number {int} action, input data, expected result with valid data")
+    public void fillUptStepNumberActionInputDataExpectedResultWithValidData(int stepNumber) {
+        fillOutStepActionWithValidData(stepNumber);
+        fillOutStepInputDataWithValidData(stepNumber);
+        fillOutStepExpectedResultWithValidData(stepNumber);
+    }
+
     @And("Click the `Save` button")
     public void clickTheSaveButton() {
         CaseProperties caseProperties = casePage.getBuiltCaseProperties();
@@ -119,10 +142,12 @@ public class CreateNewCaseSteps {
         casePage.clickSaveCaseButton();
     }
 
-    @And("A case without suite is created in the project via gui")
-    public void aCaseWithoutSuiteIsCreatedInTheProjectViaGui() {
-        openCreateCasePageByProjectCode(projectPropertiesWrapper.getProjectProperties().getProjectCode());
-        fillOutTheCaseTitleFieldWithValidData();
-        clickTheSaveButton();
+    @And("{int} case(s) without suite is/are created in the project via gui")
+    public void casesWithoutSuiteAreCreatedInTheProjectViaGui(int numberOfCases) {
+        for (int i = 0; i < numberOfCases; i++) {
+            openCreateCasePageByProjectCode(projectPropertiesWrapper.getProjectProperties().getProjectCode());
+            fillOutTheCaseTitleFieldWithValidData();
+            clickTheSaveButton();
+        }
     }
 }
