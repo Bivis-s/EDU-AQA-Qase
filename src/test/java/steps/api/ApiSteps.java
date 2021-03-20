@@ -11,18 +11,18 @@ import property_objects.wrappers.ProjectPropertiesWrapper;
 import property_objects.wrappers.SuitePropertiesWrapper;
 import utils.DateGenerator;
 import utils.RandomStringGenerator;
-import world.World;
+import world_context.WorldContext;
 
 @RequiredArgsConstructor
 public class ApiSteps {
-    private final World world;
+    private final WorldContext worldContext;
     private final ProjectPropertiesWrapper projectPropertiesWrapper;
     private final SuitePropertiesWrapper suitePropertiesWrapper;
 
     @And("A private project is created via api")
     public void aPrivateProjectIsCreatedViaApi() {
         CreateNewProjectRequest createNewProjectRequest = CreateNewProjectRequest.builder()
-                .title(DateGenerator.getCurrentFullDate() + " | " + world.getScenario().getName())
+                .title(DateGenerator.getCurrentFullDate() + " | " + worldContext.getScenario().getName())
                 .code(RandomStringGenerator.createRandomLatinUppercaseString(6))
                 .description(RandomStringGenerator.createRandomLatinSentence(10))
                 .access(CreateNewProjectAccess.NONE)
@@ -30,7 +30,7 @@ public class ApiSteps {
         ProjectProperties projectProperties = new ProjectProperties();
         projectProperties.setPropertiesByApiRequest(createNewProjectRequest);
         projectPropertiesWrapper.setProjectProperties(projectProperties);
-        world.getApiAdapter().createNewProject(createNewProjectRequest);
+        worldContext.getApiAdapter().createNewProject(createNewProjectRequest);
     }
 
     @And("A suite is created in the project via api")
@@ -43,6 +43,6 @@ public class ApiSteps {
         SuiteProperties suiteProperties = new SuiteProperties();
         suiteProperties.setPropertiesByApiRequest(createNewSuiteRequest);
         suitePropertiesWrapper.setSuiteProperties(suiteProperties);
-        world.getApiAdapter().createNewSuite(projectPropertiesWrapper.getProjectCode(), createNewSuiteRequest);
+        worldContext.getApiAdapter().createNewSuite(projectPropertiesWrapper.getProjectCode(), createNewSuiteRequest);
     }
 }

@@ -40,6 +40,10 @@ public abstract class PropertyReader {
         return Boolean.parseBoolean(properties.getProperty(key));
     }
 
+    public int getInt(String key) {
+        return Integer.parseInt(getString(key));
+    }
+
     public Map<String, String> getMap() {
         Map<String, String> propertiesMap = new HashMap<>();
         Set<String> propertyNames = properties.stringPropertyNames();

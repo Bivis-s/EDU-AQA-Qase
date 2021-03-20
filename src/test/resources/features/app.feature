@@ -1,7 +1,8 @@
 Feature: App
 
+  @caseId=3
   Scenario: Create a private project with all valid data
-    Given The 'existing-user' was created
+    Given The 'existing_user' was created
     And The user is logged in
     And Open the projects page
     When Click the `Create new project` button in the upper left corner
@@ -12,8 +13,9 @@ Feature: App
     And Click the `Create project` button
     Then The project is opened
 
+  @caseId=4
   Scenario: Delete an empty project using project search
-    Given The 'existing-user' was created
+    Given The 'existing_user' was created
     And A private project is created via api
     And The user is logged in
     And Open the projects page
@@ -25,8 +27,9 @@ Feature: App
     And Enter a project name into search project field
     And There is no such project on the projects page
 
+  @caseId=5
   Scenario: Create a case without a suite with all valid data in a private project
-    Given The 'existing-user' was created
+    Given The 'existing_user' was created
     And A private project is created via api
     And The user is logged in
     And Open the created project
@@ -41,8 +44,9 @@ Feature: App
     And Enter a case name into search case field
     Then There is 1 the case without suite on the project page
 
+  @caseId=6
   Scenario: Delete a case without suite
-    Given The 'existing-user' was created
+    Given The 'existing_user' was created
     And A private project is created via api
     And The user is logged in
     And Open the created project
@@ -55,8 +59,9 @@ Feature: App
     Then Open the created project
     And There are 0 cases without suite on the project page
 
+  @caseId=7
   Scenario: Create a suite with all valid data
-    Given The 'existing-user' was created
+    Given The 'existing_user' was created
     And A private project is created via api
     And The user is logged in
     And Open the created project
@@ -66,8 +71,9 @@ Feature: App
     Then Open the created project
     And There are 1 suites on the project page
 
+  @caseId=8
   Scenario: Delete an empty suite
-    Given The 'existing-user' was created
+    Given The 'existing_user' was created
     And A private project is created via api
     And The user is logged in
     And A suite is created in the project via api
@@ -77,8 +83,9 @@ Feature: App
     Then Open the created project
     And There are 0 suites on the project page
 
+  @caseId=16
   Scenario: Delete two cases by clicking a suite checkbox
-    Given The 'existing-user' was created
+    Given The 'existing_user' was created
     And A private project is created via api
     And The user is logged in
     And 2 cases without suite are created in the project via gui
@@ -90,8 +97,9 @@ Feature: App
     Then Open the created project
     And There are 0 cases without suite on the project page
 
+  @caseId=18
   Scenario: Clone a suite
-    Given The 'existing-user' was created
+    Given The 'existing_user' was created
     And A private project is created via api
     And A suite is created in the project via api
     And The user is logged in

@@ -15,7 +15,7 @@ import property_objects.wrappers.CasePropertiesWrapper;
 import property_objects.wrappers.ProjectPropertiesWrapper;
 import property_objects.wrappers.SuitePropertiesWrapper;
 import utils.RandomStringGenerator;
-import world.World;
+import world_context.WorldContext;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
@@ -23,7 +23,7 @@ import static org.testng.Assert.assertNotNull;
 @Log4j2
 @RequiredArgsConstructor
 public class ProjectSteps {
-    private final World world;
+    private final WorldContext worldContext;
     private final ProjectPropertiesWrapper projectPropertiesWrapper;
     private final CasePropertiesWrapper casePropertiesWrapper;
     private final SuitePropertiesWrapper suitePropertiesWrapper;
@@ -35,7 +35,7 @@ public class ProjectSteps {
 
     @Before
     public void initPages() {
-        projectPage = new ProjectPage(world.getDriver());
+        projectPage = new ProjectPage(worldContext.getDriver());
     }
 
     @Then("The project is opened")

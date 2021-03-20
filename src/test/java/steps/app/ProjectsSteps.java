@@ -13,7 +13,7 @@ import pageobjects.app.ProjectsPage;
 import property_objects.wrappers.ProjectPropertiesWrapper;
 import utils.DateGenerator;
 import utils.RandomStringGenerator;
-import world.World;
+import world_context.WorldContext;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -23,7 +23,7 @@ import static org.testng.Assert.assertNotNull;
 @Log4j2
 @RequiredArgsConstructor
 public class ProjectsSteps {
-    private final World world;
+    private final WorldContext worldContext;
     private final ProjectPropertiesWrapper projectPropertiesWrapper;
     private ProjectsPage projectsPage;
     private NewProjectPage newProjectPage;
@@ -31,7 +31,7 @@ public class ProjectsSteps {
 
     @Before
     public void initProjectsPage() {
-        projectsPage = new ProjectsPage(world.getDriver());
+        projectsPage = new ProjectsPage(worldContext.getDriver());
     }
 
     @Then("The projects page is opened")
@@ -61,7 +61,7 @@ public class ProjectsSteps {
 
     @And("Enter a valid project name")
     public void enterAValidProjectName() {
-        newProjectPage.enterProjectName(DateGenerator.getCurrentFullDate() + " | " + world.getScenario().getName());
+        newProjectPage.enterProjectName(DateGenerator.getCurrentFullDate() + " | ");
     }
 
     @And("Enter a valid project code")

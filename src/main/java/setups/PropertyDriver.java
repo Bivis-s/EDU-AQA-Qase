@@ -1,10 +1,7 @@
 package setups;
 
 import lombok.extern.log4j.Log4j2;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import property_objects.DriverProperties;
 
 import java.util.Arrays;
@@ -12,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 @Log4j2
-public class PropertyDriver implements WebDriver, JavascriptExecutor {
+public class PropertyDriver implements WebDriver, JavascriptExecutor, TakesScreenshot {
     private final WebDriver driver;
 
     public PropertyDriver(DriverProperties driverProperties) {
@@ -178,5 +175,11 @@ public class PropertyDriver implements WebDriver, JavascriptExecutor {
             log.trace(t.getMessage());
             throw t;
         }
+    }
+
+    @Override
+    public <X> X getScreenshotAs(OutputType<X> target) throws WebDriverException {
+        log.debug("Take screenshot " + target.toString());
+        return ((TakesScreenshot) driver).getScreenshotAs(target);
     }
 }
